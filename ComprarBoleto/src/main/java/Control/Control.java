@@ -61,4 +61,5 @@ public class Control {
     public void registrarCompra() {
         System.out.println("Compra registrada exitosamente.");
     }
+    
 }

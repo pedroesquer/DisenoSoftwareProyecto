@@ -5,6 +5,7 @@
 package Frames;
 
 import enumm.estadoAsiento;
+import itson.rutappdto.AsientoAsignadoDTO;
 import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.BoletoDTO;
@@ -26,8 +27,7 @@ public class ResumenCompra extends javax.swing.JFrame {
 
     private final JTextArea resumenTextArea;
 
-    private List<AsientosDisponibles.AsientoAsignado> asientosAsignados;
-
+//    private List<AsientosDisponibles.AsientoAsignado> asientosAsignados;
     /**
      * Creates new form ComprarViaje
      */
@@ -40,7 +40,18 @@ public class ResumenCompra extends javax.swing.JFrame {
 
         resumenTextArea = new JTextArea();
         resumenTextArea.setEditable(false);
-        add(new JScrollPane(resumenTextArea), BorderLayout.CENTER);;
+        add(new JScrollPane(resumenTextArea), BorderLayout.CENTER);
+
+//        BoletoDTO boleto = new BoletoDTO(
+//                "Ciudad A",
+//                "Ciudad B",
+//                "15:30",
+//                usuario,
+//                200.0,
+//                "2 horas",
+//                camion,
+//                asientosBoleto
+//        );
 
     }
 
@@ -349,19 +360,20 @@ public class ResumenCompra extends javax.swing.JFrame {
     private javax.swing.JLabel lblPrecio;
     private javax.swing.JLabel lblTotal;
     // End of variables declaration//GEN-END:variables
-    public void mostrarResumen(List<AsientosDisponibles.AsientoAsignado> lista, BoletoDTO camion, double monedero) {
+
+    public void mostrarResumen(List<AsientoAsignadoDTO> lista, BoletoDTO boleto) {
         // Origen y destino
-        lblOrigen.setText(camion.getOrigen());
-        lblDestino.setText(camion.getDestino());
+        lblOrigen.setText(boleto.getOrigen());
+        lblDestino.setText(boleto.getDestino());
 
         // Duración (puedes ajustarlo según tus datos)
-        lblDuracion.setText(camion.getDuracion());
+        lblDuracion.setText(boleto.getDuracion());
 
         // Asientos y nombres
         StringBuilder asientos = new StringBuilder();
         StringBuilder nombres = new StringBuilder();
 
-        for (AsientosDisponibles.AsientoAsignado asignado : lista) {
+        for (AsientoAsignadoDTO asignado : lista) {
             asientos.append(asignado.getNumeroAsiento()).append(" ");
             nombres.append(asignado.getNombrePasajero()).append(" / ");
         }
@@ -370,11 +382,10 @@ public class ResumenCompra extends javax.swing.JFrame {
         lblNombres.setText(nombres.toString().trim());
 
         // Precio por asiento
-        double precio = camion.getPrecio();
+        double precio = boleto.getPrecio();
         double total = precio * lista.size();
 
         lblPrecio.setText("$" + precio);
-        lblMonedero.setText("$" + monedero);
         lblTotal.setText("$" + total);
     }
 }

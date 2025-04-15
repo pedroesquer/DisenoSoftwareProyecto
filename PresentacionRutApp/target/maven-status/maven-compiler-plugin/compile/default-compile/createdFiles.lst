@@ -9,7 +9,6 @@ Interfaces\ITabla.class
 Frames\ViajesDisponibles.class
 Frames\ResumenCompra.class
 Frames\SistemaRutaApp.class
-Frames\AsientosDisponibles$AsientoAsignado.class
 Frames\AsientosDisponibles.class
 Frames\MainMenu$5.class
 Frames\MainMenu.class

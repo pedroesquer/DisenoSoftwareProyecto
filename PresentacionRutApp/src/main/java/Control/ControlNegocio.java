@@ -11,6 +11,7 @@ import control.ControlSeleccionAsiento;
 import excepciones.SeleccionAsientoException;
 import itson.consultardisponibilidad.Interfaz.IConsultarDisponibilidad;
 import itson.consultardisponibilidad.fachada.FachadaConsultarDisponibilidad;
+import itson.rutappdto.AsientoAsignadoDTO;
 import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.CamionDTO;
 import itson.rutappdto.ViajeDTO;
@@ -27,6 +28,7 @@ import javax.swing.JOptionPane;
  */
 public class ControlNegocio {
 
+    private List<AsientoAsignadoDTO> asientosAsignados = new ArrayList<>();
     IConsultarDisponibilidad consultarDisponibilidad = new FachadaConsultarDisponibilidad();
     IComprarBoleto comprarBoleto = new ComprarBoleto();
 
@@ -34,8 +36,6 @@ public class ControlNegocio {
 
     public ControlNegocio() {
     }
-
-    
 
     public static ControlNegocio getInstancia() {
         if (instancia == null) {
@@ -46,14 +46,15 @@ public class ControlNegocio {
 
     /**
      * Método que se comunica con el subsistmea y regresa la lista de destinos.
+     *
      * @param origen De donde se parte.
-     * @return 
+     * @return
      */
     public List<String> obtenerDestinosDisponibles(String origen) {
         List<String> destinos = consultarDisponibilidad.consultarDestinos(origen);
-        if (destinos.isEmpty()){
-            JOptionPane.showMessageDialog(null, 
-                    "No hay destinos para este parametro", 
+        if (destinos.isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "No hay destinos para este parametro",
                     "Sin coincidencias", JOptionPane.ERROR_MESSAGE);
             return null;
         }
@@ -66,9 +67,9 @@ public class ControlNegocio {
 
     public List<ViajeDTO> obtenerListaViajes(String origen, String Destino, LocalDate fecha) {
         List<ViajeDTO> viajes = consultarDisponibilidad.consultarViajesDisponibles(origen, Destino, fecha);
-        if(viajes.isEmpty() ){
-            JOptionPane.showMessageDialog(null, 
-                    "No se encontraron viajes para estos parametros", 
+        if (viajes.isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "No se encontraron viajes para estos parametros",
                     "Sin coincidencias", JOptionPane.ERROR_MESSAGE);
             return null;
         } else {
@@ -128,7 +129,7 @@ public class ControlNegocio {
     }
 
     public void apartarAsiento(AsientoDTO asiento) throws SeleccionAsientoException {
-        if(asiento == null){
+        if (asiento == null) {
             throw new SeleccionAsientoException("Error de asiento");
         }
         ControlSeleccionAsiento.getInstancia().apartarAsiento(asiento);
@@ -145,5 +146,13 @@ public class ControlNegocio {
     public List<AsientoDTO> obtenerAsientos(CamionDTO camion) throws CompraBoletoException {
         return comprarBoleto.mostrarListaAsientos(camion);
 
+    }
+
+    public void guardarAsientosAsignados(List<AsientoAsignadoDTO> lista) {
+        this.asientosAsignados = lista;
+    }
+
+    public List<AsientoAsignadoDTO> obtenerAsientosAsignados() {
+        return this.asientosAsignados;
     }
 }

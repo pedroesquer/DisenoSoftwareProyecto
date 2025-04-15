@@ -2,6 +2,7 @@ package Frames;
 
 import Control.CordinadorPresentacion;
 import enumm.estadoAsiento;
+import itson.rutappdto.AsientoAsignadoDTO;
 import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.BoletoDTO;
@@ -26,72 +27,48 @@ import javax.swing.JPanel;
  * @author BusSoft
  */
 public class AsientosDisponibles extends javax.swing.JFrame {
-
+//
     CamionDTO camion;
-
-    UsuarioDTO usuario = new UsuarioDTO("Juan Pérez");
-
-    List<AsientoDTO> asientosCamion = new ArrayList<>();
-    List<AsientoBoletoDTO> asientosBoleto = new ArrayList<>();
+//
+//    UsuarioDTO usuario = new UsuarioDTO("Juan Pérez");
+//
+//    List<AsientoDTO> asientosCamion = new ArrayList<>();
+//    List<AsientoBoletoDTO> asientosBoleto = new ArrayList<>();
 
     public AsientosDisponibles() {
-        // Crear asientos
-        AsientoDTO asiento1 = new AsientoDTO(1L, estadoAsiento.DISPONIBLE, "A1");
-        AsientoDTO asiento2 = new AsientoDTO(2L, estadoAsiento.OCUPADO, "A2");
-
-        // Agregar a la lista de asientos del camión
-        asientosCamion.add(asiento1);
-        asientosCamion.add(asiento2);
-
-        // Agregar a la lista de asientos del boleto
-        asientosBoleto.add(new AsientoBoletoDTO(asiento1, null, "A1", 100.0));
-        asientosBoleto.add(new AsientoBoletoDTO(asiento2, null, "A2", 100.0));
-
-        // Crear y guardar el boleto
+//        // Crear asientos
+//        AsientoDTO asiento1 = new AsientoDTO(1L, estadoAsiento.DISPONIBLE, "A1");
+//        AsientoDTO asiento2 = new AsientoDTO(2L, estadoAsiento.OCUPADO, "A2");
+//
+//        // Agregar a la lista de asientos del camión
+//        asientosCamion.add(asiento1);
+//        asientosCamion.add(asiento2);
+//
+//        // Agregar a la lista de asientos del boleto
+//        asientosBoleto.add(new AsientoBoletoDTO(asiento1, null, "A1", 100.0));
+//        asientosBoleto.add(new AsientoBoletoDTO(asiento2, null, "A2", 100.0));
+//
+//        // Crear y guardar el boleto
 
     }
-      BoletoDTO boleto = new BoletoDTO(
-                "Ciudad A",
-                "Ciudad B",
-                "15:30",
-                usuario,
-                200.0,
-                "2 horas",
-                camion,
-                asientosBoleto
-        );
+//      BoletoDTO boleto = new BoletoDTO(
+//                "Ciudad A",
+//                "Ciudad B",
+//                "15:30",
+//                usuario,
+//                200.0,
+//                "2 horas",
+//                camion,
+//                asientosBoleto
+//        );
 
     // Definir el Enum para los estados de los asientos
     public enum EstadoAsiento {
         LIBRE, SELECCIONADO, OCUPADO
     }
 
-    class AsientoAsignado {
-
-        private String numeroAsiento;
-        private String nombrePasajero;
-
-        public AsientoAsignado(String numeroAsiento, String nombrePasajero) {
-            this.numeroAsiento = numeroAsiento;
-            this.nombrePasajero = nombrePasajero;
-        }
-
-        public String getNumeroAsiento() {
-            return numeroAsiento;
-        }
-
-        public String getNombrePasajero() {
-            return nombrePasajero;
-        }
-
-        @Override
-        public String toString() {
-            return "Asiento " + numeroAsiento + ": " + nombrePasajero;
-        }
-    }
-
-    public List<AsientoAsignado> obtenerAsientosYPasajeros() {
-        List<AsientoAsignado> lista = new ArrayList<>();
+    public List<AsientoAsignadoDTO> obtenerAsientosYPasajeros() {
+        List<AsientoAsignadoDTO> lista = new ArrayList<>();
 
         for (Map.Entry<JPanel, String> entry : mapaNombresPasajeros.entrySet()) {
             String nombre = entry.getValue();
@@ -104,7 +81,7 @@ public class AsientosDisponibles extends javax.swing.JFrame {
                     .findFirst()
                     .orElse("Desconocido");
 
-            lista.add(new AsientoAsignado(numeroAsiento, nombre));
+            lista.add(new AsientoAsignadoDTO(numeroAsiento, nombre));
         }
 
         return lista;
@@ -144,10 +121,6 @@ public class AsientosDisponibles extends javax.swing.JFrame {
         inicializarMapaAsientos();
         marcarAsientosOcupados(camion.getListaAsiento());
         mapaEstadosAsientos.put(botonAsientoUno, EstadoAsiento.OCUPADO);
-    }
-
-    public void compararAsiento() {
-
     }
 
     // Mapear los números de asiento a los paneles correspondientes
@@ -1026,14 +999,19 @@ public class AsientosDisponibles extends javax.swing.JFrame {
     }//GEN-LAST:event_botonAsientoCincoMouseClicked
 
     private void btnCompraViajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompraViajeActionPerformed
-        List<AsientoAsignado> lista = obtenerAsientosYPasajeros();
-        ResumenCompra resumen = new ResumenCompra();
-        resumen.mostrarResumen(lista,boleto, 150.00); // <- el último valor es el monedero, cámbialo si lo sacas de otro lado
-        resumen.setVisible(true);
+//        List<AsientoAsignado> lista = obtenerAsientosYPasajeros();
+//        ResumenCompra resumen = new ResumenCompra();
+//        resumen.mostrarResumen(lista,boleto, 150.00); // <- el último valor es el monedero, cámbialo si lo sacas de otro lado
+//        resumen.setVisible(true);
         
-        //CordinadorPresentacion.getInstancia().abrirMetodoPago();
+        CordinadorPresentacion.getInstancia().abrirMetodoPago();
 
     }//GEN-LAST:event_btnCompraViajeActionPerformed
+    
+    /**
+     * 
+     * @param panel 
+     */
     private void seleccionarAsiento(JPanel panel) {
 
         // Obtener el estado actual del asiento desde el HashMap
@@ -1083,6 +1061,9 @@ public class AsientosDisponibles extends javax.swing.JFrame {
         panel.repaint();
     }
 
+    /**
+     * 
+     */
     private void actualizarResumenAsientos() {
         StringBuilder resumen = new StringBuilder();
 
