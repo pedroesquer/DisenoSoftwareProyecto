@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
  *
  * @author mmax2
  */
+
 public class BuscarViaje extends javax.swing.JFrame {
 
     /**
@@ -31,11 +32,13 @@ public class BuscarViaje extends javax.swing.JFrame {
         List<String> origenes = CordinadorPresentacion.getInstancia().buscarOrigenesDisponibles();
 
         BoxOrigen.removeAllItems();
+        BoxOrigen.addItem("Selecciona tu origen"); // opción por defecto
+
         for (String origen : origenes) {
             BoxOrigen.addItem(origen);
         }
 
-        // Desactivar destino hasta que se seleccione un origen
+        BoxOrigen.setSelectedIndex(0); // asegurarse de que la opción default esté seleccionada
         BoxDestino.setEnabled(false);
     }
 
@@ -176,19 +179,24 @@ public class BuscarViaje extends javax.swing.JFrame {
     }//GEN-LAST:event_BoxDestinoActionPerformed
 
     private void BoxOrigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BoxOrigenActionPerformed
-        // TODO add your handling code here:
         String origenSeleccionado = (String) BoxOrigen.getSelectedItem();
 
-        if (origenSeleccionado != null && !origenSeleccionado.isEmpty()) {
+        // Verificamos que no sea la opción por defecto
+        if (origenSeleccionado != null && !origenSeleccionado.equals("Selecciona tu origen")) {
             List<String> destinos = ControlNegocio.getInstancia().obtenerDestinosDisponibles(origenSeleccionado);
 
-            if (destinos != null) {
+            if (destinos != null && !destinos.isEmpty()) {
                 BoxDestino.removeAllItems();
+                BoxDestino.addItem("Selecciona tu destino"); // Opción por defecto para destino
                 for (String destino : destinos) {
                     BoxDestino.addItem(destino);
                 }
+                BoxDestino.setEnabled(true);
+                BoxDestino.setSelectedIndex(0);
+            } else {
+                BoxDestino.removeAllItems();
+                BoxDestino.setEnabled(false);
             }
-            BoxDestino.setEnabled(true);
         } else {
             BoxDestino.removeAllItems();
             BoxDestino.setEnabled(false);
@@ -197,29 +205,43 @@ public class BuscarViaje extends javax.swing.JFrame {
     }//GEN-LAST:event_BoxOrigenActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        if (BoxOrigen.getSelectedIndex() == 0 && BoxDestino.getSelectedIndex() == 0) {
-            JOptionPane.showMessageDialog(this, "Favor de seleccionar origen y destino para continuar");
-        } else {
-            java.util.Calendar calendar = Calendario.getCalendar();
-            if (calendar == null) {
-                JOptionPane.showMessageDialog(this, "Por favor seleccione una fecha.");
-                return;
-            }
+        String origen = BoxOrigen.getSelectedItem().toString();
+        String destino = BoxDestino.getSelectedItem().toString();
 
-            java.util.Date fecha = calendar.getTime(); // Obtener la fecha como Date
-
-            // Si necesitas convertir la fecha a LocalDate
-            LocalDate localDate = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-            String origen = BoxOrigen.getSelectedItem().toString();
-            String destino = BoxDestino.getSelectedItem().toString();
-
-            ControlNegocio.getInstancia().guardarBusqueda(origen, destino, localDate);
-            ControlNegocio.getInstancia().obtenerListaViajes(origen, destino, localDate);
-            CordinadorPresentacion.getInstancia().mostrarViajesDisponibles(origen, destino, localDate);
-            dispose(); // Cerrar la ventana actual
+        // Validar origen
+        if (origen.equals("Selecciona tu origen")) {
+            JOptionPane.showMessageDialog(this, "Por favor selecciona un origen válido.");
+            return;
         }
 
+        // Validar destino
+        if (destino.equals("Selecciona tu destino")) {
+            JOptionPane.showMessageDialog(this, "Por favor selecciona un destino válido.");
+            return;
+        }
+
+        // Validar que se haya seleccionado una fecha
+        java.util.Calendar calendar = Calendario.getCalendar();
+        if (calendar == null) {
+            JOptionPane.showMessageDialog(this, "Por favor selecciona una fecha.");
+            return;
+        }
+
+        java.util.Date fecha = calendar.getTime();
+        LocalDate fechaSeleccionada = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate hoy = LocalDate.now();
+
+        // Validar que la fecha no sea anterior a hoy
+        if (fechaSeleccionada.isBefore(hoy)) {
+            JOptionPane.showMessageDialog(this, "La fecha seleccionada no puede ser anterior a hoy.");
+            return;
+        }
+
+        // Si todo está bien, continuar
+        ControlNegocio.getInstancia().guardarBusqueda(origen, destino, fechaSeleccionada);
+        ControlNegocio.getInstancia().obtenerListaViajes(origen, destino, fechaSeleccionada);
+        CordinadorPresentacion.getInstancia().mostrarViajesDisponibles(origen, destino, fechaSeleccionada);
+        dispose(); // Cerrar la ventana actual
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed

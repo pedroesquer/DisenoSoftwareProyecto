@@ -119,7 +119,6 @@ public class ResumenCompra extends javax.swing.JFrame {
         Header.setPreferredSize(new java.awt.Dimension(520, 60));
 
         jLabel1.setFont(new java.awt.Font("Roboto Condensed Medium", 1, 48)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("RUTAPP");
 
         javax.swing.GroupLayout HeaderLayout = new javax.swing.GroupLayout(Header);
@@ -158,15 +157,13 @@ public class ResumenCompra extends javax.swing.JFrame {
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Total");
-        BackGround.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 440, 160, -1));
+        BackGround.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 420, 160, -1));
         BackGround.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 173, 480, 0));
         BackGround.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 270, -1, 110));
 
         lblOrigen.setBackground(new java.awt.Color(255, 255, 255));
         lblOrigen.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        lblOrigen.setForeground(new java.awt.Color(0, 0, 0));
         lblOrigen.setText("Origen");
         lblOrigen.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
@@ -175,101 +172,86 @@ public class ResumenCompra extends javax.swing.JFrame {
                 lblOrigenInputMethodTextChanged(evt);
             }
         });
-        BackGround.add(lblOrigen, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 150, 150, 20));
+        BackGround.add(lblOrigen, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 130, 150, 20));
 
         lblDestino.setBackground(new java.awt.Color(255, 255, 255));
         lblDestino.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        lblDestino.setForeground(new java.awt.Color(0, 0, 0));
         lblDestino.setText("Destino");
-        BackGround.add(lblDestino, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 190, 160, -1));
+        BackGround.add(lblDestino, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 170, 160, -1));
 
         lblAsientos.setBackground(new java.awt.Color(255, 255, 255));
         lblAsientos.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        lblAsientos.setForeground(new java.awt.Color(0, 0, 0));
         lblAsientos.setText("Asiento(s)");
-        BackGround.add(lblAsientos, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 230, 160, -1));
+        BackGround.add(lblAsientos, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 210, 160, -1));
 
         lblDuracion.setBackground(new java.awt.Color(255, 255, 255));
         lblDuracion.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        lblDuracion.setForeground(new java.awt.Color(0, 0, 0));
         lblDuracion.setText("00:00");
-        BackGround.add(lblDuracion, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 270, 160, -1));
+        BackGround.add(lblDuracion, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 250, 160, -1));
 
         lblNombres.setBackground(new java.awt.Color(255, 255, 255));
         lblNombres.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        lblNombres.setForeground(new java.awt.Color(0, 0, 0));
         lblNombres.setText("Nombre(s)");
-        BackGround.add(lblNombres, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 310, 160, -1));
+        BackGround.add(lblNombres, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 290, 250, -1));
 
         jLabel9.setBackground(new java.awt.Color(255, 255, 255));
         jLabel9.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(0, 0, 0));
         jLabel9.setText("Precio");
-        BackGround.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 360, 160, -1));
+        BackGround.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, 160, -1));
 
         jLabel10.setBackground(new java.awt.Color(255, 255, 255));
         jLabel10.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(0, 0, 0));
         jLabel10.setText("Monedero");
-        BackGround.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 400, 160, -1));
-        BackGround.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 300, -1));
-        BackGround.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, 440, 20));
+        BackGround.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 380, 160, -1));
+        BackGround.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 112, 530, 20));
+        BackGround.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 530, 20));
         BackGround.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 463, 460, 0));
-        BackGround.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, 460, 10));
+        BackGround.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 460, 530, 10));
 
         jLabel11.setBackground(new java.awt.Color(255, 255, 255));
         jLabel11.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(0, 0, 0));
         jLabel11.setText("Origen");
-        BackGround.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, 160, -1));
+        BackGround.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 160, -1));
 
         jLabel12.setBackground(new java.awt.Color(255, 255, 255));
         jLabel12.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(0, 0, 0));
         jLabel12.setText("Destino");
-        BackGround.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, 160, -1));
+        BackGround.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 160, -1));
 
         jLabel13.setBackground(new java.awt.Color(255, 255, 255));
         jLabel13.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        jLabel13.setForeground(new java.awt.Color(0, 0, 0));
         jLabel13.setText("Asiento(s)");
-        BackGround.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 230, 160, -1));
+        BackGround.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 160, -1));
 
         lblPrecio.setBackground(new java.awt.Color(255, 255, 255));
         lblPrecio.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        lblPrecio.setForeground(new java.awt.Color(0, 0, 0));
         lblPrecio.setText("$....");
-        BackGround.add(lblPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 360, 160, -1));
+        BackGround.add(lblPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 340, 160, -1));
 
         lblTotal.setBackground(new java.awt.Color(255, 255, 255));
         lblTotal.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        lblTotal.setForeground(new java.awt.Color(0, 0, 0));
         lblTotal.setText("$....");
-        BackGround.add(lblTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 440, 160, -1));
+        BackGround.add(lblTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 420, 160, -1));
 
         jLabel15.setBackground(new java.awt.Color(255, 255, 255));
         jLabel15.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(0, 0, 0));
         jLabel15.setText("Duracion");
-        BackGround.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, 160, -1));
+        BackGround.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 160, -1));
 
         jLabel16.setBackground(new java.awt.Color(255, 255, 255));
         jLabel16.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        jLabel16.setForeground(new java.awt.Color(0, 0, 0));
         jLabel16.setText("Nombre(s)");
-        BackGround.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, 160, -1));
+        BackGround.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 160, -1));
 
         lblMonedero.setBackground(new java.awt.Color(255, 255, 255));
         lblMonedero.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        lblMonedero.setForeground(new java.awt.Color(0, 0, 0));
         lblMonedero.setText("$....");
-        BackGround.add(lblMonedero, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 400, 160, -1));
+        BackGround.add(lblMonedero, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 380, 160, -1));
 
         jLabel3.setBackground(new java.awt.Color(255, 255, 255));
         jLabel3.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Resumen de compra");
-        BackGround.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 160, -1));
+        BackGround.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 160, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -383,7 +365,7 @@ public class ResumenCompra extends javax.swing.JFrame {
         StringBuilder nombres = new StringBuilder();
 
         for (AsientoAsignadoDTO asignado : lista) {
-            asientos.append(asignado.getNumeroAsiento()).append(" ");
+            asientos.append(asignado.getNumeroAsiento()).append(" / ");
             nombres.append(asignado.getNombrePasajero()).append(" / ");
         }
 
