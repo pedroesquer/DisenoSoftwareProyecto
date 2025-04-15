@@ -214,6 +214,7 @@ public class BuscarViaje extends javax.swing.JFrame {
             String origen = BoxOrigen.getSelectedItem().toString();
             String destino = BoxDestino.getSelectedItem().toString();
 
+            ControlNegocio.getInstancia().guardarBusqueda(origen, destino, localDate);
             ControlNegocio.getInstancia().obtenerListaViajes(origen, destino, localDate);
             CordinadorPresentacion.getInstancia().mostrarViajesDisponibles(origen, destino, localDate);
             dispose(); // Cerrar la ventana actual

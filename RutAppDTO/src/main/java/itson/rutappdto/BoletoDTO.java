@@ -17,6 +17,9 @@ public class BoletoDTO {
     private String duracion;
     private CamionDTO camion;
     private List<AsientoBoletoDTO> listaAsiento;
+    private LocalDate fecha;
+
+
 
     public BoletoDTO() {
     }
@@ -31,6 +34,20 @@ public class BoletoDTO {
         this.camion = camion;
         this.listaAsiento = listaAsiento;
     }
+
+    public BoletoDTO(String origen, String destino, Double precio, String duracion, CamionDTO camion, List<AsientoBoletoDTO> listaAsiento) {
+        this.origen = origen;
+        this.destino = destino;
+        this.precio = precio;
+        this.duracion = duracion;
+        this.camion = camion;
+        this.listaAsiento = listaAsiento;
+    }
+
+  
+
+
+    
 
     public String getOrigen() {
         return origen;
@@ -94,6 +111,14 @@ public class BoletoDTO {
 
     public void setListaAsiento(List<AsientoBoletoDTO> listaAsiento) {
         this.listaAsiento = listaAsiento;
+    }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
     }
 
     

@@ -242,14 +242,17 @@ public class ComprarBoleto extends javax.swing.JFrame {
 
             // Si pasa todas las validaciones:
             javax.swing.JOptionPane.showMessageDialog(this, "¡Pago con tarjeta procesado con éxito!");
+            CordinadorPresentacion.getInstancia().abrirResumenCompra();
+            this.dispose();
+            
             // Aquí puedes continuar con la lógica de compra.
 
         } else if (botonPagarMonedero.isSelected()) {
             // Lógica para pagar con monedero
             javax.swing.JOptionPane.showMessageDialog(this, "¡Pago con monedero procesado con éxito!");
-            
-           CordinadorPresentacion.getInstancia().abrirResumenCompra();
-           this.dispose();
+
+            CordinadorPresentacion.getInstancia().abrirResumenCompra();
+            this.dispose();
 
         } else {
             javax.swing.JOptionPane.showMessageDialog(this, "Por favor, selecciona un método de pago.", "Método de pago no seleccionado", javax.swing.JOptionPane.WARNING_MESSAGE);

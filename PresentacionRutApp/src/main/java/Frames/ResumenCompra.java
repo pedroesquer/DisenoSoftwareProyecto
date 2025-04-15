@@ -4,6 +4,7 @@
  */
 package Frames;
 
+import Control.ControlNegocio;
 import enumm.estadoAsiento;
 import itson.rutappdto.AsientoAsignadoDTO;
 import itson.rutappdto.AsientoBoletoDTO;
@@ -26,6 +27,12 @@ import javax.swing.JTextArea;
 public class ResumenCompra extends javax.swing.JFrame {
 
     private final JTextArea resumenTextArea;
+        CamionDTO camion;
+
+    UsuarioDTO usuario = new UsuarioDTO("Juan Pérez");
+
+    List<AsientoDTO> asientosCamion = new ArrayList<>();
+    List<AsientoBoletoDTO> asientosBoleto = new ArrayList<>();
 
 //    private List<AsientosDisponibles.AsientoAsignado> asientosAsignados;
     /**
@@ -34,7 +41,6 @@ public class ResumenCompra extends javax.swing.JFrame {
     public ResumenCompra() {
         initComponents();
         setTitle("Resumen de Compra");
-        setSize(400, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -42,16 +48,19 @@ public class ResumenCompra extends javax.swing.JFrame {
         resumenTextArea.setEditable(false);
         add(new JScrollPane(resumenTextArea), BorderLayout.CENTER);
 
-//        BoletoDTO boleto = new BoletoDTO(
-//                "Ciudad A",
-//                "Ciudad B",
-//                "15:30",
-//                usuario,
-//                200.0,
-//                "2 horas",
-//                camion,
-//                asientosBoleto
-//        );
+            ControlNegocio control = ControlNegocio.getInstancia();
+
+        
+    BoletoDTO boleto = new BoletoDTO(
+        control.getOrigenSeleccionado(),
+        control.getDestinoSeleccionado(),
+        control.getPrecioSeleccionado(),
+        control.getDuracionSeleccionada(),
+        control.getCamionSeleccionado(),
+        control.getAsientosSeleccionados()
+    );
+        
+        mostrarResumen(ControlNegocio.getInstancia().obtenerAsientosAsignados(),boleto);
 
     }
 
@@ -72,7 +81,6 @@ public class ResumenCompra extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
-        jLabel3 = new javax.swing.JLabel();
         lblOrigen = new javax.swing.JLabel();
         lblDestino = new javax.swing.JLabel();
         lblAsientos = new javax.swing.JLabel();
@@ -92,6 +100,7 @@ public class ResumenCompra extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         lblMonedero = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -118,18 +127,18 @@ public class ResumenCompra extends javax.swing.JFrame {
         HeaderLayout.setHorizontalGroup(
             HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HeaderLayout.createSequentialGroup()
-                .addContainerGap(166, Short.MAX_VALUE)
+                .addContainerGap(241, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(164, 164, 164))
+                .addGap(184, 184, 184))
         );
         HeaderLayout.setVerticalGroup(
             HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(HeaderLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HeaderLayout.createSequentialGroup()
                 .addComponent(jLabel1)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        BackGround.add(Header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, -1));
+        BackGround.add(Header, new org.netbeans.lib.awtextra.AbsoluteConstraints(-50, 0, 620, -1));
 
         Footer.setBackground(new java.awt.Color(255, 201, 98));
         Footer.setPreferredSize(new java.awt.Dimension(520, 60));
@@ -138,14 +147,14 @@ public class ResumenCompra extends javax.swing.JFrame {
         Footer.setLayout(FooterLayout);
         FooterLayout.setHorizontalGroup(
             FooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 500, Short.MAX_VALUE)
+            .addGap(0, 670, Short.MAX_VALUE)
         );
         FooterLayout.setVerticalGroup(
             FooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 60, Short.MAX_VALUE)
         );
 
-        BackGround.add(Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 500, 60));
+        BackGround.add(Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 670, 60));
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
@@ -154,12 +163,6 @@ public class ResumenCompra extends javax.swing.JFrame {
         BackGround.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 440, 160, -1));
         BackGround.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 173, 480, 0));
         BackGround.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 270, -1, 110));
-
-        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel3.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel3.setText("Resumen de compra");
-        BackGround.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, 160, -1));
 
         lblOrigen.setBackground(new java.awt.Color(255, 255, 255));
         lblOrigen.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
@@ -172,7 +175,7 @@ public class ResumenCompra extends javax.swing.JFrame {
                 lblOrigenInputMethodTextChanged(evt);
             }
         });
-        BackGround.add(lblOrigen, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 150, 70, 20));
+        BackGround.add(lblOrigen, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 150, 150, 20));
 
         lblDestino.setBackground(new java.awt.Color(255, 255, 255));
         lblDestino.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
@@ -209,7 +212,7 @@ public class ResumenCompra extends javax.swing.JFrame {
         jLabel10.setForeground(new java.awt.Color(0, 0, 0));
         jLabel10.setText("Monedero");
         BackGround.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 400, 160, -1));
-        BackGround.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 460, -1));
+        BackGround.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 300, -1));
         BackGround.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, 440, 20));
         BackGround.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 463, 460, 0));
         BackGround.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, 460, 10));
@@ -262,11 +265,17 @@ public class ResumenCompra extends javax.swing.JFrame {
         lblMonedero.setText("$....");
         BackGround.add(lblMonedero, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 400, 160, -1));
 
+        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel3.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setText("Resumen de compra");
+        BackGround.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 160, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(BackGround, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(BackGround, javax.swing.GroupLayout.PREFERRED_SIZE, 566, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

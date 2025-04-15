@@ -91,8 +91,17 @@ public class ViajesDisponibles extends javax.swing.JFrame {
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                ControlNegocio control = ControlNegocio.getInstancia();
+
+                // Guardar los datos seleccionados del viaje
+                control.setCamionSeleccionado(viaje.getCamion());
+                control.setDuracionSeleccionada(viaje.getDuracion());
+                control.setPrecioSeleccionado(viaje.getPrecio());
+                
+                // Abrir el frame de asientos
                 CordinadorPresentacion.getInstancia().abrirAsientosDisponibles(viaje.getCamion());
 
+                // Cerrar esta ventana
                 Component comp = SwingUtilities.getWindowAncestor(panel);
                 if (comp instanceof JFrame) {
                     ((JFrame) comp).dispose();

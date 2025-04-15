@@ -1,16 +1,12 @@
 package Frames;
 
+import Control.ControlNegocio;
 import Control.CordinadorPresentacion;
 import enumm.estadoAsiento;
 import itson.rutappdto.AsientoAsignadoDTO;
-import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.AsientoDTO;
-import itson.rutappdto.BoletoDTO;
 import itson.rutappdto.CamionDTO;
-import itson.rutappdto.UsuarioDTO;
 import java.awt.Color;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,39 +24,11 @@ import javax.swing.JPanel;
  */
 public class AsientosDisponibles extends javax.swing.JFrame {
 //
+
     CamionDTO camion;
-//
-//    UsuarioDTO usuario = new UsuarioDTO("Juan Pérez");
-//
-//    List<AsientoDTO> asientosCamion = new ArrayList<>();
-//    List<AsientoBoletoDTO> asientosBoleto = new ArrayList<>();
-
     public AsientosDisponibles() {
-//        // Crear asientos
-//        AsientoDTO asiento1 = new AsientoDTO(1L, estadoAsiento.DISPONIBLE, "A1");
-//        AsientoDTO asiento2 = new AsientoDTO(2L, estadoAsiento.OCUPADO, "A2");
-//
-//        // Agregar a la lista de asientos del camión
-//        asientosCamion.add(asiento1);
-//        asientosCamion.add(asiento2);
-//
-//        // Agregar a la lista de asientos del boleto
-//        asientosBoleto.add(new AsientoBoletoDTO(asiento1, null, "A1", 100.0));
-//        asientosBoleto.add(new AsientoBoletoDTO(asiento2, null, "A2", 100.0));
-//
-//        // Crear y guardar el boleto
-
     }
-//      BoletoDTO boleto = new BoletoDTO(
-//                "Ciudad A",
-//                "Ciudad B",
-//                "15:30",
-//                usuario,
-//                200.0,
-//                "2 horas",
-//                camion,
-//                asientosBoleto
-//        );
+
 
     // Definir el Enum para los estados de los asientos
     public enum EstadoAsiento {
@@ -999,18 +967,15 @@ public class AsientosDisponibles extends javax.swing.JFrame {
     }//GEN-LAST:event_botonAsientoCincoMouseClicked
 
     private void btnCompraViajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompraViajeActionPerformed
-//        List<AsientoAsignado> lista = obtenerAsientosYPasajeros();
-//        ResumenCompra resumen = new ResumenCompra();
-//        resumen.mostrarResumen(lista,boleto, 150.00); // <- el último valor es el monedero, cámbialo si lo sacas de otro lado
-//        resumen.setVisible(true);
-        
+        List<AsientoAsignadoDTO> lista = obtenerAsientosYPasajeros(); // tu método original
+        ControlNegocio.getInstancia().guardarAsientosAsignados(lista);
         CordinadorPresentacion.getInstancia().abrirMetodoPago();
-
+        this.dispose();
     }//GEN-LAST:event_btnCompraViajeActionPerformed
-    
+
     /**
-     * 
-     * @param panel 
+     *
+     * @param panel
      */
     private void seleccionarAsiento(JPanel panel) {
 
@@ -1062,7 +1027,7 @@ public class AsientosDisponibles extends javax.swing.JFrame {
     }
 
     /**
-     * 
+     *
      */
     private void actualizarResumenAsientos() {
         StringBuilder resumen = new StringBuilder();

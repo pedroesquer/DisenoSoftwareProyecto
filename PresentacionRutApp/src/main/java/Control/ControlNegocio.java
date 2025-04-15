@@ -12,8 +12,10 @@ import excepciones.SeleccionAsientoException;
 import itson.consultardisponibilidad.Interfaz.IConsultarDisponibilidad;
 import itson.consultardisponibilidad.fachada.FachadaConsultarDisponibilidad;
 import itson.rutappdto.AsientoAsignadoDTO;
+import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.CamionDTO;
+import itson.rutappdto.UsuarioDTO;
 import itson.rutappdto.ViajeDTO;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -31,6 +33,17 @@ public class ControlNegocio {
     private List<AsientoAsignadoDTO> asientosAsignados = new ArrayList<>();
     IConsultarDisponibilidad consultarDisponibilidad = new FachadaConsultarDisponibilidad();
     IComprarBoleto comprarBoleto = new ComprarBoleto();
+
+    //VARIABLES PARA GUARDAR LOS DATOS DEL BOLETO 
+    private String origenSeleccionado;
+    private String destinoSeleccionado;
+    private String horaSalidaSeleccionada;
+    private LocalDate fechaSeleccionada;
+    private Double precioSeleccionado;
+    private String duracionSeleccionada;
+    private CamionDTO camionSeleccionado;
+    //private UsuarioDTO usuarioActual;
+    private List<AsientoBoletoDTO> asientosSeleccionados;
 
     private static ControlNegocio instancia;
 
@@ -155,4 +168,72 @@ public class ControlNegocio {
     public List<AsientoAsignadoDTO> obtenerAsientosAsignados() {
         return this.asientosAsignados;
     }
+
+    //METODO PARA GUARDAR LOS ATRIBUTOS DEL VIAJE
+    public void guardarBusqueda(String origen, String destino, LocalDate fecha) {
+        this.origenSeleccionado = origen;
+        this.destinoSeleccionado = destino;
+        this.fechaSeleccionada = fecha;
+    }
+
+    public String getOrigenSeleccionado() {
+        return origenSeleccionado;
+    }
+
+    public String getDestinoSeleccionado() {
+        return destinoSeleccionado;
+    }
+
+    public LocalDate getFechaSeleccionada() {
+        return fechaSeleccionada;
+    }
+
+    public List<AsientoAsignadoDTO> getAsientosAsignados() {
+        return asientosAsignados;
+    }
+
+    public void setAsientosAsignados(List<AsientoAsignadoDTO> asientosAsignados) {
+        this.asientosAsignados = asientosAsignados;
+    }
+
+    public String getHoraSalidaSeleccionada() {
+        return horaSalidaSeleccionada;
+    }
+
+    public void setHoraSalidaSeleccionada(String horaSalidaSeleccionada) {
+        this.horaSalidaSeleccionada = horaSalidaSeleccionada;
+    }
+
+    public Double getPrecioSeleccionado() {
+        return precioSeleccionado;
+    }
+
+    public void setPrecioSeleccionado(Double precioSeleccionado) {
+        this.precioSeleccionado = precioSeleccionado;
+    }
+
+    public String getDuracionSeleccionada() {
+        return duracionSeleccionada;
+    }
+
+    public void setDuracionSeleccionada(String duracionSeleccionada) {
+        this.duracionSeleccionada = duracionSeleccionada;
+    }
+
+    public CamionDTO getCamionSeleccionado() {
+        return camionSeleccionado;
+    }
+
+    public void setCamionSeleccionado(CamionDTO camionSeleccionado) {
+        this.camionSeleccionado = camionSeleccionado;
+    }
+
+    public List<AsientoBoletoDTO> getAsientosSeleccionados() {
+        return asientosSeleccionados;
+    }
+
+    public void setAsientosSeleccionados(List<AsientoBoletoDTO> asientosSeleccionados) {
+        this.asientosSeleccionados = asientosSeleccionados;
+    }
+
 }
