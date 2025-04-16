@@ -11,6 +11,7 @@
         <module>../ComprarBoleto</module>
         <module>../SeleccionAsiento</module>
         <module>../ConsultarDisponibilidad</module>
+        <module>../PagoBoleto</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

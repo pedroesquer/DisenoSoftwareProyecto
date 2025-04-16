@@ -77,7 +77,7 @@ public class ControlConsultarDisponibilidad {
         for (int i = 0; i < 6; i++) {
             contador++;
             CamionDTO camion = new CamionDTO(contador, (i + 1) + "a", crearListaAsientos());
-            viajes.add(new ViajeDTO(300.00, "Obregon", "Hermosillo", "3hr 30min", camion, LocalDate.now()));
+            viajes.add(new ViajeDTO(300.00, origen, destino, "3hr 30min", camion, LocalDate.now()));
         }
         return viajes;
     }

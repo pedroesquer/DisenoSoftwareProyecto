@@ -157,7 +157,7 @@ public class ControlNegocio {
     }
 
     public List<AsientoDTO> obtenerAsientos(CamionDTO camion) throws CompraBoletoException {
-        return comprarBoleto.mostrarListaAsientos(camion);
+        return consultarDisponibilidad.consultarAsientosDisponibles(camion);
 
     }
 

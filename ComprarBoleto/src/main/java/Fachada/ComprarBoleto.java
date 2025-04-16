@@ -24,34 +24,11 @@ public class ComprarBoleto implements IComprarBoleto {
     }
 
     @Override
-    public void consultarAsientos() {
-        control.obtenerAsientosDisponibles();
-    }
-
-    @Override
-    public void mostrarViajesDisponibles() {
-        control.obtenerViajesDisponibles();
-    }
-
-    @Override
-    public void mostrarBusquedaViaje() {
-        control.buscarViaje();
-    }
-
-    @Override
-    public List<AsientoDTO> mostrarListaAsientos(CamionDTO camion) throws CompraBoletoException {
-        return control.mostrarListaAsientos(camion);
-    }
-
-    @Override
     public void mostrarPantallaPago() {
         control.mostrarPantallaPago();
     }
 
-    @Override
-    public void seleccionarAsiento(int asiento) {
-        control.validarAsiento(asiento);
-    }
+
 
     @Override
     public void comprarBoleto() {

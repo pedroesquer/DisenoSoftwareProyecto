@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Control;
 
 import Ex.CompraBoletoException;
@@ -17,17 +13,6 @@ import java.util.List;
  */
 public class Control {
 
-    public void obtenerAsientosDisponibles() {
-        System.out.println("Obteniendo asientos disponibles...");
-    }
-
-    public void obtenerViajesDisponibles() {
-        System.out.println("Mostrando viajes disponibles...");
-    }
-
-    public void buscarViaje() {
-        System.out.println("Buscando viaje según criterios...");
-    }
 
     public List<AsientoDTO> mostrarListaAsientos(CamionDTO camion) throws CompraBoletoException {
         if (camion.getListaAsiento().isEmpty()) {
