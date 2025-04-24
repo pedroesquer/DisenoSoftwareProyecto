@@ -5,6 +5,8 @@
 package Frames;
 
 import Control.CordinadorPresentacion;
+import javax.swing.text.AbstractDocument;
+import utilerias.FechaDocumentFilter;
 
 /**
  *
@@ -21,6 +23,7 @@ public class ComprarBoleto extends javax.swing.JFrame {
 
         buttonGroup1.add(botonPagarMonedero);
         buttonGroup1.add(botonPagarTarjeta);
+        ((AbstractDocument) campoVencimiento.getDocument()).setDocumentFilter(new FechaDocumentFilter());
 
     }
 
@@ -47,8 +50,8 @@ public class ComprarBoleto extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         campoNombreTitular = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        campoNombreTitular1 = new javax.swing.JTextField();
-        campoNombreTitular2 = new javax.swing.JTextField();
+        campoVencimiento = new javax.swing.JTextField();
+        campoCVV = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         btnCompraViaje = new javax.swing.JButton();
 
@@ -62,7 +65,6 @@ public class ComprarBoleto extends javax.swing.JFrame {
         Header.setPreferredSize(new java.awt.Dimension(520, 60));
 
         jLabel1.setFont(new java.awt.Font("Roboto Condensed Medium", 1, 48)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("RUTAPP");
 
         javax.swing.GroupLayout HeaderLayout = new javax.swing.GroupLayout(Header);
@@ -130,6 +132,12 @@ public class ComprarBoleto extends javax.swing.JFrame {
 
         jLabel4.setText("Vencimiento");
 
+        campoVencimiento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoVencimientoActionPerformed(evt);
+            }
+        });
+
         jLabel5.setText("CVV");
 
         javax.swing.GroupLayout panelTarjetaLayout = new javax.swing.GroupLayout(panelTarjeta);
@@ -145,11 +153,11 @@ public class ComprarBoleto extends javax.swing.JFrame {
                     .addGroup(panelTarjetaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelTarjetaLayout.createSequentialGroup()
                             .addGroup(panelTarjetaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(campoNombreTitular1, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(campoVencimiento, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE))
                             .addGap(83, 83, 83)
                             .addGroup(panelTarjetaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(campoNombreTitular2)
+                                .addComponent(campoCVV)
                                 .addGroup(panelTarjetaLayout.createSequentialGroup()
                                     .addComponent(jLabel5)
                                     .addGap(0, 0, Short.MAX_VALUE))))
@@ -173,9 +181,9 @@ public class ComprarBoleto extends javax.swing.JFrame {
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelTarjetaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(campoNombreTitular1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(campoNombreTitular2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(20, Short.MAX_VALUE))
+                    .addComponent(campoVencimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoCVV, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         BackGround.add(panelTarjeta, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 410, 240));
@@ -217,8 +225,8 @@ public class ComprarBoleto extends javax.swing.JFrame {
         if (botonPagarTarjeta.isSelected()) {
             String numeroTarjeta = campoNumeroTarjeta.getText().trim();
             String nombreTitular = campoNombreTitular.getText().trim();
-            String vencimiento = campoNombreTitular1.getText().trim(); // debería tener un nombre más descriptivo, como campoVencimiento
-            String cvv = campoNombreTitular2.getText().trim(); // debería ser campoCVV
+            String vencimiento = campoVencimiento.getText().trim(); // debería tener un nombre más descriptivo, como campoVencimiento
+            String cvv = campoCVV.getText().trim(); // debería ser campoCVV
 
             if (numeroTarjeta.isEmpty() || nombreTitular.isEmpty() || vencimiento.isEmpty() || cvv.isEmpty()) {
                 javax.swing.JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos de la tarjeta.", "Campos vacíos", javax.swing.JOptionPane.WARNING_MESSAGE);
@@ -235,18 +243,16 @@ public class ComprarBoleto extends javax.swing.JFrame {
                 return;
             }
 
-            if (!vencimiento.matches("(0[1-9]|1[0-2])/\\d{2}")) {
-                javax.swing.JOptionPane.showMessageDialog(this, "El vencimiento debe estar en formato MM/AA (por ejemplo, 08/26).", "Fecha de vencimiento inválida", javax.swing.JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
+//            if (!vencimiento.matches("(0[1-9]|1[0-2])/\\d{2}")) {
+//                javax.swing.JOptionPane.showMessageDialog(this, "El vencimiento debe estar en formato MM/AA (por ejemplo, 08/26).", "Fecha de vencimiento inválida", javax.swing.JOptionPane.ERROR_MESSAGE);
+//                return;
+//            }
             // Si pasa todas las validaciones:
             javax.swing.JOptionPane.showMessageDialog(this, "¡Pago con tarjeta procesado con éxito!");
             CordinadorPresentacion.getInstancia().abrirResumenCompra();
             this.dispose();
-            
-            // Aquí puedes continuar con la lógica de compra.
 
+            // Aquí puedes continuar con la lógica de compra.
         } else if (botonPagarMonedero.isSelected()) {
             // Lógica para pagar con monedero
             javax.swing.JOptionPane.showMessageDialog(this, "¡Pago con monedero procesado con éxito!");
@@ -262,6 +268,10 @@ public class ComprarBoleto extends javax.swing.JFrame {
     private void campoNumeroTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoNumeroTarjetaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_campoNumeroTarjetaActionPerformed
+
+    private void campoVencimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoVencimientoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoVencimientoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -314,10 +324,10 @@ public class ComprarBoleto extends javax.swing.JFrame {
     private javax.swing.JButton btnCompraViaje;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JTextField campoCVV;
     private javax.swing.JTextField campoNombreTitular;
-    private javax.swing.JTextField campoNombreTitular1;
-    private javax.swing.JTextField campoNombreTitular2;
     private javax.swing.JTextField campoNumeroTarjeta;
+    private javax.swing.JTextField campoVencimiento;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

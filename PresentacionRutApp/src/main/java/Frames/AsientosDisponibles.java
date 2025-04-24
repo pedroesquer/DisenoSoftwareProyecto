@@ -4,7 +4,9 @@ import Control.ControlNegocio;
 import Control.CordinadorPresentacion;
 import enumm.estadoAsiento;
 import itson.rutappdto.AsientoAsignadoDTO;
+import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.AsientoDTO;
+import itson.rutappdto.BoletoContext;
 import itson.rutappdto.CamionDTO;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -14,10 +16,6 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 /**
  *
  * @author BusSoft
@@ -26,20 +24,26 @@ public class AsientosDisponibles extends javax.swing.JFrame {
 //
 
     CamionDTO camion;
+
     public AsientosDisponibles() {
     }
-
 
     // Definir el Enum para los estados de los asientos
     public enum EstadoAsiento {
         LIBRE, SELECCIONADO, OCUPADO
     }
 
-    public List<AsientoAsignadoDTO> obtenerAsientosYPasajeros() {
-        List<AsientoAsignadoDTO> lista = new ArrayList<>();
+    /**
+     * Método para obtener los nombres que estaran relacionados con el asiento.
+     *
+     * @return La lista de asientoBoleto con los nombres que pertenecen al
+     * asiento.
+     */
+    public List<AsientoBoletoDTO> obtenerAsientosYPasajeros() {
+        List<AsientoBoletoDTO> lista = new ArrayList<>();
 
         for (Map.Entry<JPanel, String> entry : mapaNombresPasajeros.entrySet()) {
-            String nombre = entry.getValue();
+            String nombrePasajero = entry.getValue();
             JPanel panel = entry.getKey();
 
             // Buscar número de asiento correspondiente al panel
@@ -47,9 +51,18 @@ public class AsientosDisponibles extends javax.swing.JFrame {
                     .filter(e -> e.getValue().equals(panel))
                     .map(Map.Entry::getKey)
                     .findFirst()
-                    .orElse("Desconocido");
+                    .orElse(null);
 
-            lista.add(new AsientoAsignadoDTO(numeroAsiento, nombre));
+            if (numeroAsiento != null) {
+                // Crear AsientoDTO
+                AsientoDTO asiento = new AsientoDTO(null, estadoAsiento.OCUPADO, numeroAsiento);
+
+                // Crear AsientoBoletoDTO
+                AsientoBoletoDTO asientoBoleto = new AsientoBoletoDTO(asiento, nombrePasajero);
+                asientoBoleto.setBoleto(BoletoContext.getBoleto());
+
+                lista.add(asientoBoleto);
+            }
         }
 
         return lista;
@@ -72,8 +85,8 @@ public class AsientosDisponibles extends javax.swing.JFrame {
             botonAsientoNueve, botonAsientoDiez, botonAsientoDiesciseis, botonAsientoQuince, botonAsientoCatorce,
             botonAsientoTrece, botonAsientoDiescinueve, botonAsientoVeinte, botonAsientoDiesciocho, botonAsientoDiescisiete,
             botonAsiento2, botonAsientoVeintitres, botonAsientoVeinticuatro, botonAsientoVeintiuno, botonAsientoVeintidos,
-            botonAsiento3, botonAsientoOcho, botonAsientoSiete, botonAsientoCinco, botonAsientoSeis,
-            botonAsientoDoce, botonAsientoOnce, botonAsientoUno, botonAsientoUno1
+            botonAsiento4, botonAsientoOcho, botonAsientoSiete, botonAsientoCinco, botonAsientoSeis,
+            botonAsientoDoce, botonAsientoOnce, botonAsientoUno, botonAsiento3
         };
 
         for (JPanel panel : paneles) {
@@ -135,9 +148,15 @@ public class AsientosDisponibles extends javax.swing.JFrame {
         mapaAsientos.put("12", botonAsientoDoce);
         mapaAsientos.put("11", botonAsientoOnce);
         mapaAsientos.put("1", botonAsientoUno);
+        mapaAsientos.put("4", botonAsiento4);
     }
 
-    // Método para marcar los asientos ocupados
+    /**
+     * Método para rellenar los asientos ocupados de otro color y dejarlos sin
+     * poder seleccionar.
+     *
+     * @param listaAsientos
+     */
     private void marcarAsientosOcupados(List<AsientoDTO> listaAsientos) {
         for (AsientoDTO asiento : listaAsientos) {
             // Verificamos si el estado es "OCUPADO"
@@ -171,9 +190,9 @@ public class AsientosDisponibles extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         botonAsiento2 = new javax.swing.JPanel();
         numeroAsientoDos = new javax.swing.JLabel();
-        botonAsiento3 = new javax.swing.JPanel();
+        botonAsiento4 = new javax.swing.JPanel();
         numeroAsientoCuatro = new javax.swing.JLabel();
-        botonAsientoUno1 = new javax.swing.JPanel();
+        botonAsiento3 = new javax.swing.JPanel();
         numeroAsientoTres = new javax.swing.JLabel();
         botonAsientoOcho = new javax.swing.JPanel();
         numeroAsiento7 = new javax.swing.JLabel();
@@ -229,7 +248,6 @@ public class AsientosDisponibles extends javax.swing.JFrame {
         Header.setPreferredSize(new java.awt.Dimension(520, 60));
 
         jLabel1.setFont(new java.awt.Font("Roboto Condensed Medium", 1, 48)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("RUTAPP");
 
         javax.swing.GroupLayout HeaderLayout = new javax.swing.GroupLayout(Header);
@@ -302,44 +320,44 @@ public class AsientosDisponibles extends javax.swing.JFrame {
 
         contenedorAsientos.add(botonAsiento2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 40, 30));
 
-        botonAsiento3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        botonAsiento3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        botonAsiento4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        botonAsiento4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         numeroAsientoCuatro.setForeground(new java.awt.Color(255, 255, 255));
         numeroAsientoCuatro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         numeroAsientoCuatro.setText("4");
 
-        javax.swing.GroupLayout botonAsiento3Layout = new javax.swing.GroupLayout(botonAsiento3);
-        botonAsiento3.setLayout(botonAsiento3Layout);
-        botonAsiento3Layout.setHorizontalGroup(
-            botonAsiento3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout botonAsiento4Layout = new javax.swing.GroupLayout(botonAsiento4);
+        botonAsiento4.setLayout(botonAsiento4Layout);
+        botonAsiento4Layout.setHorizontalGroup(
+            botonAsiento4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(numeroAsientoCuatro, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
         );
-        botonAsiento3Layout.setVerticalGroup(
-            botonAsiento3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        botonAsiento4Layout.setVerticalGroup(
+            botonAsiento4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(numeroAsientoCuatro, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
         );
 
-        contenedorAsientos.add(botonAsiento3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 40, -1));
+        contenedorAsientos.add(botonAsiento4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 40, -1));
 
-        botonAsientoUno1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        botonAsiento3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         numeroAsientoTres.setForeground(new java.awt.Color(255, 255, 255));
         numeroAsientoTres.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         numeroAsientoTres.setText("3");
 
-        javax.swing.GroupLayout botonAsientoUno1Layout = new javax.swing.GroupLayout(botonAsientoUno1);
-        botonAsientoUno1.setLayout(botonAsientoUno1Layout);
-        botonAsientoUno1Layout.setHorizontalGroup(
-            botonAsientoUno1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout botonAsiento3Layout = new javax.swing.GroupLayout(botonAsiento3);
+        botonAsiento3.setLayout(botonAsiento3Layout);
+        botonAsiento3Layout.setHorizontalGroup(
+            botonAsiento3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(numeroAsientoTres, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
         );
-        botonAsientoUno1Layout.setVerticalGroup(
-            botonAsientoUno1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        botonAsiento3Layout.setVerticalGroup(
+            botonAsiento3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(numeroAsientoTres, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
         );
 
-        contenedorAsientos.add(botonAsientoUno1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, -1, -1));
+        contenedorAsientos.add(botonAsiento3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, -1, -1));
 
         botonAsientoOcho.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -967,8 +985,8 @@ public class AsientosDisponibles extends javax.swing.JFrame {
     }//GEN-LAST:event_botonAsientoCincoMouseClicked
 
     private void btnCompraViajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompraViajeActionPerformed
-        List<AsientoAsignadoDTO> lista = obtenerAsientosYPasajeros(); // tu método original
-        ControlNegocio.getInstancia().guardarAsientosAsignados(lista);
+        List<AsientoBoletoDTO> lista = obtenerAsientosYPasajeros(); // tu método original
+        BoletoContext.getBoleto().setListaAsiento(lista);
         CordinadorPresentacion.getInstancia().abrirMetodoPago();
         this.dispose();
     }//GEN-LAST:event_btnCompraViajeActionPerformed
@@ -1055,6 +1073,7 @@ public class AsientosDisponibles extends javax.swing.JFrame {
     private javax.swing.JPanel Header;
     private javax.swing.JPanel botonAsiento2;
     private javax.swing.JPanel botonAsiento3;
+    private javax.swing.JPanel botonAsiento4;
     private javax.swing.JPanel botonAsientoCatorce;
     private javax.swing.JPanel botonAsientoCinco;
     private javax.swing.JPanel botonAsientoDiescinueve;
@@ -1071,7 +1090,6 @@ public class AsientosDisponibles extends javax.swing.JFrame {
     private javax.swing.JPanel botonAsientoSiete;
     private javax.swing.JPanel botonAsientoTrece;
     private javax.swing.JPanel botonAsientoUno;
-    private javax.swing.JPanel botonAsientoUno1;
     private javax.swing.JPanel botonAsientoVeinte;
     private javax.swing.JPanel botonAsientoVeinticuatro;
     private javax.swing.JPanel botonAsientoVeintidos;

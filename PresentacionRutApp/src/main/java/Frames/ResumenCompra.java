@@ -5,10 +5,12 @@
 package Frames;
 
 import Control.ControlNegocio;
+import Control.CordinadorPresentacion;
 import enumm.estadoAsiento;
 import itson.rutappdto.AsientoAsignadoDTO;
 import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.AsientoDTO;
+import itson.rutappdto.BoletoContext;
 import itson.rutappdto.BoletoDTO;
 import itson.rutappdto.CamionDTO;
 import itson.rutappdto.DetallesPagoDTO;
@@ -17,6 +19,7 @@ import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -27,7 +30,7 @@ import javax.swing.JTextArea;
 public class ResumenCompra extends javax.swing.JFrame {
 
     private final JTextArea resumenTextArea;
-        CamionDTO camion;
+    CamionDTO camion;
 
     UsuarioDTO usuario = new UsuarioDTO("Juan Pérez");
 
@@ -48,19 +51,18 @@ public class ResumenCompra extends javax.swing.JFrame {
         resumenTextArea.setEditable(false);
         add(new JScrollPane(resumenTextArea), BorderLayout.CENTER);
 
-            ControlNegocio control = ControlNegocio.getInstancia();
+        ControlNegocio control = ControlNegocio.getInstancia();
 
-        
-    BoletoDTO boleto = new BoletoDTO(
-        control.getOrigenSeleccionado(),
-        control.getDestinoSeleccionado(),
-        control.getPrecioSeleccionado(),
-        control.getDuracionSeleccionada(),
-        control.getCamionSeleccionado(),
-        control.getAsientosSeleccionados()
-    );
-        
-        mostrarResumen(ControlNegocio.getInstancia().obtenerAsientosAsignados(),boleto);
+        BoletoDTO boleto = new BoletoDTO(
+                control.getOrigenSeleccionado(),
+                control.getDestinoSeleccionado(),
+                control.getPrecioSeleccionado(),
+                control.getDuracionSeleccionada(),
+                control.getCamionSeleccionado(),
+                control.getAsientosSeleccionados()
+        );
+
+        mostrarResumen(BoletoContext.getBoleto());
 
     }
 
@@ -101,6 +103,7 @@ public class ResumenCompra extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         lblMonedero = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        botonAceptar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -253,6 +256,15 @@ public class ResumenCompra extends javax.swing.JFrame {
         jLabel3.setText("Resumen de compra");
         BackGround.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 160, -1));
 
+        botonAceptar.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        botonAceptar.setText("Aceptar");
+        botonAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonAceptarActionPerformed(evt);
+            }
+        });
+        BackGround.add(botonAceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 480, 180, 40));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -274,6 +286,16 @@ public class ResumenCompra extends javax.swing.JFrame {
     private void BackGroundInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_BackGroundInputMethodTextChanged
         // TODO add your handling code here:
     }//GEN-LAST:event_BackGroundInputMethodTextChanged
+
+    private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
+        JOptionPane.showMessageDialog(this, "Gracias por comprar con nosotros");
+        BoletoContext.limpiarBoleto();
+        
+        this.dispose();
+        CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
+        
+        
+    }//GEN-LAST:event_botonAceptarActionPerformed
 
     private void datosResumen(BoletoDTO boleto) {
 
@@ -325,6 +347,7 @@ public class ResumenCompra extends javax.swing.JFrame {
     private javax.swing.JPanel BackGround;
     private javax.swing.JPanel Footer;
     private javax.swing.JPanel Header;
+    private javax.swing.JButton botonAceptar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -352,7 +375,7 @@ public class ResumenCompra extends javax.swing.JFrame {
     private javax.swing.JLabel lblTotal;
     // End of variables declaration//GEN-END:variables
 
-    public void mostrarResumen(List<AsientoAsignadoDTO> lista, BoletoDTO boleto) {
+    public void mostrarResumen( BoletoDTO boleto) {
         // Origen y destino
         lblOrigen.setText(boleto.getOrigen());
         lblDestino.setText(boleto.getDestino());
@@ -364,9 +387,9 @@ public class ResumenCompra extends javax.swing.JFrame {
         StringBuilder asientos = new StringBuilder();
         StringBuilder nombres = new StringBuilder();
 
-        for (AsientoAsignadoDTO asignado : lista) {
-            asientos.append(asignado.getNumeroAsiento()).append(" / ");
-            nombres.append(asignado.getNombrePasajero()).append(" / ");
+        for (AsientoBoletoDTO asignado : BoletoContext.getBoleto().getListaAsiento()) {
+            asientos.append(asignado.getAsiento().getNumero()).append(" / ");
+            nombres.append(asignado.getNombreAsiento()).append(" / ");
         }
 
         lblAsientos.setText(asientos.toString().trim());
@@ -374,7 +397,7 @@ public class ResumenCompra extends javax.swing.JFrame {
 
         // Precio por asiento
         double precio = boleto.getPrecio();
-        double total = precio * lista.size();
+        double total = precio * BoletoContext.getBoleto().getListaAsiento().size();
 
         lblPrecio.setText("$" + precio);
         lblTotal.setText("$" + total);

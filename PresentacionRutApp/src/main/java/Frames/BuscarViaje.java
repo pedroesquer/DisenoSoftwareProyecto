@@ -6,6 +6,7 @@ package Frames;
 
 import Control.ControlNegocio;
 import Control.CordinadorPresentacion;
+import itson.rutappdto.BoletoContext;
 import itson.rutappdto.ViajeDTO;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -238,7 +239,11 @@ public class BuscarViaje extends javax.swing.JFrame {
         }
 
         // Si todo está bien, continuar
-        ControlNegocio.getInstancia().guardarBusqueda(origen, destino, fechaSeleccionada);
+        //Asignamos al boletoDTO los datos seleccionado por el usuario para proceder a la siguiente pantalla
+        BoletoContext.getBoleto().setOrigen(origen);
+        BoletoContext.getBoleto().setDestino(destino);
+        BoletoContext.getBoleto().setFecha(fechaSeleccionada);
+
         ControlNegocio.getInstancia().obtenerListaViajes(origen, destino, fechaSeleccionada);
         CordinadorPresentacion.getInstancia().mostrarViajesDisponibles(origen, destino, fechaSeleccionada);
         dispose(); // Cerrar la ventana actual

@@ -13,6 +13,7 @@ import Frames.MainMenu;
 import Frames.ResumenCompra;
 import Frames.ViajesDisponibles;
 import itson.consultardisponibilidad.Interfaz.IConsultarDisponibilidad;
+import itson.rutappdto.BoletoContext;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
@@ -94,6 +95,8 @@ public class CordinadorPresentacion {
                 contadorIniciado = false;
 
                 JOptionPane.showMessageDialog(null, "El tiempo se ha acabado. Inténtelo de nuevo.");
+                //El boleto se reinicia si no se completo a tiempo
+                BoletoContext.limpiarBoleto();
 
                 if (reiniciarAsientosCallback != null) {
                     reiniciarAsientosCallback.run();

@@ -8,6 +8,7 @@ import Control.ControlNegocio;
 import Control.CordinadorPresentacion;
 import enumm.estadoAsiento;
 import itson.rutappdto.AsientoDTO;
+import itson.rutappdto.BoletoContext;
 import itson.rutappdto.CamionDTO;
 import itson.rutappdto.ViajeDTO;
 import java.awt.BorderLayout;
@@ -91,12 +92,12 @@ public class ViajesDisponibles extends javax.swing.JFrame {
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                ControlNegocio control = ControlNegocio.getInstancia();
+                
 
                 // Guardar los datos seleccionados del viaje
-                control.setCamionSeleccionado(viaje.getCamion());
-                control.setDuracionSeleccionada(viaje.getDuracion());
-                control.setPrecioSeleccionado(viaje.getPrecio());
+                BoletoContext.getBoleto().setCamion(viaje.getCamion());
+                BoletoContext.getBoleto().setDuracion(viaje.getDuracion());
+                BoletoContext.getBoleto().setPrecio(viaje.getPrecio());
                 
                 // Abrir el frame de asientos
                 CordinadorPresentacion.getInstancia().abrirAsientosDisponibles(viaje.getCamion());
