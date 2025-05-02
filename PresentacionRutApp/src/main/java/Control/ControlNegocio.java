@@ -31,6 +31,7 @@ import javax.swing.JOptionPane;
 public class ControlNegocio {
 
     private List<AsientoAsignadoDTO> asientosAsignados = new ArrayList<>();
+    
     IConsultarDisponibilidad consultarDisponibilidad = new FachadaConsultarDisponibilidad();
     IComprarBoleto comprarBoleto = new ComprarBoleto();
 

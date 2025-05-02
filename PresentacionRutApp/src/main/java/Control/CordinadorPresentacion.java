@@ -12,11 +12,13 @@ import Frames.ComprarBoleto;
 import Frames.MainMenu;
 import Frames.ResumenCompra;
 import Frames.ViajesDisponibles;
+import Interfaces.TemporizadorObserver;
 import itson.consultardisponibilidad.Interfaz.IConsultarDisponibilidad;
 import itson.rutappdto.BoletoContext;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
@@ -26,6 +28,8 @@ import javax.swing.Timer;
  * @author chris
  */
 public class CordinadorPresentacion {
+
+    private List<TemporizadorObserver> observadores = new ArrayList<>();
 
     private Timer temporizador; // Timer de swing
     private boolean contadorIniciado = false;
@@ -88,6 +92,7 @@ public class CordinadorPresentacion {
 
         JOptionPane.showMessageDialog(null, "Tienes 5 minutos para realizar la compra");
         contadorIniciado = true;
+
         temporizador = new Timer(DURACION_CONTADOR, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -95,12 +100,15 @@ public class CordinadorPresentacion {
                 contadorIniciado = false;
 
                 JOptionPane.showMessageDialog(null, "El tiempo se ha acabado. Inténtelo de nuevo.");
-                //El boleto se reinicia si no se completo a tiempo
-                BoletoContext.limpiarBoleto();
 
+                // Reiniciar boleto y ejecutar el callback clásico
+                BoletoContext.limpiarBoleto();
                 if (reiniciarAsientosCallback != null) {
                     reiniciarAsientosCallback.run();
                 }
+
+                // Notificar a los observadores registrados
+                notificarObservadores();
             }
         });
         temporizador.setRepeats(false);
@@ -115,5 +123,17 @@ public class CordinadorPresentacion {
     public void abrirMetodoPago() {
         ComprarBoleto forma = new ComprarBoleto();
         forma.setVisible(true);
+    }
+
+    //TIMER
+    public void agregarObservador(TemporizadorObserver obs) {
+        observadores.add(obs);
+    }
+
+    //TIMER
+    private void notificarObservadores() {
+        for (TemporizadorObserver obs : observadores) {
+            obs.tiempoAgotado();
+        }
     }
 }
