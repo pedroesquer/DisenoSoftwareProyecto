@@ -22,4 +22,11 @@ public class SeleccionAsiento implements ISeleccionAsiento {
         return ControlSeleccionAsiento.getInstancia().mostradoListaAsientos(camion);
     }
 
+    @Override
+    public void iniciarTemporizador(Runnable reiniciarAsientosCallback) {
+        ControlSeleccionAsiento.getInstancia().iniciarTemporizador(reiniciarAsientosCallback);
+    }
+    
+    
+
 }

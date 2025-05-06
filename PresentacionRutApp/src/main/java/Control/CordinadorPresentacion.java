@@ -13,6 +13,8 @@ import Frames.MainMenu;
 import Frames.ResumenCompra;
 import Frames.ViajesDisponibles;
 import Interfaces.TemporizadorObserver;
+import control.ControlSeleccionAsiento;
+import interfaz.ISeleccionAsiento;
 import itson.consultardisponibilidad.Interfaz.IConsultarDisponibilidad;
 import itson.rutappdto.BoletoContext;
 import java.awt.event.ActionEvent;
@@ -36,6 +38,7 @@ public class CordinadorPresentacion {
     private final int DURACION_CONTADOR = 5 * 60 * 1000;
 
     private IConsultarDisponibilidad consultarDisponibilidad;
+    private ISeleccionAsiento seleccionAsiento;
 
     private static CordinadorPresentacion instancia;
 
@@ -86,33 +89,7 @@ public class CordinadorPresentacion {
     }
 
     public void iniciarTemporizador(Runnable reiniciarAsientosCallback) {
-        if (contadorIniciado) {
-            return;
-        }
-
-        JOptionPane.showMessageDialog(null, "Tienes 5 minutos para realizar la compra");
-        contadorIniciado = true;
-
-        temporizador = new Timer(DURACION_CONTADOR, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                temporizador.stop();
-                contadorIniciado = false;
-
-                JOptionPane.showMessageDialog(null, "El tiempo se ha acabado. Inténtelo de nuevo.");
-
-                // Reiniciar boleto y ejecutar el callback clásico
-                BoletoContext.limpiarBoleto();
-                if (reiniciarAsientosCallback != null) {
-                    reiniciarAsientosCallback.run();
-                }
-
-                // Notificar a los observadores registrados
-                notificarObservadores();
-            }
-        });
-        temporizador.setRepeats(false);
-        temporizador.start();
+        seleccionAsiento.iniciarTemporizador(reiniciarAsientosCallback);
     }
 
     public void abrirResumenCompra() {

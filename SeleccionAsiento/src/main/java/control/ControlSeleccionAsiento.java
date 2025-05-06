@@ -2,16 +2,27 @@ package control;
 
 import enumm.estadoAsiento;
 import excepciones.SeleccionAsientoException;
+import interfaz.ITemporizadorObserver;
 import itson.rutappdto.AsientoDTO;
+import itson.rutappdto.BoletoContext;
 import itson.rutappdto.CamionDTO;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 /**
  *
  * @author pedro
  */
 public class ControlSeleccionAsiento {
+
+    private List<ITemporizadorObserver> observadores = new ArrayList<>();
+    private Timer temporizador; // Timer de swing
+    private boolean contadorIniciado = false;
+    private final int DURACION_CONTADOR = 5 * 60 * 1000;
 
     private static ControlSeleccionAsiento instance;
 
@@ -42,8 +53,6 @@ public class ControlSeleccionAsiento {
         listaAsientos.add(new AsientoDTO(4L, estadoAsiento.DISPONIBLE, "A4"));
         listaAsientos.add(new AsientoDTO(5L, estadoAsiento.DISPONIBLE, "A5"));
     }
-
-
 
     /**
      * Actualiza el estado del asiento alternando entre DISPONIBLE y OCUPADO.
@@ -103,5 +112,46 @@ public class ControlSeleccionAsiento {
     public List<AsientoDTO> mostradoListaAsientos(CamionDTO camion) {
         return camion.getListaAsiento();
     }
+    
+    public void iniciarTemporizador(Runnable reiniciarAsientosCallback) {
+        if (contadorIniciado) {
+            return;
+        }
 
+        JOptionPane.showMessageDialog(null, "Tienes 5 minutos para realizar la compra");
+        contadorIniciado = true;
+
+        temporizador = new Timer(DURACION_CONTADOR, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                temporizador.stop();
+                contadorIniciado = false;
+
+                JOptionPane.showMessageDialog(null, "El tiempo se ha acabado. Inténtelo de nuevo.");
+
+                // Reiniciar boleto y ejecutar el callback clásico
+                BoletoContext.limpiarBoleto();
+                if (reiniciarAsientosCallback != null) {
+                    reiniciarAsientosCallback.run();
+                }
+
+                // Notificar a los observadores registrados
+                notificarObservadores();
+            }
+        });
+        temporizador.setRepeats(false);
+        temporizador.start();
+    }
+
+    //TIMER
+    public void agregarObservador(ITemporizadorObserver obs) {
+        observadores.add(obs);
+    }
+
+    //TIMER
+    private void notificarObservadores() {
+        for (ITemporizadorObserver obs : observadores) {
+            obs.tiempoAgotado();
+        }
+    }
 }

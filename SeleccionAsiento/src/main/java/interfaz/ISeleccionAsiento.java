@@ -11,4 +11,5 @@ import java.util.List;
 public interface ISeleccionAsiento {
 
     List<AsientoDTO> obtenerAsientos(CamionDTO camion);
+    void iniciarTemporizador(Runnable reiniciarAsientosCallback);
 }
