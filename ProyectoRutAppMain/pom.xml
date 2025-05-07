@@ -13,6 +13,7 @@
         <module>../ConsultarDisponibilidad</module>
         <module>../PagoBoleto</module>
         <module>../Servidro</module>
+        <module>Cliente</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

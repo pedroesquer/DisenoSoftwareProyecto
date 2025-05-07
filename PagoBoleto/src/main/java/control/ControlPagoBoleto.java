@@ -1,5 +1,8 @@
 package control;
 
+import itson.cliente.ClienteBancoRMI;
+import itson.rutappdto.DetallesPagoDTO;
+import itson.rutappdto.TarjetaCreditoDTO;
 import itson.rutappdto.UsuarioDTO;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -86,7 +89,8 @@ public class ControlPagoBoleto {
     }
 
     /**
-     * Método que descuenta el saldo del monedero según la cantidad que introduzcas.
+     * Método que descuenta el saldo del monedero según la cantidad que
+     * introduzcas.
      *
      */
     public void descontarSaldoMonedero(UsuarioDTO usuarioDTO, Double cantidad) {
@@ -94,14 +98,51 @@ public class ControlPagoBoleto {
             usuarioDTO.setSaldoMonedero(usuarioDTO.getSaldoMonedero() - cantidad);
         }
     }
-    
+
     /**
      * Método que agrega la cantidad que desees al monedero.
      *
      */
-    public void agregarSaldoMonedero(UsuarioDTO usuarioDTO, Double cantidad){
-        if (usuarioDTO.getSaldoMonedero() != null){
+    public void agregarSaldoMonedero(UsuarioDTO usuarioDTO, Double cantidad) {
+        if (usuarioDTO.getSaldoMonedero() != null) {
             usuarioDTO.setSaldoMonedero(usuarioDTO.getSaldoMonedero() + cantidad);
+        }
+    }
+
+    public boolean procesarPago(DetallesPagoDTO detalles, UsuarioDTO usuarioDTO) {
+        Double monto = detalles.getMonto();
+        TarjetaCreditoDTO tarjeta = detalles.getDetallesTarjeta();
+
+        if (tarjeta == null) {
+            // Pago con monedero
+            if (validarSaldoMonedero(usuarioDTO, monto)) {
+                descontarSaldoMonedero(usuarioDTO, monto);
+                System.out.println("Pago con monedero aprobado.");
+                return true;
+            } else {
+                System.out.println("Saldo insuficiente en monedero.");
+                return false;
+            }
+        } else {
+            // Validaciones locales antes de enviar al banco
+            if (!validarNumeroTarjeta(tarjeta.getNumeroTarjeta())) {
+                System.out.println("Número de tarjeta inválido.");
+                return false;
+            }
+
+            if (!validarFechaVencimiento(tarjeta.getFechaExpiracion())) {
+                System.out.println("Fecha de vencimiento inválida.");
+                return false;
+            }
+
+            // Cliente RMI envía solicitud al servidor externo
+            boolean aprobado = ClienteBancoRMI.procesarPagoConTarjeta(detalles);
+            if (aprobado) {
+                System.out.println("Pago con tarjeta aprobado por el banco.");
+            } else {
+                System.out.println("Pago con tarjeta rechazado por el banco.");
+            }
+            return false;
         }
     }
 

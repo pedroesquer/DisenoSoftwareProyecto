@@ -3,6 +3,8 @@ package Interfaz;
 import Ex.CompraBoletoException;
 import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.CamionDTO;
+import itson.rutappdto.DetallesPagoDTO;
+import itson.rutappdto.UsuarioDTO;
 import java.util.List;
 
 /**
@@ -12,4 +14,5 @@ import java.util.List;
 public interface IComprarBoleto {
 //    void mostrarPantallaPago();
     void comprarBoleto();
+     public boolean procesarCompra(DetallesPagoDTO detalles, UsuarioDTO usuario) throws CompraBoletoException;
 }
