@@ -186,9 +186,9 @@ public class ComprarBoleto extends javax.swing.JFrame {
                 .addContainerGap(17, Short.MAX_VALUE))
         );
 
-        BackGround.add(panelTarjeta, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 410, 240));
+        BackGround.add(panelTarjeta, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, 410, 240));
 
-        btnCompraViaje.setBackground(new java.awt.Color(47, 40, 34));
+        btnCompraViaje.setBackground(new java.awt.Color(240, 152, 39));
         btnCompraViaje.setFont(new java.awt.Font("Roboto Condensed Black", 1, 13)); // NOI18N
         btnCompraViaje.setForeground(new java.awt.Color(255, 255, 255));
         btnCompraViaje.setText("COMPRAR");
@@ -197,7 +197,7 @@ public class ComprarBoleto extends javax.swing.JFrame {
                 btnCompraViajeActionPerformed(evt);
             }
         });
-        BackGround.add(btnCompraViaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 450, 110, 40));
+        BackGround.add(btnCompraViaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 440, 110, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

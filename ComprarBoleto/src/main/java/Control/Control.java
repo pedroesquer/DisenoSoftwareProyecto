@@ -35,14 +35,6 @@ public class Control {
 
     }
 
-    public void mostrarPantallaPago() {
-        System.out.println("Mostrando pantalla de pago...");
-    }
-
-    public void validarAsiento(int asiento) {
-        System.out.println("Validando asiento: " + asiento);
-    }
-
     public void registrarCompra() {
         System.out.println("Compra registrada exitosamente.");
     }

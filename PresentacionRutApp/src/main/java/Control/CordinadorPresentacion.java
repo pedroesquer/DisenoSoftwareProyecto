@@ -14,8 +14,10 @@ import Frames.ResumenCompra;
 import Frames.ViajesDisponibles;
 import Interfaces.TemporizadorObserver;
 import control.ControlSeleccionAsiento;
+import fachada.SeleccionAsiento;
 import interfaz.ISeleccionAsiento;
 import itson.consultardisponibilidad.Interfaz.IConsultarDisponibilidad;
+import itson.consultardisponibilidad.fachada.FachadaConsultarDisponibilidad;
 import itson.rutappdto.BoletoContext;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,8 +39,8 @@ public class CordinadorPresentacion {
     private boolean contadorIniciado = false;
     private final int DURACION_CONTADOR = 5 * 60 * 1000;
 
-    private IConsultarDisponibilidad consultarDisponibilidad;
-    private ISeleccionAsiento seleccionAsiento;
+    private IConsultarDisponibilidad consultarDisponibilidad = new FachadaConsultarDisponibilidad();
+    private ISeleccionAsiento seleccionAsiento = new SeleccionAsiento();
 
     private static CordinadorPresentacion instancia;
 

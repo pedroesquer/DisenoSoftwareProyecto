@@ -10,6 +10,6 @@ import java.util.List;
  * @author multaslokas33
  */
 public interface IComprarBoleto {
-    void mostrarPantallaPago();
+//    void mostrarPantallaPago();
     void comprarBoleto();
 }

@@ -23,10 +23,10 @@ public class ComprarBoleto implements IComprarBoleto {
         control = new Control();
     }
 
-    @Override
-    public void mostrarPantallaPago() {
-        control.mostrarPantallaPago();
-    }
+//    @Override
+//    public void mostrarPantallaPago() {
+//        control.mostrarPantallaPago();
+//    }
 
 
 
