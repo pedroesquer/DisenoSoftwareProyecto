@@ -80,6 +80,7 @@ public class ResumenCompra extends javax.swing.JFrame {
         Header = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         Footer = new javax.swing.JPanel();
+        botonCancelar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
@@ -89,7 +90,6 @@ public class ResumenCompra extends javax.swing.JFrame {
         lblDuracion = new javax.swing.JLabel();
         lblNombres = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
         jSeparator3 = new javax.swing.JSeparator();
         jSeparator4 = new javax.swing.JSeparator();
         jSeparator5 = new javax.swing.JSeparator();
@@ -101,7 +101,6 @@ public class ResumenCompra extends javax.swing.JFrame {
         lblTotal = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        lblMonedero = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         botonAceptar = new javax.swing.JButton();
 
@@ -145,15 +144,29 @@ public class ResumenCompra extends javax.swing.JFrame {
         Footer.setBackground(new java.awt.Color(255, 201, 98));
         Footer.setPreferredSize(new java.awt.Dimension(520, 60));
 
+        botonCancelar.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        botonCancelar.setText("Cancelar");
+        botonCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonCancelarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout FooterLayout = new javax.swing.GroupLayout(Footer);
         Footer.setLayout(FooterLayout);
         FooterLayout.setHorizontalGroup(
             FooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 670, Short.MAX_VALUE)
+            .addGroup(FooterLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(botonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(484, Short.MAX_VALUE))
         );
         FooterLayout.setVerticalGroup(
             FooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 60, Short.MAX_VALUE)
+            .addGroup(FooterLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(botonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         BackGround.add(Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 670, 60));
@@ -201,11 +214,6 @@ public class ResumenCompra extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
         jLabel9.setText("Precio");
         BackGround.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, 160, -1));
-
-        jLabel10.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel10.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        jLabel10.setText("Monedero");
-        BackGround.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 380, 160, -1));
         BackGround.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 112, 530, 20));
         BackGround.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 530, 20));
         BackGround.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 463, 460, 0));
@@ -246,18 +254,13 @@ public class ResumenCompra extends javax.swing.JFrame {
         jLabel16.setText("Nombre(s)");
         BackGround.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 160, -1));
 
-        lblMonedero.setBackground(new java.awt.Color(255, 255, 255));
-        lblMonedero.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        lblMonedero.setText("$....");
-        BackGround.add(lblMonedero, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 380, 160, -1));
-
         jLabel3.setBackground(new java.awt.Color(255, 255, 255));
         jLabel3.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
         jLabel3.setText("Resumen de compra");
         BackGround.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 160, -1));
 
         botonAceptar.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
-        botonAceptar.setText("Aceptar");
+        botonAceptar.setText("Pagar");
         botonAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonAceptarActionPerformed(evt);
@@ -292,10 +295,24 @@ public class ResumenCompra extends javax.swing.JFrame {
         BoletoContext.limpiarBoleto();
         
         this.dispose();
-        CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
+        CordinadorPresentacion.getInstancia().abrirMetodoPago();
         
         
     }//GEN-LAST:event_botonAceptarActionPerformed
+
+    private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
+        int confirmacion = JOptionPane.showConfirmDialog(null, "Confirmar cancelación", "¿Estas seguro de cancelar"
+                + "la operacion? Se borrará tu progreso", JOptionPane.YES_NO_OPTION);
+        
+        if (confirmacion == JOptionPane.YES_OPTION){
+            BoletoContext.limpiarBoleto();
+            JOptionPane.showMessageDialog(null, "Has cancelado el proceso.\n Regresaras a la pantalla principal");
+            CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
+            this.dispose();
+            //AQUI DEBERIA DE IR ALGO PARA REGRESAR LOS ASIENTOS A DISPONIBLES
+        }
+        
+    }//GEN-LAST:event_botonCancelarActionPerformed
 
     private void datosResumen(BoletoDTO boleto) {
 
@@ -348,8 +365,8 @@ public class ResumenCompra extends javax.swing.JFrame {
     private javax.swing.JPanel Footer;
     private javax.swing.JPanel Header;
     private javax.swing.JButton botonAceptar;
+    private javax.swing.JButton botonCancelar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -368,7 +385,6 @@ public class ResumenCompra extends javax.swing.JFrame {
     private javax.swing.JLabel lblAsientos;
     private javax.swing.JLabel lblDestino;
     private javax.swing.JLabel lblDuracion;
-    private javax.swing.JLabel lblMonedero;
     private javax.swing.JLabel lblNombres;
     private javax.swing.JLabel lblOrigen;
     private javax.swing.JLabel lblPrecio;

@@ -184,6 +184,7 @@ public class AsientosDisponibles extends javax.swing.JFrame {
         Header = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         Footer = new javax.swing.JPanel();
+        botonCancelar = new javax.swing.JButton();
         contenedorAsientos = new javax.swing.JPanel();
         botonAsientoUno = new javax.swing.JPanel();
         numeroAsientoUno = new javax.swing.JLabel();
@@ -271,15 +272,29 @@ public class AsientosDisponibles extends javax.swing.JFrame {
         Footer.setBackground(new java.awt.Color(255, 201, 98));
         Footer.setPreferredSize(new java.awt.Dimension(520, 60));
 
+        botonCancelar.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        botonCancelar.setText("Cancelar");
+        botonCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonCancelarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout FooterLayout = new javax.swing.GroupLayout(Footer);
         Footer.setLayout(FooterLayout);
         FooterLayout.setHorizontalGroup(
             FooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 500, Short.MAX_VALUE)
+            .addGroup(FooterLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(botonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(314, Short.MAX_VALUE))
         );
         FooterLayout.setVerticalGroup(
             FooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 60, Short.MAX_VALUE)
+            .addGroup(FooterLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(botonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         BackGround.add(Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 540, 500, 60));
@@ -987,9 +1002,23 @@ public class AsientosDisponibles extends javax.swing.JFrame {
     private void btnCompraViajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompraViajeActionPerformed
         List<AsientoBoletoDTO> lista = obtenerAsientosYPasajeros(); // tu método original
         BoletoContext.getBoleto().setListaAsiento(lista);
-        CordinadorPresentacion.getInstancia().abrirMetodoPago();
+        CordinadorPresentacion.getInstancia().abrirResumenCompra();
         this.dispose();
     }//GEN-LAST:event_btnCompraViajeActionPerformed
+
+    private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
+        int confirmacion = JOptionPane.showConfirmDialog(null, "Confirmar cancelación", "¿Estas seguro de cancelar"
+            + "la operacion? Se borrará tu progreso", JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion == JOptionPane.YES_OPTION){
+            BoletoContext.limpiarBoleto();
+            JOptionPane.showMessageDialog(null, "Has cancelado el proceso.\n Regresaras a la pantalla principal");
+            CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
+            this.dispose();
+            //AQUI DEBERIA DE IR ALGO PARA REGRESAR LOS ASIENTOS A DISPONIBLES
+        }
+
+    }//GEN-LAST:event_botonCancelarActionPerformed
 
     /**
      *
@@ -1095,6 +1124,7 @@ public class AsientosDisponibles extends javax.swing.JFrame {
     private javax.swing.JPanel botonAsientoVeintidos;
     private javax.swing.JPanel botonAsientoVeintitres;
     private javax.swing.JPanel botonAsientoVeintiuno;
+    private javax.swing.JButton botonCancelar;
     private javax.swing.JButton btnCompraViaje;
     private javax.swing.JPanel contenedorAsientos;
     private javax.swing.JLabel jLabel1;
