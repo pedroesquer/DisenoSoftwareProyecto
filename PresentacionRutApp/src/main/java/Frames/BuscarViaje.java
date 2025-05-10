@@ -67,7 +67,6 @@ public class BuscarViaje extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
-        setPreferredSize(new java.awt.Dimension(520, 553));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         BackGround.setBackground(new java.awt.Color(255, 255, 255));
@@ -77,7 +76,6 @@ public class BuscarViaje extends javax.swing.JFrame {
         Header.setPreferredSize(new java.awt.Dimension(520, 60));
 
         eName.setFont(new java.awt.Font("Roboto Condensed Medium", 1, 48)); // NOI18N
-        eName.setForeground(new java.awt.Color(0, 0, 0));
         eName.setText("RUTAPP");
 
         javax.swing.GroupLayout HeaderLayout = new javax.swing.GroupLayout(Header);
@@ -93,7 +91,7 @@ public class BuscarViaje extends javax.swing.JFrame {
             HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(HeaderLayout.createSequentialGroup()
                 .addComponent(eName)
-                .addGap(0, 3, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         BackGround.add(Header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -103,8 +101,6 @@ public class BuscarViaje extends javax.swing.JFrame {
 
         btnVolver.setBackground(new java.awt.Color(255, 201, 98));
         btnVolver.setFont(new java.awt.Font("Roboto Condensed Black", 1, 13)); // NOI18N
-        btnVolver.setForeground(new java.awt.Color(0, 0, 0));
-        btnVolver.setIcon(new javax.swing.ImageIcon("C:\\Users\\mmax2\\Documents\\GitHub\\ProyectoDiseno\\PresentacionRutApp\\src\\main\\java\\img\\FlechaVolver.png")); // NOI18N
         btnVolver.setText("Volver\n");
         btnVolver.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnVolver.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -147,7 +143,7 @@ public class BuscarViaje extends javax.swing.JFrame {
             }
         });
         BackGround.add(BoxOrigen, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, 190, 40));
-        BackGround.add(Calendario, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 190, 320, 190));
+        BackGround.add(Calendario, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 170, 320, 190));
 
         btnBuscar.setBackground(new java.awt.Color(47, 40, 34));
         btnBuscar.setFont(new java.awt.Font("Roboto Condensed Black", 1, 13)); // NOI18N
@@ -161,12 +157,10 @@ public class BuscarViaje extends javax.swing.JFrame {
         BackGround.add(btnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 410, 130, 50));
 
         Origen.setFont(new java.awt.Font("Roboto Condensed Black", 1, 24)); // NOI18N
-        Origen.setForeground(new java.awt.Color(0, 0, 0));
         Origen.setText("ORIGEN");
         BackGround.add(Origen, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, -1, -1));
 
         Destino.setFont(new java.awt.Font("Roboto Condensed Black", 1, 24)); // NOI18N
-        Destino.setForeground(new java.awt.Color(0, 0, 0));
         Destino.setText("DESTINO");
         BackGround.add(Destino, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 80, -1, -1));
 

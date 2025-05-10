@@ -42,7 +42,7 @@ public class ControlConsultarDisponibilidad {
         //Cuando le quitemos el mockeo seria CamionDTO.getListaAsientos();
         for (long i = 0; i < 24; i++) {
             String numero = String.valueOf(i);
-            if (i == 5 || i == 7 || i == 20 || i == 21) {
+            if (i == 5 || i == 7 || i == 20 || i == 21 || i == 1) {
                 listaAsientos.add(new AsientoDTO(i, estadoAsiento.OCUPADO, numero));
             } else {
                 listaAsientos.add(new AsientoDTO(i, estadoAsiento.DISPONIBLE, numero));
@@ -77,7 +77,7 @@ public class ControlConsultarDisponibilidad {
         for (int i = 0; i < 6; i++) {
             contador++;
             CamionDTO camion = new CamionDTO(contador, (i + 1) + "a", crearListaAsientos());
-            viajes.add(new ViajeDTO(300.00, origen, destino, "3hr 30min", camion, LocalDate.now()));
+            viajes.add(new ViajeDTO(300.00, origen, destino, "3hr 30min", camion, fecha));
         }
         return viajes;
     }

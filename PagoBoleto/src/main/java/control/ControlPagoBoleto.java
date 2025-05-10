@@ -1,6 +1,6 @@
 package control;
 
-import itson.cliente.ClienteBancoRMI;
+//import itson.cliente.ClienteBancoRMI;
 import itson.rutappdto.DetallesPagoDTO;
 import itson.rutappdto.TarjetaCreditoDTO;
 import itson.rutappdto.UsuarioDTO;
@@ -130,20 +130,19 @@ public class ControlPagoBoleto {
                 return false;
             }
 
-            if (!validarFechaVencimiento(tarjeta.getFechaExpiracion())) {
-                System.out.println("Fecha de vencimiento inválida.");
-                return false;
-            }
-
-            // Cliente RMI envía solicitud al servidor externo
-            boolean aprobado = ClienteBancoRMI.procesarPagoConTarjeta(detalles);
-            if (aprobado) {
-                System.out.println("Pago con tarjeta aprobado por el banco.");
-            } else {
-                System.out.println("Pago con tarjeta rechazado por el banco.");
-            }
+//            if (!validarFechaVencimiento(tarjeta.getFechaExpiracion())) {
+//                System.out.println("Fecha de vencimiento inválida.");
+//                return false;
+//            }
+//
+//            // Cliente RMI envía solicitud al servidor externo
+//            boolean aprobado = ClienteBancoRMI.procesarPagoConTarjeta(detalles);
+//            if (aprobado) {
+//                System.out.println("Pago con tarjeta aprobado por el banco.");
+//            } else {
+//                System.out.println("Pago con tarjeta rechazado por el banco.");
+//            }
             return false;
         }
     }
-
 }

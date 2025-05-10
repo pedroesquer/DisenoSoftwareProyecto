@@ -1041,23 +1041,38 @@ public class AsientosDisponibles extends javax.swing.JFrame {
         // Comprobar el estado y realizar las acciones correspondientes
         switch (estadoActual) {
             case LIBRE:
-                panel.setBackground(new Color(51, 204, 255)); // Azul
-                // Mostrar cuadro de diálogo para ingresar el nombre del pasajero
-                String nombrePasajero = JOptionPane.showInputDialog(
-                        this,
-                        "Ingresa el nombre del pasajero:",
-                        "Asignar Asiento",
-                        JOptionPane.PLAIN_MESSAGE
-                );
+                String nombrePasajero = null;
+                boolean nombreValido = false;
+                panel.setBackground(new Color(51, 204, 255));
+                while (!nombreValido) {
+                    nombrePasajero = JOptionPane.showInputDialog(
+                            this,
+                            "Ingresa el nombre del pasajero:",
+                            "Asignar Asiento",
+                            JOptionPane.PLAIN_MESSAGE
+                    );
 
-                // Si el usuario ingresó un nombre válido
-                if (nombrePasajero != null && !nombrePasajero.trim().isEmpty()) {
-                    panel.setBackground(new Color(242, 242, 242));
-                    mapaEstadosAsientos.put(panel, EstadoAsiento.SELECCIONADO); // Actualizar el estado
-                    mapaNombresPasajeros.put(panel, nombrePasajero.trim());// Guardar el nombre
-                    actualizarResumenAsientos();
+                    // Cancelar si el usuario cierra el diálogo o presiona cancelar
+                    if (nombrePasajero == null) {
+                        return;
+                    }
+
+                    if (!nombrePasajero.trim().isEmpty()) {
+                        nombreValido = true;
+                    } else {
+                        JOptionPane.showMessageDialog(
+                                this,
+                                "El nombre no puede estar vacío.",
+                                "Error",
+                                JOptionPane.WARNING_MESSAGE
+                        );
+                    }
                 }
 
+                panel.setBackground(new Color(192, 192, 192)); // Gris seleccionado
+                mapaEstadosAsientos.put(panel, EstadoAsiento.SELECCIONADO);
+                mapaNombresPasajeros.put(panel, nombrePasajero.trim());
+                actualizarResumenAsientos();
                 CordinadorPresentacion.getInstancia().iniciarTemporizador(() -> reiniciarAsientosSeleccionados());
                 break;
 

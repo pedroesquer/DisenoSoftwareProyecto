@@ -131,6 +131,7 @@ public class ControlSeleccionAsiento {
 
                 // Reiniciar boleto y ejecutar el callback clásico
                 BoletoContext.limpiarBoleto();
+                
                 if (reiniciarAsientosCallback != null) {
                     reiniciarAsientosCallback.run();
                 }

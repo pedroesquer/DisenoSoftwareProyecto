@@ -83,9 +83,9 @@ public class ViajesDisponibles extends javax.swing.JFrame {
         String viajeInfo = "<html><b>Destino:  </b>" + viaje.getDestino()
                 + "<b>  Origen:</b> " + viaje.getOrigen() + "<br>"
                 + "<b>Duración:</b> " + viaje.getDuracion() + "<br>"
-                + "<b>Precio:</b> $" + viaje.getPrecio() 
+                + "<b>Precio:</b> $" + viaje.getPrecio()
                 + "<br> <b>Numero camion:</b> " + viaje.getCamion().getNumeroCamion()
-                + "<b>  Fecha:</b> " + viaje.getFecha().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + "</html>";
+                + "<b>  Fecha:</b> " + viaje.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "</html>";
 
         JLabel label = new JLabel(viajeInfo);
         label.setFont(new Font("SansSerif", Font.PLAIN, 14));
@@ -100,6 +100,7 @@ public class ViajesDisponibles extends javax.swing.JFrame {
                 BoletoContext.getBoleto().setCamion(viaje.getCamion());
                 BoletoContext.getBoleto().setDuracion(viaje.getDuracion());
                 BoletoContext.getBoleto().setPrecio(viaje.getPrecio());
+                BoletoContext.getBoleto().setFecha(viaje.getFecha());
 
                 // Abrir el frame de asientos
                 CordinadorPresentacion.getInstancia().abrirAsientosDisponibles(viaje.getCamion());

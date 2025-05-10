@@ -33,18 +33,16 @@ import javax.swing.Timer;
  */
 public class CordinadorPresentacion {
 
-    private List<TemporizadorObserver> observadores = new ArrayList<>();
-
-    private Timer temporizador; // Timer de swing
-    private boolean contadorIniciado = false;
-    private final int DURACION_CONTADOR = 5 * 60 * 1000;
-
+//    private List<TemporizadorObserver> observadores = new ArrayList<>();
+//
+//    private Timer temporizador; // Timer de swing
+//    private boolean contadorIniciado = false;
+//    private final int DURACION_CONTADOR = 5 * 60 * 1000;
+    private static CordinadorPresentacion instancia;
     private IConsultarDisponibilidad consultarDisponibilidad = new FachadaConsultarDisponibilidad();
     private ISeleccionAsiento seleccionAsiento = new SeleccionAsiento();
-
-    private static CordinadorPresentacion instancia;
-
     private ControlNegocio controlNegocio = ControlNegocio.getInstancia();
+    private final ControlTimer controlTimer = new ControlTimer();
 
     public CordinadorPresentacion() {
     }
@@ -91,11 +89,11 @@ public class CordinadorPresentacion {
     }
 
     public void iniciarTemporizador(Runnable reiniciarAsientosCallback) {
-        seleccionAsiento.iniciarTemporizador(reiniciarAsientosCallback);
+        controlTimer.iniciarTemporizador(reiniciarAsientosCallback);
     }
-    
-    public void finalizarTemporizador(){
-        seleccionAsiento.finalizarTemporizador();
+
+    public void finalizarTemporizador() {
+        controlTimer.finalizarTemporizador();
     }
 
     public void abrirResumenCompra() {
@@ -110,13 +108,12 @@ public class CordinadorPresentacion {
 
     //TIMER
     public void agregarObservador(TemporizadorObserver obs) {
-        observadores.add(obs);
+        controlTimer.agregarObservador(obs);
     }
 
     //TIMER
-    private void notificarObservadores() {
-        for (TemporizadorObserver obs : observadores) {
-            obs.tiempoAgotado();
-        }
-    }
+//    private void notificarObservadores() {
+//        for (TemporizadorObserver obs : observadores) {
+//            obs.tiempoAgotado();
+//        }
 }
