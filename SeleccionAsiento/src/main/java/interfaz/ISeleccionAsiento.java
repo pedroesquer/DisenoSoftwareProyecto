@@ -12,4 +12,5 @@ public interface ISeleccionAsiento {
 
     List<AsientoDTO> obtenerAsientos(CamionDTO camion);
     void iniciarTemporizador(Runnable reiniciarAsientosCallback);
+    void finalizarTemporizador();
 }

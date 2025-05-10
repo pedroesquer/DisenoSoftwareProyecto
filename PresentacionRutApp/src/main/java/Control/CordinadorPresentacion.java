@@ -93,6 +93,10 @@ public class CordinadorPresentacion {
     public void iniciarTemporizador(Runnable reiniciarAsientosCallback) {
         seleccionAsiento.iniciarTemporizador(reiniciarAsientosCallback);
     }
+    
+    public void finalizarTemporizador(){
+        seleccionAsiento.finalizarTemporizador();
+    }
 
     public void abrirResumenCompra() {
         ResumenCompra forma = new ResumenCompra();

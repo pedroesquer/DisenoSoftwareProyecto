@@ -26,6 +26,11 @@ public class AsientosDisponibles extends javax.swing.JFrame {
     CamionDTO camion;
 
     public AsientosDisponibles() {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        setTitle("Asientos disponibles");
+        btnCompraViaje.setEnabled(false);
+
     }
 
     // Definir el Enum para los estados de los asientos
@@ -79,6 +84,9 @@ public class AsientosDisponibles extends javax.swing.JFrame {
      */
     public AsientosDisponibles(CamionDTO camion) {
         initComponents();
+        this.setLocationRelativeTo(null);
+        setTitle("Asientos disponibles");
+        btnCompraViaje.setEnabled(false);
         this.camion = camion;
         // Lista de paneles
         JPanel[] paneles = {
@@ -91,6 +99,7 @@ public class AsientosDisponibles extends javax.swing.JFrame {
 
         for (JPanel panel : paneles) {
             mapaEstadosAsientos.put(panel, EstadoAsiento.LIBRE);
+            panel.setBackground(new Color(51, 204, 255)); // Azul claro (LIBRE)
             panel.addMouseListener(new java.awt.event.MouseAdapter() {
                 @Override
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -115,7 +124,7 @@ public class AsientosDisponibles extends javax.swing.JFrame {
         for (Map.Entry<JPanel, EstadoAsiento> entry : mapaEstadosAsientos.entrySet()) {
             if (entry.getValue() == EstadoAsiento.SELECCIONADO) {
                 JPanel panel = entry.getKey();
-                panel.setBackground(new Color(242, 242, 242)); // Gris claro
+                panel.setBackground(new Color(51, 204, 255)); // Gris claro
                 mapaEstadosAsientos.put(panel, EstadoAsiento.LIBRE);
             }
         }
@@ -1008,9 +1017,9 @@ public class AsientosDisponibles extends javax.swing.JFrame {
 
     private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
         int confirmacion = JOptionPane.showConfirmDialog(null, "Confirmar cancelación", "¿Estas seguro de cancelar"
-            + "la operacion? Se borrará tu progreso", JOptionPane.YES_NO_OPTION);
+                + "la operacion? Se borrará tu progreso", JOptionPane.YES_NO_OPTION);
 
-        if (confirmacion == JOptionPane.YES_OPTION){
+        if (confirmacion == JOptionPane.YES_OPTION) {
             BoletoContext.limpiarBoleto();
             JOptionPane.showMessageDialog(null, "Has cancelado el proceso.\n Regresaras a la pantalla principal");
             CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
@@ -1032,6 +1041,7 @@ public class AsientosDisponibles extends javax.swing.JFrame {
         // Comprobar el estado y realizar las acciones correspondientes
         switch (estadoActual) {
             case LIBRE:
+                panel.setBackground(new Color(51, 204, 255)); // Azul
                 // Mostrar cuadro de diálogo para ingresar el nombre del pasajero
                 String nombrePasajero = JOptionPane.showInputDialog(
                         this,
@@ -1042,7 +1052,7 @@ public class AsientosDisponibles extends javax.swing.JFrame {
 
                 // Si el usuario ingresó un nombre válido
                 if (nombrePasajero != null && !nombrePasajero.trim().isEmpty()) {
-                    panel.setBackground(new Color(51, 204, 255)); // Azul
+                    panel.setBackground(new Color(242, 242, 242));
                     mapaEstadosAsientos.put(panel, EstadoAsiento.SELECCIONADO); // Actualizar el estado
                     mapaNombresPasajeros.put(panel, nombrePasajero.trim());// Guardar el nombre
                     actualizarResumenAsientos();
@@ -1053,9 +1063,10 @@ public class AsientosDisponibles extends javax.swing.JFrame {
 
             case SELECCIONADO:
                 // Si está seleccionado, cambiar a libre
-                panel.setBackground(new Color(242, 242, 242)); // Gris
+                panel.setBackground(new Color(51, 204, 255)); // Azul claro (LIBRE)
                 mapaEstadosAsientos.put(panel, EstadoAsiento.LIBRE); // Actualizar el estado
                 mapaNombresPasajeros.remove(panel); // Eliminar el nombre del pasajero
+                actualizarResumenAsientos();
                 break;
 
             case OCUPADO:
@@ -1094,6 +1105,9 @@ public class AsientosDisponibles extends javax.swing.JFrame {
         }
 
         resumenTextArea.setText(resumen.toString());
+        btnCompraViaje.setEnabled(!mapaNombresPasajeros.isEmpty());
+        CordinadorPresentacion.getInstancia().finalizarTemporizador();
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -22,7 +22,7 @@ public class ControlSeleccionAsiento {
     private List<ITemporizadorObserver> observadores = new ArrayList<>();
     private Timer temporizador; // Timer de swing
     private boolean contadorIniciado = false;
-    private final int DURACION_CONTADOR = 5 * 60 * 1000;
+    private final int DURACION_CONTADOR = 10 * 1000;
 
     private static ControlSeleccionAsiento instance;
 
@@ -142,6 +142,15 @@ public class ControlSeleccionAsiento {
         temporizador.setRepeats(false);
         temporizador.start();
     }
+    
+    public void finalizarTimer() {
+    if (temporizador != null && temporizador.isRunning()) {
+        temporizador.stop();
+        
+    }
+    contadorIniciado = false;
+}
+
 
     //TIMER
     public void agregarObservador(ITemporizadorObserver obs) {

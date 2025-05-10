@@ -25,7 +25,7 @@ public class MainMenu extends javax.swing.JFrame {
     public MainMenu() {
         initComponents();
         this.setLocationRelativeTo(this);
-        
+        setTitle("Menú principal");
         this.pintarImg(this.fotoPerfil, "src\\main\\java\\img\\FotoPerfil.png");
     }
 
@@ -125,7 +125,7 @@ public class MainMenu extends javax.swing.JFrame {
         btnMisViajes.setBackground(new java.awt.Color(47, 40, 34));
         btnMisViajes.setFont(new java.awt.Font("Roboto Condensed Black", 1, 13)); // NOI18N
         btnMisViajes.setForeground(new java.awt.Color(255, 255, 255));
-        btnMisViajes.setText("MIS VIAJES");
+        btnMisViajes.setText("RESEÑAS");
         btnMisViajes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMisViajesActionPerformed(evt);
@@ -201,7 +201,7 @@ public class MainMenu extends javax.swing.JFrame {
 
         Bienvenida.setFont(new java.awt.Font("Roboto Condensed Medium", 0, 30)); // NOI18N
         Bienvenida.setForeground(new java.awt.Color(0, 0, 0));
-        Bienvenida.setText("BIENBENID@");
+        Bienvenida.setText("BIENVENID@");
         BackGround.add(Bienvenida, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, 160, 40));
 
         Saldo1.setFont(new java.awt.Font("Roboto Condensed Medium", 0, 30)); // NOI18N

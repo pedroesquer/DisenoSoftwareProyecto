@@ -26,6 +26,11 @@ public class SeleccionAsiento implements ISeleccionAsiento {
     public void iniciarTemporizador(Runnable reiniciarAsientosCallback) {
         ControlSeleccionAsiento.getInstancia().iniciarTemporizador(reiniciarAsientosCallback);
     }
+
+    @Override
+    public void finalizarTemporizador() {
+        ControlSeleccionAsiento.getInstancia().finalizarTimer();
+    }
     
     
 

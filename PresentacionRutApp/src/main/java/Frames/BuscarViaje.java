@@ -17,7 +17,6 @@ import javax.swing.JOptionPane;
  *
  * @author mmax2
  */
-
 public class BuscarViaje extends javax.swing.JFrame {
 
     /**
@@ -26,6 +25,8 @@ public class BuscarViaje extends javax.swing.JFrame {
     public BuscarViaje() {
         initComponents();
         cargarOrigenes();
+        this.setLocationRelativeTo(null);
+        setTitle("Búsqueda viaje");
 
     }
 

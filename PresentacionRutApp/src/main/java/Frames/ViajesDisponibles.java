@@ -21,6 +21,7 @@ import java.awt.HeadlessException;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +55,8 @@ public class ViajesDisponibles extends javax.swing.JFrame {
         initComponents();
         this.viajesDTO = viajesDTO;
         cargarViajesEnTarjetas(viajesDTO);
-
+        setLocationRelativeTo(null);
+        setTitle("Viajes disponibles");
     }
 
     public void cargarViajesEnTarjetas(List<ViajeDTO> viajes) {
@@ -81,8 +83,9 @@ public class ViajesDisponibles extends javax.swing.JFrame {
         String viajeInfo = "<html><b>Destino:  </b>" + viaje.getDestino()
                 + "<b>  Origen:</b> " + viaje.getOrigen() + "<br>"
                 + "<b>Duración:</b> " + viaje.getDuracion() + "<br>"
-                + "<b>Precio:</b> $" + viaje.getPrecio()
-                + "<br> <b>Numero camion:</b> " + viaje.getCamion().getNumeroCamion() + "</html>";
+                + "<b>Precio:</b> $" + viaje.getPrecio() 
+                + "<br> <b>Numero camion:</b> " + viaje.getCamion().getNumeroCamion()
+                + "<b>  Fecha:</b> " + viaje.getFecha().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + "</html>";
 
         JLabel label = new JLabel(viajeInfo);
         label.setFont(new Font("SansSerif", Font.PLAIN, 14));
@@ -92,13 +95,12 @@ public class ViajesDisponibles extends javax.swing.JFrame {
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                
 
                 // Guardar los datos seleccionados del viaje
                 BoletoContext.getBoleto().setCamion(viaje.getCamion());
                 BoletoContext.getBoleto().setDuracion(viaje.getDuracion());
                 BoletoContext.getBoleto().setPrecio(viaje.getPrecio());
-                
+
                 // Abrir el frame de asientos
                 CordinadorPresentacion.getInstancia().abrirAsientosDisponibles(viaje.getCamion());
 
