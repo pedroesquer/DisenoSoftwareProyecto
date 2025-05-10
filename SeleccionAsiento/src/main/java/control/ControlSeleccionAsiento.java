@@ -112,46 +112,45 @@ public class ControlSeleccionAsiento {
     public List<AsientoDTO> mostradoListaAsientos(CamionDTO camion) {
         return camion.getListaAsiento();
     }
-    
-    public void iniciarTemporizador(Runnable reiniciarAsientosCallback) {
-        if (contadorIniciado) {
-            return;
-        }
 
-        JOptionPane.showMessageDialog(null, "Tienes 5 minutos para realizar la compra");
-        contadorIniciado = true;
-
-        temporizador = new Timer(DURACION_CONTADOR, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                temporizador.stop();
-                contadorIniciado = false;
-
-                JOptionPane.showMessageDialog(null, "El tiempo se ha acabado. Inténtelo de nuevo.");
-
-                // Reiniciar boleto y ejecutar el callback clásico
-                BoletoContext.limpiarBoleto();
-                
-                if (reiniciarAsientosCallback != null) {
-                    reiniciarAsientosCallback.run();
-                }
-
-                // Notificar a los observadores registrados
-                notificarObservadores();
-            }
-        });
-        temporizador.setRepeats(false);
-        temporizador.start();
-    }
-    
-    public void finalizarTimer() {
-    if (temporizador != null && temporizador.isRunning()) {
-        temporizador.stop();
-        
-    }
-    contadorIniciado = false;
-}
-
+//    public void iniciarTemporizador(Runnable reiniciarAsientosCallback) {
+//        if (contadorIniciado) {
+//            return;
+//        }
+//
+//        JOptionPane.showMessageDialog(null, "Tienes 5 minutos para realizar la compra");
+//        contadorIniciado = true;
+//
+//        temporizador = new Timer(DURACION_CONTADOR, new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                temporizador.stop();
+//                contadorIniciado = false;
+//
+//                JOptionPane.showMessageDialog(null, "El tiempo se ha acabado. Inténtelo de nuevo.");
+//
+//                // Reiniciar boleto y ejecutar el callback clásico
+//                BoletoContext.limpiarBoleto();
+//
+//                if (reiniciarAsientosCallback != null) {
+//                    reiniciarAsientosCallback.run();
+//                }
+//
+//                // Notificar a los observadores registrados
+//                notificarObservadores();
+//            }
+//        });
+//        temporizador.setRepeats(false);
+//        temporizador.start();
+//    }
+//
+//    public void finalizarTimer() {
+//        if (temporizador != null && temporizador.isRunning()) {
+//            temporizador.stop();
+//
+//        }
+//        contadorIniciado = false;
+//    }
 
     //TIMER
     public void agregarObservador(ITemporizadorObserver obs) {

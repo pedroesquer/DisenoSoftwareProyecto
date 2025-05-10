@@ -10,4 +10,5 @@ package Interfaces;
  */
 public interface TemporizadorObserver {
     void tiempoAgotado();
+    
 }

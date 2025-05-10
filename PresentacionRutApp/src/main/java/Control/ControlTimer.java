@@ -22,9 +22,18 @@ public class ControlTimer {
 
     private Timer temporizador;
     private boolean contadorIniciado = false;
-    private final int DURACION_CONTADOR = 10 * 1000; // 10 segundos
+    private final int DURACION_CONTADOR = 5 * 1000 ; // 5 segundos
 
     private List<TemporizadorObserver> observadores = new ArrayList<>();
+
+    private static ControlTimer instancia;
+
+    public static ControlTimer getInstancia() {
+        if (instancia == null) {
+            instancia = new ControlTimer();
+        }
+        return instancia;
+    }
 
     public void iniciarTemporizador(Runnable reiniciarCallback) {
         if (contadorIniciado) {
@@ -40,7 +49,7 @@ public class ControlTimer {
                 temporizador.stop();
                 contadorIniciado = false;
 
-                JOptionPane.showMessageDialog(null, "El tiempo se ha acabado. Inténtelo de nuevo.");
+                //JOptionPane.showMessageDialog(null, "El tiempo se ha acabado. Inténtelo de nuevo.");
                 BoletoContext.limpiarBoleto();
                 if (reiniciarCallback != null) {
                     reiniciarCallback.run();
@@ -64,8 +73,15 @@ public class ControlTimer {
     }
 
     private void notificarObservadores() {
+        System.out.println("Notificando a " + observadores.size() + " observadores");
         for (TemporizadorObserver obs : observadores) {
+            System.out.println("Notificando a instancia: " + obs.hashCode());
             obs.tiempoAgotado();
         }
     }
+
+    public void limpiarObservadores() {
+        observadores.clear();
+    }
+
 }

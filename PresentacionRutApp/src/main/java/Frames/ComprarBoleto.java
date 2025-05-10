@@ -4,7 +4,9 @@
  */
 package Frames;
 
+import Control.ControlTimer;
 import Control.CordinadorPresentacion;
+import Interfaces.TemporizadorObserver;
 import itson.rutappdto.BoletoContext;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
@@ -14,12 +16,16 @@ import utilerias.FechaDocumentFilter;
  *
  * @author mmax2
  */
-public class ComprarBoleto extends javax.swing.JFrame {
+public class ComprarBoleto extends javax.swing.JFrame implements TemporizadorObserver {
 
     /**
      * Creates new form ComprarViaje
      */
     public ComprarBoleto() {
+        //--------------OBSERVADOR----------
+        ControlTimer.getInstancia().limpiarObservadores();
+        ControlTimer.getInstancia().agregarObservador(this);
+        System.out.println("Observador agregado: " + this.hashCode());
         initComponents();
         this.panelTarjeta.setVisible(false);
         setTitle("Pago");
@@ -294,9 +300,9 @@ public class ComprarBoleto extends javax.swing.JFrame {
 
     private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
         int confirmacion = JOptionPane.showConfirmDialog(null, "Confirmar cancelación", "¿Estas seguro de cancelar"
-            + "la operacion? Se borrará tu progreso", JOptionPane.YES_NO_OPTION);
+                + "la operacion? Se borrará tu progreso", JOptionPane.YES_NO_OPTION);
 
-        if (confirmacion == JOptionPane.YES_OPTION){
+        if (confirmacion == JOptionPane.YES_OPTION) {
             BoletoContext.limpiarBoleto();
             JOptionPane.showMessageDialog(null, "Has cancelado el proceso.\n Regresaras a la pantalla principal");
             CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
@@ -327,4 +333,11 @@ public class ComprarBoleto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel panelTarjeta;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void tiempoAgotado() {
+        JOptionPane.showMessageDialog(this, "El tiempo se agotó. Serás redirigido al menú principal.");
+        this.dispose(); // Cierra esta pantalla
+        new MainMenu().setVisible(true); // Abre la pantalla principal
+    }
 }

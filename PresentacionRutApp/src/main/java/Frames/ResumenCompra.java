@@ -5,7 +5,9 @@
 package Frames;
 
 import Control.ControlNegocio;
+import Control.ControlTimer;
 import Control.CordinadorPresentacion;
+import Interfaces.TemporizadorObserver;
 import enumm.estadoAsiento;
 import itson.rutappdto.AsientoAsignadoDTO;
 import itson.rutappdto.AsientoBoletoDTO;
@@ -27,7 +29,7 @@ import javax.swing.JTextArea;
  *
  * @author mmax2
  */
-public class ResumenCompra extends javax.swing.JFrame {
+public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObserver {
 
     private final JTextArea resumenTextArea;
     CamionDTO camion;
@@ -42,6 +44,11 @@ public class ResumenCompra extends javax.swing.JFrame {
      * Creates new form ComprarViaje
      */
     public ResumenCompra() {
+        //--------------OBSERVADOR----------
+        ControlTimer.getInstancia().limpiarObservadores();
+        ControlTimer.getInstancia().agregarObservador(this);
+        System.out.println("Observador agregado: " + this.hashCode());
+        
         initComponents();
         setTitle("Resumen de Compra");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -293,25 +300,25 @@ public class ResumenCompra extends javax.swing.JFrame {
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
         JOptionPane.showMessageDialog(this, "Gracias por comprar con nosotros");
         BoletoContext.limpiarBoleto();
-        
+
         this.dispose();
         CordinadorPresentacion.getInstancia().abrirMetodoPago();
-        
-        
+
+
     }//GEN-LAST:event_botonAceptarActionPerformed
 
     private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
         int confirmacion = JOptionPane.showConfirmDialog(null, "Confirmar cancelación", "¿Estas seguro de cancelar"
                 + "la operacion? Se borrará tu progreso", JOptionPane.YES_NO_OPTION);
-        
-        if (confirmacion == JOptionPane.YES_OPTION){
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
             BoletoContext.limpiarBoleto();
             JOptionPane.showMessageDialog(null, "Has cancelado el proceso.\n Regresaras a la pantalla principal");
             CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
             this.dispose();
             //AQUI DEBERIA DE IR ALGO PARA REGRESAR LOS ASIENTOS A DISPONIBLES
         }
-        
+
     }//GEN-LAST:event_botonCancelarActionPerformed
 
     private void datosResumen(BoletoDTO boleto) {
@@ -350,7 +357,7 @@ public class ResumenCompra extends javax.swing.JFrame {
     private javax.swing.JLabel lblTotal;
     // End of variables declaration//GEN-END:variables
 
-    public void mostrarResumen( BoletoDTO boleto) {
+    public void mostrarResumen(BoletoDTO boleto) {
         // Origen y destino
         lblOrigen.setText(boleto.getOrigen());
         lblDestino.setText(boleto.getDestino());
@@ -376,5 +383,12 @@ public class ResumenCompra extends javax.swing.JFrame {
 
         lblPrecio.setText("$" + precio);
         lblTotal.setText("$" + total);
+    }
+
+    @Override
+    public void tiempoAgotado() {
+        JOptionPane.showMessageDialog(this, "El tiempo se agotó. Serás redirigido al menú principal.");
+        this.dispose(); // Cierra esta pantalla
+        new MainMenu().setVisible(true); // Abre la pantalla principal
     }
 }

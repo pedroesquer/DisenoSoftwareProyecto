@@ -1,7 +1,9 @@
 package Frames;
 
 import Control.ControlNegocio;
+import Control.ControlTimer;
 import Control.CordinadorPresentacion;
+import Interfaces.TemporizadorObserver;
 import enumm.estadoAsiento;
 import itson.rutappdto.AsientoAsignadoDTO;
 import itson.rutappdto.AsientoBoletoDTO;
@@ -20,8 +22,15 @@ import javax.swing.JPanel;
  *
  * @author BusSoft
  */
-public class AsientosDisponibles extends javax.swing.JFrame {
+public class AsientosDisponibles extends javax.swing.JFrame implements TemporizadorObserver {
 //
+    // Crear un HashMap que relacione cada panel con su estado
+
+    private Map<JPanel, EstadoAsiento> mapaEstadosAsientos = new HashMap<>();
+    private Map<JPanel, String> mapaNombresPasajeros = new HashMap<>();
+
+    // Mapear los números de asiento a los paneles correspondientes
+    private Map<String, JPanel> mapaAsientos = new HashMap<>();
 
     CamionDTO camion;
 
@@ -31,6 +40,56 @@ public class AsientosDisponibles extends javax.swing.JFrame {
         setTitle("Asientos disponibles");
         btnCompraViaje.setEnabled(false);
 
+        System.out.println("Observador agregado desde: " + this.hashCode());
+
+    }
+
+    /**
+     * Creates new form ComprarViaje
+     *
+     * @param camion
+     */
+    public AsientosDisponibles(CamionDTO camion) {
+        //--------------OBSERVADOR----------
+        ControlTimer.getInstancia().limpiarObservadores();
+        ControlTimer.getInstancia().agregarObservador(this);
+        System.out.println("Observador agregado desde constructor CON CamionDTO: " + this.hashCode());
+
+        initComponents();
+        this.setLocationRelativeTo(null);
+        setTitle("Asientos disponibles");
+        btnCompraViaje.setEnabled(false);
+        this.camion = camion;
+        // Lista de paneles
+        JPanel[] paneles = {
+            botonAsientoNueve, botonAsientoDiez, botonAsientoDiesciseis, botonAsientoQuince, botonAsientoCatorce,
+            botonAsientoTrece, botonAsientoDiescinueve, botonAsientoVeinte, botonAsientoDiesciocho, botonAsientoDiescisiete,
+            botonAsiento2, botonAsientoVeintitres, botonAsientoVeinticuatro, botonAsientoVeintiuno, botonAsientoVeintidos,
+            botonAsiento4, botonAsientoOcho, botonAsientoSiete, botonAsientoCinco, botonAsientoSeis,
+            botonAsientoDoce, botonAsientoOnce, botonAsientoUno, botonAsiento3
+        };
+
+        for (JPanel panel : paneles) {
+            mapaEstadosAsientos.put(panel, EstadoAsiento.LIBRE);
+            panel.setBackground(new Color(51, 204, 255)); // Azul claro (LIBRE)
+            panel.addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    seleccionarAsiento(panel);
+                }
+            });
+        }
+
+        inicializarMapaAsientos();
+        marcarAsientosOcupados(camion.getListaAsiento());
+        mapaEstadosAsientos.put(botonAsientoUno, EstadoAsiento.OCUPADO);
+    }
+
+    @Override
+    public void tiempoAgotado() {
+        JOptionPane.showMessageDialog(this, "El tiempo se agotó. Serás redirigido al menú principal.");
+        this.dispose(); // Cierra esta pantalla
+        new MainMenu().setVisible(true); // Abre la pantalla principal
     }
 
     // Definir el Enum para los estados de los asientos
@@ -72,49 +131,6 @@ public class AsientosDisponibles extends javax.swing.JFrame {
 
         return lista;
     }
-
-    // Crear un HashMap que relacione cada panel con su estado
-    private Map<JPanel, EstadoAsiento> mapaEstadosAsientos = new HashMap<>();
-    private Map<JPanel, String> mapaNombresPasajeros = new HashMap<>();
-
-    /**
-     * Creates new form ComprarViaje
-     *
-     * @param camion
-     */
-    public AsientosDisponibles(CamionDTO camion) {
-        initComponents();
-        this.setLocationRelativeTo(null);
-        setTitle("Asientos disponibles");
-        btnCompraViaje.setEnabled(false);
-        this.camion = camion;
-        // Lista de paneles
-        JPanel[] paneles = {
-            botonAsientoNueve, botonAsientoDiez, botonAsientoDiesciseis, botonAsientoQuince, botonAsientoCatorce,
-            botonAsientoTrece, botonAsientoDiescinueve, botonAsientoVeinte, botonAsientoDiesciocho, botonAsientoDiescisiete,
-            botonAsiento2, botonAsientoVeintitres, botonAsientoVeinticuatro, botonAsientoVeintiuno, botonAsientoVeintidos,
-            botonAsiento4, botonAsientoOcho, botonAsientoSiete, botonAsientoCinco, botonAsientoSeis,
-            botonAsientoDoce, botonAsientoOnce, botonAsientoUno, botonAsiento3
-        };
-
-        for (JPanel panel : paneles) {
-            mapaEstadosAsientos.put(panel, EstadoAsiento.LIBRE);
-            panel.setBackground(new Color(51, 204, 255)); // Azul claro (LIBRE)
-            panel.addMouseListener(new java.awt.event.MouseAdapter() {
-                @Override
-                public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    seleccionarAsiento(panel);
-                }
-            });
-        }
-
-        inicializarMapaAsientos();
-        marcarAsientosOcupados(camion.getListaAsiento());
-        mapaEstadosAsientos.put(botonAsientoUno, EstadoAsiento.OCUPADO);
-    }
-
-    // Mapear los números de asiento a los paneles correspondientes
-    private Map<String, JPanel> mapaAsientos = new HashMap<>();
 
     public void cargarCamion(CamionDTO camionDTO) {
         marcarAsientosOcupados(camionDTO.getListaAsiento());
@@ -1019,8 +1035,10 @@ public class AsientosDisponibles extends javax.swing.JFrame {
         int confirmacion = JOptionPane.showConfirmDialog(null, "Confirmar cancelación", "¿Estas seguro de cancelar"
                 + "la operacion? Se borrará tu progreso", JOptionPane.YES_NO_OPTION);
 
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            BoletoContext.limpiarBoleto();
+        if (confirmacion == JOptionPane.YES_OPTION) {   
+            ControlTimer.getInstancia().finalizarTemporizador();   //DETENEMOS EL TIEMPO
+            BoletoContext.limpiarBoleto();                         //LIMPIAMOS EL BOLETO QUE CREAMOS CON LOS DATOS
+            reiniciarAsientosSeleccionados();                      //SE LIBERA VISUALMENTE LOS ASIENTOS SELECCIONADOS
             JOptionPane.showMessageDialog(null, "Has cancelado el proceso.\n Regresaras a la pantalla principal");
             CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
             this.dispose();
@@ -1073,7 +1091,8 @@ public class AsientosDisponibles extends javax.swing.JFrame {
                 mapaEstadosAsientos.put(panel, EstadoAsiento.SELECCIONADO);
                 mapaNombresPasajeros.put(panel, nombrePasajero.trim());
                 actualizarResumenAsientos();
-                CordinadorPresentacion.getInstancia().iniciarTemporizador(() -> reiniciarAsientosSeleccionados());
+                ControlTimer.getInstancia().iniciarTemporizador(() -> reiniciarAsientosSeleccionados());
+                //CordinadorPresentacion.getInstancia().iniciarTemporizador(() -> reiniciarAsientosSeleccionados());
                 break;
 
             case SELECCIONADO:
