@@ -4,7 +4,9 @@
  */
 package Server;
 
+import Exception.PagoException;
 import Interfaz.ServidorInterface;
+import dto.TarjetaDTO;
 import itson.rutappdto.DetallesPagoDTO;
 import itson.rutappdto.TarjetaCreditoDTO;
 
@@ -12,78 +14,99 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-/**
- *
- * @author mmax2
- */
-/**
- * Implementación del servidor RMI. Implementa la interfaz remota y contiene la
- * lógica para procesar las solicitudes.
- */
+// Clase renombrada de ServidorPagos a Servidor
 public class Servidor extends UnicastRemoteObject implements ServidorInterface {
 
-    protected Servidor() throws RemoteException {
+    private final Map<String, TarjetaDTO> tarjetasRegistradas;
+
+    /**
+     * Constructor del servidor. Inicializa la lista de tarjetas preguardadas.
+     *
+     * @throws RemoteException si ocurre un error durante la exportación del
+     * objeto remoto.
+     */
+    public Servidor() throws RemoteException {
         super();
+        tarjetasRegistradas = new ConcurrentHashMap<>();
+        inicializarTarjetas();
+    }
+
+    private void inicializarTarjetas() {
+        tarjetasRegistradas.put("1111222233334444", new TarjetaDTO("1111222233334444", "123", 5000.00, "Juan Perez"));
+        tarjetasRegistradas.put("5555666677778888", new TarjetaDTO("5555666677778888", "456", 10000.00, "Maria Lopez"));
+        tarjetasRegistradas.put("9999000011112222", new TarjetaDTO("9999000011112222", "789", 200.00, "Carlos Ruiz"));
+        tarjetasRegistradas.put("1234123412341234", new TarjetaDTO("1234123412341234", "000", 1500.00, "Ana Gomez"));
+        System.out.println("Servidor: Tarjetas de ejemplo (DTO internas) inicializadas.");
     }
 
     /**
-     * Implementación del método remoto para procesar pagos con tarjeta
-     *
-     * @param detallesPago DTO con los datos del pago.
-     * @return true, false.
-     * @throws RemoteException Por RMI.
+     * Implementación del método remoto para procesar pagos con validación.
+     * @throws Exception.PagoException
      */
     @Override
-    public boolean procesarPagoTarjeta(DetallesPagoDTO detallesPago) throws RemoteException {
-        System.out.println("\n--- Servidor RMI: Solicitud de Pago con Tarjeta Recibida ---");
-        System.out.println("Timestamp: " + java.time.LocalDateTime.now());
-        System.out.println("Monto: " + detallesPago.getMonto());
+    public synchronized boolean procesarPagoConValidacion(DetallesPagoDTO detallesPago) throws RemoteException, PagoException {
+        System.out.println("\nServidor: Solicitud de pago recibida.");
+        System.out.println("Detalles del pago (DTO externo): " + detallesPago);
 
-        TarjetaCreditoDTO tarjeta = detallesPago.getDetallesTarjeta();
-        if (tarjeta != null) {
-            System.out.println("Tarjeta:");
-            System.out.println("  Titular: " + tarjeta.getNombreTitular());
-            System.out.println("  Número: **** **** **** " + (tarjeta.getNumeroTarjeta() != null && tarjeta.getNumeroTarjeta().length() > 4 ? tarjeta.getNumeroTarjeta().substring(tarjeta.getNumeroTarjeta().length() - 4) : "****"));
-            System.out.println("  Expiración: " + tarjeta.getFechaExpiracion());
-            // No loguear CVV
-            System.out.println("  CVV: ***");
-        } else {
-            System.out.println("Tarjeta: Detalles no proporcionados.");
+        if (detallesPago == null || detallesPago.getDetallesTarjeta() == null) {
+            throw new PagoException("Los detalles de pago o de la tarjeta (DTO externo) son nulos.");
         }
 
-        boolean pagoAprobado = true;
-        if (detallesPago.getMonto() > 10000.00) {
-            System.out.println("Pago RECHAZADO (Monto > 10000)");
-            pagoAprobado = false;
-        } else if (tarjeta != null && tarjeta.getNumeroTarjeta() != null && tarjeta.getNumeroTarjeta().endsWith("0000")) {
-            System.out.println("Pago RECHAZADO ");
-            pagoAprobado = false;
-        } else {
-            System.out.println(" Pago APROBADO");
+        TarjetaCreditoDTO tarjetaCliente = detallesPago.getDetallesTarjeta();
+        double montoAPagar = detallesPago.getMonto();
+
+        if (tarjetaCliente.getNumeroTarjeta() == null || tarjetaCliente.getNumeroTarjeta().trim().isEmpty()) {
+            throw new PagoException("Número de tarjeta (DTO externo) no proporcionado.");
+        }
+        if (tarjetaCliente.getCvv() == null || tarjetaCliente.getCvv().trim().isEmpty()) {
+            throw new PagoException("CVV (DTO externo) no proporcionado.");
+        }
+        if (montoAPagar <= 0) {
+            throw new PagoException("El monto a pagar debe ser positivo.");
         }
 
-        System.out.println("--- Fin Solicitud de Pago ---");
-        return pagoAprobado;
+        TarjetaDTO tarjetaInterna = tarjetasRegistradas.get(tarjetaCliente.getNumeroTarjeta());
+
+        if (tarjetaInterna == null) {
+            System.out.println("Validación fallida: Tarjeta no encontrada en el servidor - " + tarjetaCliente.getNumeroTarjeta());
+            throw new PagoException("Tarjeta no registrada o número incorrecto.");
+        }
+
+        System.out.println("Tarjeta encontrada en servidor (DTO interno): " + tarjetaInterna.getNombreTitular());
+
+        if (!tarjetaInterna.getCvv().equals(tarjetaCliente.getCvv())) {
+            System.out.println("Validación fallida: CVV incorrecto para tarjeta " + tarjetaInterna.getNumero());
+            throw new PagoException("CVV incorrecto.");
+        }
+
+        if (tarjetaInterna.getSaldo() < montoAPagar) {
+            System.out.println("Validación fallida: Saldo insuficiente. Saldo actual: " + tarjetaInterna.getSaldo() + ", Monto solicitado: " + montoAPagar);
+            throw new PagoException("Saldo insuficiente en la tarjeta.");
+        }
+
+        double nuevoSaldo = tarjetaInterna.getSaldo() - montoAPagar;
+        tarjetaInterna.setSaldo(nuevoSaldo);
+
+        System.out.println("Pago procesado exitosamente para tarjeta " + tarjetaInterna.getNumero());
+        System.out.println("Monto descontado: " + montoAPagar + ". Nuevo saldo: " + nuevoSaldo);
+        return true;
     }
 
-    // --- Método main para iniciar el servidor RMI ---
+    /**
+     * Método principal para iniciar el servidor RMI.
+     */
     public static void main(String[] args) {
         try {
-            // Crear una instancia del servidor
-            Servidor servidor = new Servidor();
-
-            Registry registry = LocateRegistry.createRegistry(5000);
-            System.out.println("Registro RMI creado en el puerto 5000.");
-            registry.rebind("ServidorPagosRutApp", servidor);
-
-            System.out.println("Servidor de Pagos RutApp listo y esperando conexiones...");
-
-        } catch (RemoteException e) {
-            System.err.println("Error al iniciar el servidor RMI: " + e.getMessage());
-            e.printStackTrace();
+            ServidorInterface servidor = new Servidor(); // Instancia de la clase renombrada
+            Registry registry = LocateRegistry.createRegistry(1100);
+            // Nombre RMI actualizado para ser más genérico
+            registry.rebind("ServidorPagosRMI", servidor);
+            System.out.println("ServidorPagosRMI listo en el puerto 1100.");
         } catch (Exception e) {
-            System.err.println("Error general al iniciar el servidor: " + e.getMessage());
+            System.err.println("Excepción en Servidor (main): " + e.getMessage());
             e.printStackTrace();
         }
     }

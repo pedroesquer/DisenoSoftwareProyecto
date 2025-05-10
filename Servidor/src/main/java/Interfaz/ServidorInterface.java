@@ -4,6 +4,7 @@
  */
 package Interfaz;
 
+import Exception.PagoException;
 import itson.rutappdto.DetallesPagoDTO;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -25,5 +26,5 @@ public interface ServidorInterface extends Remote {
      * @return true si el pago es aprobado, false si es rechazado.
      * @throws RemoteException Si ocurre un error de comunicación RMI.
      */
-    boolean procesarPagoTarjeta(DetallesPagoDTO detallesPago) throws RemoteException;
+    boolean procesarPagoConValidacion(DetallesPagoDTO detallesPago) throws RemoteException, PagoException;
 }

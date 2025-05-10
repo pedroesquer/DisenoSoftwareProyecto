@@ -1,6 +1,7 @@
 package control;
 
 //import itson.cliente.ClienteBancoRMI;
+import itson.cliente.Cliente;
 import itson.rutappdto.DetallesPagoDTO;
 import itson.rutappdto.TarjetaCreditoDTO;
 import itson.rutappdto.UsuarioDTO;
@@ -15,6 +16,7 @@ import java.time.format.DateTimeParseException;
 public class ControlPagoBoleto {
 
     private static ControlPagoBoleto instance;
+    private Cliente clienteServicioPagos;
 
     public ControlPagoBoleto() {
     }

@@ -4,159 +4,168 @@
  */
 package Server;
 
-import itson.rutappdto.BoletoDTO;
+import Exception.PagoException;
+import dto.TarjetaDTO;
+
 import itson.rutappdto.DetallesPagoDTO;
 import itson.rutappdto.TarjetaCreditoDTO;
-import java.rmi.RemoteException;
-import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
-/**
- *
- * @author mmax2
- */
-public class ServidorTest {
+import java.rmi.RemoteException;
+import java.util.Map;
+import java.lang.reflect.Field; 
 
-    private Servidor servidor; // La instancia de la clase bajo prueba
+import static org.junit.jupiter.api.Assertions.*;
 
-    @BeforeEach
-    void setUp() {
-        try {
-            servidor = new Servidor();
-        } catch (RemoteException e) {
-            fail("No se pudo instanciar el Servidor para pruebas: " + e.getMessage());
-        }
-    }
+class ServidorTest {
 
-    /**
-     * Crea un DTO de detalles de pago base para usar en las pruebas, adaptado a
-     * la estructura de DetallesPagoDTO proporcionada por el usuario.
-     *
-     * @param monto El monto del pago.
-     * @param numeroTarjeta El número de tarjeta completo (para simulación).
-     * @param terminacion Los últimos 4 dígitos (Integer).
-     * @return Un DetallesPagoDTO configurado.
-     */
-    private DetallesPagoDTO crearDetallesPago(double monto, String numeroTarjeta, Integer terminacion) {
-        TarjetaCreditoDTO tarjeta = null;
-        if (numeroTarjeta != null) {
-            tarjeta = new TarjetaCreditoDTO(
-                    numeroTarjeta,
-                    "Nombre Titular Prueba",
-                    "12/25", // Fecha válida de ejemplo
-                    "123" // CVV de ejemplo
-            );
-        }
+    private Servidor servidor;
+    private TarjetaCreditoDTO tarjetaClienteValida;
 
-        // Crear instancia de BoletoDTO (puede ser null o un mock si es necesario)
-        BoletoDTO boletoMock = null; // Usar null para simplicidad en esta prueba unitaria
-        // Si necesitaras un BoletoDTO real o mock:
-        // BoletoDTO boletoMock = Mockito.mock(BoletoDTO.class);
-        // O: BoletoDTO boletoMock = new BoletoDTO(...); // Si tienes un constructor adecuado
-
-        // *** Usar el constructor de la clase DetallesPagoDTO proporcionada ***
+   
+    private DetallesPagoDTO construirDetallesPago(Double monto, TarjetaCreditoDTO tarjetaCreditoDTO) {
         return new DetallesPagoDTO(
-                // Asignar un valor de ejemplo para idPago (puede ser diferente en cada llamada si es necesario)
-                System.currentTimeMillis(), // Usar timestamp como ID único simple para prueba
+                System.currentTimeMillis(), // idPago de ejemplo
                 "TARJETA_CREDITO", // metodoPago
                 monto,
-                terminacion, // terminacionTarjeta
-                boletoMock, // boleto (null o mock)
-                tarjeta // detallesTarjeta (puede ser null si numeroTarjeta es null)
+                tarjetaCreditoDTO != null && tarjetaCreditoDTO.getNumeroTarjeta() != null && tarjetaCreditoDTO.getNumeroTarjeta().length() >= 4
+                ? Integer.parseInt(tarjetaCreditoDTO.getNumeroTarjeta().substring(tarjetaCreditoDTO.getNumeroTarjeta().length() - 4)) : null,
+                null, 
+                tarjetaCreditoDTO
         );
     }
 
-    @Test
-    @DisplayName("Procesar pago exitoso con monto bajo y tarjeta válida")
-    void procesarPagoTarjeta_Exitoso_MontoBajo() throws RemoteException {
-        // Arrange: Crear DTO con monto <= 1000 y tarjeta no terminada en 0000
-        DetallesPagoDTO detalles = crearDetallesPago(500.00, "1234567890123456", 3456);
-        // Act: Llamar al método bajo prueba
-        boolean resultado = servidor.procesarPagoTarjeta(detalles);
-        // Assert: Verificar que el resultado es true (pago aprobado)
-        // Si esta prueba sigue fallando, la lógica en Servidor.java es diferente.
-        assertTrue(resultado, "El pago debería ser aprobado para montos bajos y tarjetas válidas.");
+    @BeforeEach
+    void setUp() throws RemoteException {
+        servidor = new Servidor();
+        tarjetaClienteValida = new TarjetaCreditoDTO("1111222233334444", "Juan Perez", "12/25", "123");
     }
 
     @Test
-    @DisplayName("Procesar pago rechazado por monto alto")
-    void procesarPagoTarjeta_Rechazado_MontoAlto() throws RemoteException {
-        // Arrange: Crear DTO con monto > 1000
-        DetallesPagoDTO detalles = crearDetallesPago(15000.00, "1234567890123456", 3456);
-        // Act: Llamar al método bajo prueba
-        boolean resultado = servidor.procesarPagoTarjeta(detalles);
-        // Assert: Verificar que el resultado es false (pago rechazado)
-        assertFalse(resultado, "El pago debería ser rechazado para montos altos (> 10000).");
+    @DisplayName("Procesar pago exitoso descuenta saldo correctamente")
+    void procesarPagoConValidacion_pagoExitoso_descuentaSaldo() throws RemoteException, PagoException, NoSuchFieldException, IllegalAccessException {
+        DetallesPagoDTO detalles = construirDetallesPago(100.0, tarjetaClienteValida);
+
+        boolean resultado = servidor.procesarPagoConValidacion(detalles);
+        assertTrue(resultado, "El pago debería ser exitoso.");
+
+        Field tarjetasRegistradasField = Servidor.class.getDeclaredField("tarjetasRegistradas");
+        tarjetasRegistradasField.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        Map<String, TarjetaDTO> tarjetasInternas = (Map<String, TarjetaDTO>) tarjetasRegistradasField.get(servidor);
+
+        TarjetaDTO tarjetaInterna = tarjetasInternas.get("1111222233334444");
+        assertNotNull(tarjetaInterna, "La tarjeta interna no debería ser nula.");
+        assertEquals(4900.00, tarjetaInterna.getSaldo(), 0.001, "El saldo debería haberse reducido en 100.");
     }
 
     @Test
-    @DisplayName("Procesar pago rechazado por tarjeta terminada en 0000")
-    void procesarPagoTarjeta_Rechazado_TarjetaInvalida() throws RemoteException {
-        // Arrange: Crear DTO con monto bajo pero tarjeta terminada en 0000
-        DetallesPagoDTO detalles = crearDetallesPago(100.00, "9876543210000000", 0); // Terminación es 0
-        // Act: Llamar al método bajo prueba
-        boolean resultado = servidor.procesarPagoTarjeta(detalles);
-        // Assert: Verificar que el resultado es false (pago rechazado)
-        assertFalse(resultado, "El pago debería ser rechazado para tarjetas terminadas en 0000.");
+    @DisplayName("Falla el pago si DetallesPagoDTO es nulo")
+    void procesarPagoConValidacion_detallesPagoNulo_lanzaExcepcion() {
+        PagoException exception = assertThrows(PagoException.class, () -> {
+            servidor.procesarPagoConValidacion(null);
+        });
+        assertEquals("Los detalles de pago o de la tarjeta (DTO externo) son nulos.", exception.getMessage());
     }
 
     @Test
-    @DisplayName("Procesar pago exitoso con monto límite (1000)")
-    void procesarPagoTarjeta_Exitoso_MontoLimite() throws RemoteException {
-        // Arrange: Crear DTO con monto exactamente 1000
-        DetallesPagoDTO detalles = crearDetallesPago(1000.00, "1111222233334444", 4444);
-        // Act: Llamar al método bajo prueba
-        boolean resultado = servidor.procesarPagoTarjeta(detalles);
-        // Assert: Verificar que el resultado es true (pago aprobado)
-        // Si esta prueba sigue fallando, la lógica en Servidor.java es diferente (quizás usa >= 1000).
-        assertTrue(resultado, "El pago debería ser aprobado para el monto límite de 1000.");
+    @DisplayName("Falla el pago si TarjetaCreditoDTO en DetallesPagoDTO es nulo")
+    void procesarPagoConValidacion_tarjetaClienteNula_lanzaExcepcion() {
+        DetallesPagoDTO detallesSinTarjeta = construirDetallesPago(100.0, null);
+
+        PagoException exception = assertThrows(PagoException.class, () -> {
+            servidor.procesarPagoConValidacion(detallesSinTarjeta);
+        });
+        assertEquals("Los detalles de pago o de la tarjeta (DTO externo) son nulos.", exception.getMessage());
     }
 
     @Test
-    @DisplayName("Procesar pago cuando DetallesPagoDTO es null (manejo interno)")
-    void procesarPagoTarjeta_ManejoNull_DetallesPago() {
-        // Arrange: detallesPago es null
-        DetallesPagoDTO detalles = null;
-        // Act & Assert: Verificar que lanza NullPointerException como se espera
-        assertThrows(NullPointerException.class, () -> {
-            servidor.procesarPagoTarjeta(detalles);
-        }, "Debería lanzar NullPointerException si DetallesPagoDTO es null.");
+    @DisplayName("Falla el pago si número de tarjeta es nulo")
+    void procesarPagoConValidacion_numeroTarjetaNulo_lanzaExcepcion() {
+        TarjetaCreditoDTO tarjetaSinNumero = new TarjetaCreditoDTO(null, "Test", "12/25", "123");
+        DetallesPagoDTO detalles = construirDetallesPago(50.0, tarjetaSinNumero);
+        PagoException exception = assertThrows(PagoException.class, () -> {
+            servidor.procesarPagoConValidacion(detalles);
+        });
+        assertEquals("Número de tarjeta (DTO externo) no proporcionado.", exception.getMessage());
     }
 
     @Test
-    @DisplayName("Procesar pago cuando TarjetaCreditoDTO (detallesTarjeta) es null")
-    void procesarPagoTarjeta_ManejoNull_DetallesTarjeta() throws RemoteException {
-        // Arrange: Crear DetallesPagoDTO pero con detallesTarjeta null
-        DetallesPagoDTO detalles = new DetallesPagoDTO(
-                2L, "TARJETA_CREDITO", 200.00, null, null, null // detallesTarjeta es null
-        );
-        // Act: Llamar al método bajo prueba
-        boolean resultado = servidor.procesarPagoTarjeta(detalles);
-        // Assert: Verificar que el resultado es true (pago aprobado)
-        assertTrue(resultado, "El pago debería ser aprobado si detallesTarjeta es null pero el monto es bajo.");
+    @DisplayName("Falla el pago si CVV es nulo")
+    void procesarPagoConValidacion_cvvNulo_lanzaExcepcion() {
+        TarjetaCreditoDTO tarjetaSinCvv = new TarjetaCreditoDTO("1111222233334444", "Test", "12/25", null);
+        DetallesPagoDTO detalles = construirDetallesPago(50.0, tarjetaSinCvv);
+        PagoException exception = assertThrows(PagoException.class, () -> {
+            servidor.procesarPagoConValidacion(detalles);
+        });
+        assertEquals("CVV (DTO externo) no proporcionado.", exception.getMessage());
+    }
+
+    @ParameterizedTest
+    @CsvSource({"0.0", "-100.0"})
+    @DisplayName("Falla el pago si monto es cero o negativo")
+    void procesarPagoConValidacion_montoInvalido_lanzaExcepcion(double monto) {
+        DetallesPagoDTO detalles = construirDetallesPago(monto, tarjetaClienteValida);
+        PagoException exception = assertThrows(PagoException.class, () -> {
+            servidor.procesarPagoConValidacion(detalles);
+        });
+        assertEquals("El monto a pagar debe ser positivo.", exception.getMessage());
     }
 
     @Test
-    @DisplayName("Procesar pago cuando número de tarjeta es null dentro de detallesTarjeta")
-    void procesarPagoTarjeta_ManejoNull_NumeroTarjeta() throws RemoteException {
-        // Arrange: Crear DTO con TarjetaCreditoDTO pero numeroTarjeta es null
-        TarjetaCreditoDTO tarjetaSinNumero = new TarjetaCreditoDTO(null, "Titular", "12/26", "456");
-        DetallesPagoDTO detalles = new DetallesPagoDTO(
-                3L, "TARJETA_CREDITO", 300.00, null, null, tarjetaSinNumero
-        );
-
-        // Act: Llamar al método bajo prueba
-        boolean resultado = servidor.procesarPagoTarjeta(detalles);
-
-        // Assert: Verificar que el resultado es true.
-        // El servidor NO debe lanzar NPE porque verifica si numeroTarjeta es null.
-        // Como el número es null, la condición de tarjeta inválida es falsa.
-        // Como el monto (300) es bajo, la condición de monto alto es falsa.
-        // Por lo tanto, el pago debe ser aprobado.
-        assertTrue(resultado, "El pago debería aprobarse si el número de tarjeta es null y el monto es bajo.");
+    @DisplayName("Falla el pago si tarjeta no está registrada")
+    void procesarPagoConValidacion_tarjetaNoRegistrada_lanzaExcepcion() {
+        TarjetaCreditoDTO tarjetaNoExistente = new TarjetaCreditoDTO("0000000000000000", "No Existe", "01/25", "999");
+        DetallesPagoDTO detalles = construirDetallesPago(50.0, tarjetaNoExistente);
+        PagoException exception = assertThrows(PagoException.class, () -> {
+            servidor.procesarPagoConValidacion(detalles);
+        });
+        assertEquals("Tarjeta no registrada o número incorrecto.", exception.getMessage());
     }
 
+    @Test
+    @DisplayName("Falla el pago si CVV es incorrecto")
+    void procesarPagoConValidacion_cvvIncorrecto_lanzaExcepcion() {
+        TarjetaCreditoDTO tarjetaCvvErroneo = new TarjetaCreditoDTO("1111222233334444", "Juan Perez", "12/25", "999"); // CVV correcto es "123"
+        DetallesPagoDTO detalles = construirDetallesPago(50.0, tarjetaCvvErroneo);
+        PagoException exception = assertThrows(PagoException.class, () -> {
+            servidor.procesarPagoConValidacion(detalles);
+        });
+        assertEquals("CVV incorrecto.", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Falla el pago si saldo es insuficiente")
+    void procesarPagoConValidacion_saldoInsuficiente_lanzaExcepcion() {
+        // Tarjeta "9999000011112222" tiene saldo 200.00 en la inicialización del Servidor
+        TarjetaCreditoDTO tarjetaConPocoSaldo = new TarjetaCreditoDTO("9999000011112222", "Carlos Ruiz", "03/24", "789");
+        DetallesPagoDTO detalles = construirDetallesPago(250.0, tarjetaConPocoSaldo);
+        PagoException exception = assertThrows(PagoException.class, () -> {
+            servidor.procesarPagoConValidacion(detalles);
+        });
+        assertEquals("Saldo insuficiente en la tarjeta.", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Pago exitoso con monto igual al saldo")
+    void procesarPagoConValidacion_pagoExitoso_montoIgualSaldo() throws RemoteException, PagoException, NoSuchFieldException, IllegalAccessException {
+        TarjetaCreditoDTO tarjetaConSaldoExacto = new TarjetaCreditoDTO("9999000011112222", "Carlos Ruiz", "03/24", "789");
+        DetallesPagoDTO detalles = construirDetallesPago(200.0, tarjetaConSaldoExacto);
+
+        boolean resultado = servidor.procesarPagoConValidacion(detalles);
+        assertTrue(resultado, "El pago debería ser exitoso.");
+
+        Field tarjetasRegistradasField = Servidor.class.getDeclaredField("tarjetasRegistradas");
+        tarjetasRegistradasField.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        Map<String, TarjetaDTO> tarjetasInternas = (Map<String, TarjetaDTO>) tarjetasRegistradasField.get(servidor);
+
+        TarjetaDTO tarjetaInterna = tarjetasInternas.get("9999000011112222");
+        assertNotNull(tarjetaInterna);
+        assertEquals(0.0, tarjetaInterna.getSaldo(), 0.001, "El saldo debería ser cero después del pago.");
+    }
 }
