@@ -8,6 +8,7 @@ import Control.Control;
 import Ex.CompraBoletoException;
 import Interfaz.IComprarBoleto;
 import control.ControlPagoBoleto;
+import excepciones.PagoBoletoException;
 import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.CamionDTO;
 import itson.rutappdto.DetallesPagoDTO;
@@ -36,7 +37,7 @@ public class ComprarBoleto implements IComprarBoleto {
     }
 
     @Override
-    public boolean procesarCompra(DetallesPagoDTO detalles, UsuarioDTO usuario) throws CompraBoletoException {
+    public boolean procesarCompra(DetallesPagoDTO detalles, UsuarioDTO usuario) throws CompraBoletoException, PagoBoletoException {
         // Aquí podrías validar asientos si fuera necesario (más adelante)
 
         // Paso 1: Procesar el pago

@@ -14,7 +14,7 @@
         <module>../PagoBoleto</module>
         <module>../Servidor</module>
         <module>../InfraestructuraDTO</module>
-        <module>../ClInete</module>
+        <module>../ClienteBancoRMI</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

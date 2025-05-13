@@ -1,7 +1,8 @@
 package control;
 
 //import itson.cliente.ClienteBancoRMI;
-import itson.cliente.Cliente;
+import Cliente.ClienteBancoRMI;
+import excepciones.PagoBoletoException;
 import itson.rutappdto.DetallesPagoDTO;
 import itson.rutappdto.TarjetaCreditoDTO;
 import itson.rutappdto.UsuarioDTO;
@@ -16,7 +17,6 @@ import java.time.format.DateTimeParseException;
 public class ControlPagoBoleto {
 
     private static ControlPagoBoleto instance;
-    private Cliente clienteServicioPagos;
 
     public ControlPagoBoleto() {
     }
@@ -111,8 +111,22 @@ public class ControlPagoBoleto {
         }
     }
 
-    public boolean procesarPago(DetallesPagoDTO detalles, UsuarioDTO usuarioDTO) {
-        Double monto = detalles.getMonto();
+    /**
+     * Método el cual se encarga de procesar el pago. Si el pago es con monedero
+     * lo hace manual dentro del método y si es con tarjeta llama a
+     * Infraestructura.
+     *
+     * @param detalles detalles del pago.
+     * @param usuarioDTO
+     * @return
+     */
+    public boolean procesarPago(DetallesPagoDTO detalles, UsuarioDTO usuarioDTO) throws PagoBoletoException {
+
+        if (detalles == null) {
+            throw new PagoBoletoException("Los detalles vienen incompletos");
+        }
+
+        double monto = detalles.getMonto();
         TarjetaCreditoDTO tarjeta = detalles.getDetallesTarjeta();
 
         if (tarjeta == null) {
@@ -126,25 +140,30 @@ public class ControlPagoBoleto {
                 return false;
             }
         } else {
-            // Validaciones locales antes de enviar al banco
+            // Validaciones locales
             if (!validarNumeroTarjeta(tarjeta.getNumeroTarjeta())) {
                 System.out.println("Número de tarjeta inválido.");
                 return false;
             }
 
-//            if (!validarFechaVencimiento(tarjeta.getFechaExpiracion())) {
-//                System.out.println("Fecha de vencimiento inválida.");
-//                return false;
-//            }
-//
-//            // Cliente RMI envía solicitud al servidor externo
-//            boolean aprobado = ClienteBancoRMI.procesarPagoConTarjeta(detalles);
-//            if (aprobado) {
-//                System.out.println("Pago con tarjeta aprobado por el banco.");
-//            } else {
-//                System.out.println("Pago con tarjeta rechazado por el banco.");
-//            }
-            return false;
+            //Enviar al banco ficticio (servidor RMI)
+            try {
+                ClienteBancoRMI cliente = new ClienteBancoRMI();
+                boolean aprobado = cliente.realizarPago(detalles);
+
+                if (aprobado) {
+                    System.out.println("Pago con tarjeta aprobado.");
+                    return true;
+                } else {
+                    System.out.println("Pago con tarjeta rechazado por el banco.");
+                    return false;
+                }
+
+            } catch (Exception e) {
+                System.err.println("Error al contactar al servidor de banco: " + e.getMessage());
+                return false;
+            }
         }
     }
+
 }
