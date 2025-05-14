@@ -9,11 +9,14 @@ import Ex.CompraBoletoException;
 import Interfaz.IComprarBoleto;
 import control.ControlPagoBoleto;
 import excepciones.PagoBoletoException;
+import fachada.PagoBoleto;
+import interfaz.IPagoBoleto;
 import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.CamionDTO;
 import itson.rutappdto.DetallesPagoDTO;
 import itson.rutappdto.UsuarioDTO;
 import java.util.List;
+import usuarioActivoManager.UsuarioActivoManager;
 
 /**
  *
@@ -22,6 +25,7 @@ import java.util.List;
 public class ComprarBoleto implements IComprarBoleto {
 
     private ControlComprarBoleto control;
+    IPagoBoleto pagoBoleto = new PagoBoleto();
 
     public ComprarBoleto() {
         control = new ControlComprarBoleto();
@@ -38,17 +42,25 @@ public class ComprarBoleto implements IComprarBoleto {
 
     @Override
     public boolean procesarCompra(DetallesPagoDTO detalles, UsuarioDTO usuario) throws CompraBoletoException, PagoBoletoException {
-        // Aquí podrías validar asientos si fuera necesario (más adelante)
 
-        // Paso 1: Procesar el pago
-        boolean pagoExitoso = ControlPagoBoleto.getInstancia().procesarPago(detalles, usuario);
-
-        // Paso 2: Registrar compra si el pago fue exitoso
-        if (pagoExitoso) {
-            control.registrarCompra();
-            return true;
-        } else {
-            throw new CompraBoletoException("El pago no fue aprobado.");
+        System.out.println("Soy gay");
+        try {
+            // Aquí va el código que realiza el pago
+            System.out.println("Pago en proceso...");
+            boolean pagoExitoso = pagoBoleto.procesarPago(detalles, UsuarioActivoManager.getInstancia().getUsuario());
+            System.out.println("Resultado del pago: " + pagoExitoso);
+            return pagoExitoso;
+        } catch (PagoBoletoException e) {
+            System.out.println("Excepción durante el pago: " + e.getMessage());
+            // Aquí puedes capturar y manejar excepciones para ver qué pasa
+            
         }
+        return false;
+    }
+
+    @Override
+    public boolean procesarCompraDos(DetallesPagoDTO detalles, UsuarioDTO usuario) throws CompraBoletoException, PagoBoletoException {
+        boolean pagoExitoso = pagoBoleto.procesarPago(detalles, usuario);
+        return pagoExitoso;
     }
 }

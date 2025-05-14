@@ -15,5 +15,6 @@ import java.util.List;
 public interface IComprarBoleto {
 //    void mostrarPantallaPago();
     void comprarBoleto();
-     public boolean procesarCompra(DetallesPagoDTO detalles, UsuarioDTO usuario) throws CompraBoletoException, PagoBoletoException;
+    public boolean procesarCompra(DetallesPagoDTO detalles, UsuarioDTO usuario) throws CompraBoletoException, PagoBoletoException;
+    boolean procesarCompraDos(DetallesPagoDTO detalles, UsuarioDTO usuario) throws CompraBoletoException, PagoBoletoException;
 }

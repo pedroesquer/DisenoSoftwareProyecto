@@ -32,6 +32,7 @@ public class ClienteBancoRMI {
         if (servidorRemoto == null) {
             throw new IllegalStateException("No conectado al servidor de pagos.");
         }
+        System.out.println("pago 4");
         return servidorRemoto.procesarPagoConValidacion(detallesPago);
     }
 }

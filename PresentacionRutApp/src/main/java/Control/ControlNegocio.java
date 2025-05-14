@@ -8,6 +8,7 @@ import Ex.CompraBoletoException;
 import Fachada.ComprarBoleto;
 import Interfaz.IComprarBoleto;
 import control.ControlSeleccionAsiento;
+import excepciones.PagoBoletoException;
 import excepciones.SeleccionAsientoException;
 import itson.consultardisponibilidad.Interfaz.IConsultarDisponibilidad;
 import itson.consultardisponibilidad.fachada.FachadaConsultarDisponibilidad;
@@ -15,6 +16,7 @@ import itson.rutappdto.AsientoAsignadoDTO;
 import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.CamionDTO;
+import itson.rutappdto.DetallesPagoDTO;
 import itson.rutappdto.UsuarioDTO;
 import itson.rutappdto.ViajeDTO;
 import java.time.LocalDate;
@@ -31,7 +33,7 @@ import javax.swing.JOptionPane;
 public class ControlNegocio {
 
     private List<AsientoAsignadoDTO> asientosAsignados = new ArrayList<>();
-    
+
     IConsultarDisponibilidad consultarDisponibilidad = new FachadaConsultarDisponibilidad();
     IComprarBoleto comprarBoleto = new ComprarBoleto();
 
@@ -236,5 +238,36 @@ public class ControlNegocio {
     public void setAsientosSeleccionados(List<AsientoBoletoDTO> asientosSeleccionados) {
         this.asientosSeleccionados = asientosSeleccionados;
     }
+
+public boolean comprarBoleto(DetallesPagoDTO detallesPago, UsuarioDTO usuarioDTO) throws CompraBoletoException, PagoBoletoException {
+    System.out.println("Paso 1: Validando detalles de pago");
+
+    if (detallesPago == null) {
+        throw new CompraBoletoException("Detalles de pago no válidos.");
+    }
+
+    boolean pagoExitoso;
+
+    System.out.println("Método de pago seleccionado: " + detallesPago.getMetodoPago());
+
+    if ("Tarjeta".equals(detallesPago.getMetodoPago()) && detallesPago.getDetallesTarjeta() != null) {
+        System.out.println("PAGO 1 LLEGO - Tarjeta");
+        pagoExitoso = comprarBoleto.procesarCompraDos(detallesPago, usuarioDTO);
+        System.out.println(pagoExitoso);
+    } else if ("Monedero".equals(detallesPago.getMetodoPago())) {
+        System.out.println("PAGO 1 LLEGO - Monedero");
+        pagoExitoso = comprarBoleto.procesarCompra(detallesPago, usuarioDTO);
+    } else {
+        throw new CompraBoletoException("Método de pago no válido.");
+    }
+
+    if (pagoExitoso) {
+        System.out.println("Compra exitosa.");
+        return true;
+    } else {
+        throw new CompraBoletoException("El pago no fue aprobado.");
+    }
+}
+
 
 }

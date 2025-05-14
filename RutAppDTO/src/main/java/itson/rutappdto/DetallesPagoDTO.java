@@ -15,11 +15,28 @@ public class DetallesPagoDTO {
     private BoletoDTO boleto;
     private TarjetaCreditoDTO detallesTarjeta;
 
+    public DetallesPagoDTO() {
+    }
+
     public DetallesPagoDTO(Long idPago, String metodoPago, Double monto, Integer terminacionTarjeta, BoletoDTO boleto, TarjetaCreditoDTO detallesTarjeta) {
         this.idPago = idPago;
         this.metodoPago = metodoPago;
         this.monto = monto;
         this.terminacionTarjeta = terminacionTarjeta;
+        this.boleto = boleto;
+        this.detallesTarjeta = detallesTarjeta;
+    }
+
+    public DetallesPagoDTO(String metodoPago, Double monto, BoletoDTO boleto) {
+        this.metodoPago = metodoPago;
+        this.monto = monto;
+        this.boleto = boleto;
+        this.detallesTarjeta = null; // No hay detalles de tarjeta cuando es pago con monedero
+    }
+
+    public DetallesPagoDTO(String metodoPago, Double monto, BoletoDTO boleto, TarjetaCreditoDTO detallesTarjeta) {
+        this.metodoPago = metodoPago;
+        this.monto = monto;
         this.boleto = boleto;
         this.detallesTarjeta = detallesTarjeta;
     }
