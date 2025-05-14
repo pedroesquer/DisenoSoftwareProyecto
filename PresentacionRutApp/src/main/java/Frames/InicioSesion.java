@@ -130,7 +130,7 @@ public class InicioSesion extends javax.swing.JFrame {
 
         BackGround.add(pnlBotonIniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 360, 140, 50));
 
-        jLabel4.setIcon(new javax.swing.ImageIcon("/Users/juanpheras/ITSON/ISW/4to Semestre/DiseñoSoftware/trabajoDiseño/DisenoSoftwareProyecto/PresentacionRutApp/src/main/resources/imagenes/busPng.png")); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busPng.png"))); // NOI18N
         BackGround.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 80, 210, 120));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
