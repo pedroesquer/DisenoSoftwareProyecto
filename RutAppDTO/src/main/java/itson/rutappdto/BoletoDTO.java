@@ -1,6 +1,7 @@
 package itson.rutappdto;
 
 import itson.rutappdto.AsientoDTO;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -8,7 +9,10 @@ import java.util.List;
  *
  * @author pedro
  */
-public class BoletoDTO {
+public class BoletoDTO implements Serializable {
+    
+    private static final long serialVersionUID = 1L;
+    
     private String origen;
     private String destino;
     private String hrSalida;

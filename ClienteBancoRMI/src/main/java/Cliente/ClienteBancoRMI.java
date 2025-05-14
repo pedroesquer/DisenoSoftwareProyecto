@@ -19,8 +19,8 @@ public class ClienteBancoRMI {
 
     private ServidorInterface servidorRemoto; 
     private static final String DEFAULT_HOST = "localhost";
-    private static final int DEFAULT_PORT = 5000;
-    private static final String RMI_SERVICE_NAME = "ServidorPagosRutApp"; 
+    private static final int DEFAULT_PORT = 1100;
+    private static final String RMI_SERVICE_NAME = "ServidorPagosRMI"; 
 
     public ClienteBancoRMI() throws Exception {
         Registry registry = LocateRegistry.getRegistry(DEFAULT_HOST, DEFAULT_PORT);

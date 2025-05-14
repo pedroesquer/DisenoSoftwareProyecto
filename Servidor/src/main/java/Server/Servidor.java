@@ -99,15 +99,29 @@ public class Servidor extends UnicastRemoteObject implements ServidorInterface {
      * Método principal para iniciar el servidor RMI.
      */
     public static void main(String[] args) {
-        try {
-            ServidorInterface servidor = new Servidor(); // Instancia de la clase renombrada
-            Registry registry = LocateRegistry.createRegistry(1100);
-            // Nombre RMI actualizado para ser más genérico
-            registry.rebind("ServidorPagosRMI", servidor);
-            System.out.println("ServidorPagosRMI listo en el puerto 1100.");
-        } catch (Exception e) {
-            System.err.println("Excepción en Servidor (main): " + e.getMessage());
-            e.printStackTrace();
-        }
+       try {
+        ServidorInterface servidor = new Servidor();
+        Registry registry = LocateRegistry.createRegistry(1100);
+        registry.rebind("ServidorPagosRMI", servidor);
+        System.out.println("ServidorPagosRMI listo en el puerto 1100.");
+
+        // Agregar shutdown hook para limpiar antes de cerrar
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                registry.unbind("ServidorPagosRMI");
+                UnicastRemoteObject.unexportObject(servidor, true);
+                System.out.println("Servidor cerrado correctamente.");
+            } catch (Exception e) {
+                System.err.println("Error al cerrar servidor: " + e.getMessage());
+            }
+        }));
+
+        // Mantener vivo el hilo principal para que el servidor siga corriendo
+        Thread.currentThread().join();
+
+    } catch (Exception e) {
+        System.err.println("Excepción en Servidor (main): " + e.getMessage());
+        e.printStackTrace();
     }
+}
 }

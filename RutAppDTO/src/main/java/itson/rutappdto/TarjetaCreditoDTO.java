@@ -4,11 +4,15 @@
  */
 package itson.rutappdto;
 
+import java.io.Serializable;
+
 /**
  *
  * @author mmax2
  */
-public class TarjetaCreditoDTO {
+public class TarjetaCreditoDTO implements Serializable{
+
+    private static final long serialVersionUID = 1L;
 
     private String numeroTarjeta;
     private String nombreTitular;

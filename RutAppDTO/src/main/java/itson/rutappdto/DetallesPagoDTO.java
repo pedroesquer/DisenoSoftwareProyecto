@@ -1,13 +1,16 @@
 package itson.rutappdto;
 
 import itson.rutappdto.BoletoDTO;
+import java.io.Serializable;
 
 /**
  *
  * @author pedro
  */
-public class DetallesPagoDTO {
+public class DetallesPagoDTO implements Serializable{
 
+    private static final long serialVersionUID = 1L;
+    
     private Long idPago;
     private String metodoPago;
     private Double monto;

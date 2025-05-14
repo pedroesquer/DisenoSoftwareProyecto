@@ -4,11 +4,16 @@
  */
 package dto;
 
+import java.io.Serializable;
+
 /**
  *
  * @author mmax2
  */
-public class TarjetaDTO {
+public class TarjetaDTO implements Serializable{
+    
+    private static final long serialVersionUID = 1L;
+
     private String numero;
     private String cvv;
     private double saldo;
