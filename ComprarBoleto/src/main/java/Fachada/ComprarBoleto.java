@@ -4,7 +4,7 @@
  */
 package Fachada;
 
-import Control.Control;
+import Control.ControlComprarBoleto;
 import Ex.CompraBoletoException;
 import Interfaz.IComprarBoleto;
 import control.ControlPagoBoleto;
@@ -21,10 +21,10 @@ import java.util.List;
  */
 public class ComprarBoleto implements IComprarBoleto {
 
-    private Control control;
+    private ControlComprarBoleto control;
 
     public ComprarBoleto() {
-        control = new Control();
+        control = new ControlComprarBoleto();
     }
 
 //    @Override

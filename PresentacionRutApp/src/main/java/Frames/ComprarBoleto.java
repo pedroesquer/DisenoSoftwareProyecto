@@ -273,8 +273,7 @@ public class ComprarBoleto extends javax.swing.JFrame implements TemporizadorObs
 //                return;
 //            }
             // Si pasa todas las validaciones:
-            javax.swing.JOptionPane.showMessageDialog(this, "¡Pago con tarjeta procesado con éxito!");
-            CordinadorPresentacion.getInstancia().abrirResumenCompra();
+            //javax.swing.JOptionPane.showMessageDialog(this, "¡Pago con tarjeta procesado con éxito!");
             this.dispose();
 
             // Aquí puedes continuar con la lógica de compra.

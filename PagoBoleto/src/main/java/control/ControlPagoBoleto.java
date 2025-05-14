@@ -94,6 +94,8 @@ public class ControlPagoBoleto {
      * Método que descuenta el saldo del monedero según la cantidad que
      * introduzcas.
      *
+     * @param usuarioDTO
+     * @param cantidad
      */
     public void descontarSaldoMonedero(UsuarioDTO usuarioDTO, Double cantidad) {
         if (validarSaldoMonedero(usuarioDTO, cantidad)) {
@@ -104,6 +106,8 @@ public class ControlPagoBoleto {
     /**
      * Método que agrega la cantidad que desees al monedero.
      *
+     * @param usuarioDTO
+     * @param cantidad
      */
     public void agregarSaldoMonedero(UsuarioDTO usuarioDTO, Double cantidad) {
         if (usuarioDTO.getSaldoMonedero() != null) {
@@ -112,13 +116,14 @@ public class ControlPagoBoleto {
     }
 
     /**
-     * Método el cual se encarga de procesar el pago. Si el pago es con monedero
-     * lo hace manual dentro del método y si es con tarjeta llama a
-     * Infraestructura.
+     * Método el cual se encarga de procesar el pago.Si el pago es con monedero
+ lo hace manual dentro del método y si es con tarjeta llama a
+ Infraestructura.
      *
      * @param detalles detalles del pago.
      * @param usuarioDTO
      * @return
+     * @throws excepciones.PagoBoletoException
      */
     public boolean procesarPago(DetallesPagoDTO detalles, UsuarioDTO usuarioDTO) throws PagoBoletoException {
 
@@ -151,13 +156,7 @@ public class ControlPagoBoleto {
                 ClienteBancoRMI cliente = new ClienteBancoRMI();
                 boolean aprobado = cliente.realizarPago(detalles);
 
-                if (aprobado) {
-                    System.out.println("Pago con tarjeta aprobado.");
-                    return true;
-                } else {
-                    System.out.println("Pago con tarjeta rechazado por el banco.");
-                    return false;
-                }
+                return aprobado;
 
             } catch (Exception e) {
                 System.err.println("Error al contactar al servidor de banco: " + e.getMessage());

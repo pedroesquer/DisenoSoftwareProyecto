@@ -3,6 +3,7 @@ package fachada;
 import control.ControlPagoBoleto;
 import excepciones.PagoBoletoException;
 import interfaz.IPagoBoleto;
+import itson.rutappdto.DetallesPagoDTO;
 import itson.rutappdto.UsuarioDTO;
 
 /**
@@ -36,6 +37,14 @@ public class PagoBoleto implements IPagoBoleto {
         if (usuarioDTO != null) {
             ControlPagoBoleto.getInstancia().agregarSaldoMonedero(usuarioDTO, cantidad);
         }
+    }
+
+    @Override
+    public boolean procesarPago(DetallesPagoDTO detalles, UsuarioDTO usuarioDTO) throws PagoBoletoException {
+        if (detalles != null) {
+            return ControlPagoBoleto.getInstancia().procesarPago(detalles, usuarioDTO);
+        }
+        return false;
     }
 
 }
