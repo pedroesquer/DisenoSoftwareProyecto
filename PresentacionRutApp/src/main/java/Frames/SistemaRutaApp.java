@@ -18,8 +18,11 @@ public class SistemaRutaApp {
     public static void main(String[] args) {
         // TODO code application logic here
 
-        MainMenu menu = new MainMenu();
-        menu.setVisible(true);
+        InicioSesion inicio = new InicioSesion();
+        inicio.setVisible(true);
+        
+//        MainMenu menu = new MainMenu();
+//        menu.setVisible(true);
 
     }
 }

@@ -4,6 +4,8 @@
  */
 package Frames;
 
+import java.awt.Color;
+
 /**
  *
  * @author mmax2
@@ -15,6 +17,8 @@ public class InicioSesion extends javax.swing.JFrame {
      */
     public InicioSesion() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setTitle("Rutapp");
     }
 
     /**
@@ -30,6 +34,13 @@ public class InicioSesion extends javax.swing.JFrame {
         Header = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         Footer = new javax.swing.JPanel();
+        usuarioTxt = new javax.swing.JTextField();
+        usuarioLbl = new javax.swing.JLabel();
+        contraseniaLbl1 = new javax.swing.JLabel();
+        usuarioTxt1 = new javax.swing.JTextField();
+        pnlBotonIniciar = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -41,7 +52,6 @@ public class InicioSesion extends javax.swing.JFrame {
         Header.setPreferredSize(new java.awt.Dimension(520, 60));
 
         jLabel1.setFont(new java.awt.Font("Roboto Condensed Medium", 1, 48)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("RUTAPP");
 
         javax.swing.GroupLayout HeaderLayout = new javax.swing.GroupLayout(Header);
@@ -57,7 +67,7 @@ public class InicioSesion extends javax.swing.JFrame {
             HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(HeaderLayout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addGap(0, 3, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         BackGround.add(Header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, -1));
@@ -77,6 +87,51 @@ public class InicioSesion extends javax.swing.JFrame {
         );
 
         BackGround.add(Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 490, 500, -1));
+        BackGround.add(usuarioTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 230, 300, 30));
+
+        usuarioLbl.setText("Usuario");
+        BackGround.add(usuarioLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 210, 130, -1));
+
+        contraseniaLbl1.setText("Contraseña");
+        BackGround.add(contraseniaLbl1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 280, -1, -1));
+        BackGround.add(usuarioTxt1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 300, 300, 30));
+
+        pnlBotonIniciar.setBackground(new java.awt.Color(255, 201, 98));
+        pnlBotonIniciar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        pnlBotonIniciar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        pnlBotonIniciar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                pnlBotonIniciarMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                pnlBotonIniciarMouseExited(evt);
+            }
+        });
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Iniciar Sesion");
+
+        javax.swing.GroupLayout pnlBotonIniciarLayout = new javax.swing.GroupLayout(pnlBotonIniciar);
+        pnlBotonIniciar.setLayout(pnlBotonIniciarLayout);
+        pnlBotonIniciarLayout.setHorizontalGroup(
+            pnlBotonIniciarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlBotonIniciarLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(19, Short.MAX_VALUE))
+        );
+        pnlBotonIniciarLayout.setVerticalGroup(
+            pnlBotonIniciarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlBotonIniciarLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel3)
+                .addContainerGap(15, Short.MAX_VALUE))
+        );
+
+        BackGround.add(pnlBotonIniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 360, 140, 50));
+
+        jLabel4.setIcon(new javax.swing.ImageIcon("/Users/juanpheras/ITSON/ISW/4to Semestre/DiseñoSoftware/trabajoDiseño/DisenoSoftwareProyecto/PresentacionRutApp/src/main/resources/imagenes/busPng.png")); // NOI18N
+        BackGround.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 80, 210, 120));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -92,12 +147,27 @@ public class InicioSesion extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void pnlBotonIniciarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlBotonIniciarMouseEntered
+        pnlBotonIniciar.setBackground(new Color(232, 159, 19));
+    }//GEN-LAST:event_pnlBotonIniciarMouseEntered
 
+    private void pnlBotonIniciarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlBotonIniciarMouseExited
+        pnlBotonIniciar.setBackground(new Color(255, 201, 98));
+    }//GEN-LAST:event_pnlBotonIniciarMouseExited
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BackGround;
     private javax.swing.JPanel Footer;
     private javax.swing.JPanel Header;
+    private javax.swing.JLabel contraseniaLbl1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel pnlBotonIniciar;
+    private javax.swing.JLabel usuarioLbl;
+    private javax.swing.JTextField usuarioTxt;
+    private javax.swing.JTextField usuarioTxt1;
     // End of variables declaration//GEN-END:variables
 }
