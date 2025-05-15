@@ -9,6 +9,7 @@ import itson.rutappdto.ViajeDTO;
 import Frames.AsientosDisponibles;
 import Frames.BuscarViaje;
 import Frames.ComprarBoleto;
+import Frames.InicioSesion;
 import Frames.MainMenu;
 import Frames.ResumenCompra;
 import Frames.ViajesDisponibles;
@@ -111,9 +112,8 @@ public class CordinadorPresentacion {
         controlTimer.agregarObservador(obs);
     }
 
-    //TIMER
-//    private void notificarObservadores() {
-//        for (TemporizadorObserver obs : observadores) {
-//            obs.tiempoAgotado();
-//        }
+    public void abrirLogin(){
+        InicioSesion inicioSesion = new InicioSesion();
+        inicioSesion.setVisible(true);
+    }
 }
