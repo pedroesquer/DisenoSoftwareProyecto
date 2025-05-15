@@ -287,12 +287,13 @@ public class ComprarBoleto extends javax.swing.JFrame implements TemporizadorObs
         TarjetaCreditoDTO tarjeta = new TarjetaCreditoDTO(numeroTarjeta, nombreTitular, vencimiento, cvv);
 
         // Crear el DetallesPagoDTO para tarjeta
-        detallesPago = new DetallesPagoDTO("Tarjeta", 200.0, BoletoContext.getBoleto(), tarjeta);  // Asignar detallesTarjeta
+        detallesPago = new DetallesPagoDTO("Tarjeta", (BoletoContext.getBoleto().getPrecio() * BoletoContext.getBoleto().getListaAsiento().size()), BoletoContext.getBoleto(), tarjeta);  // Asignar detallesTarjeta
         
         
     } else if (botonPagarMonedero.isSelected()) {
         // Crear DetallesPagoDTO para pago con monedero sin detalles de tarjeta
-        detallesPago = new DetallesPagoDTO("Monedero", 200.0, BoletoContext.getBoleto());  // No pasa detallesTarjeta
+        detallesPago = new DetallesPagoDTO("Monedero", (BoletoContext.getBoleto().getPrecio() * BoletoContext.getBoleto().getListaAsiento().size()),
+                BoletoContext.getBoleto());  // No pasa detallesTarjeta
         javax.swing.JOptionPane.showMessageDialog(this, "¡Pago con monedero procesado con éxito!");
 //        CordinadorPresentacion.getInstancia().abrirResumenCompra(); // Navegar al resumen
 //        this.dispose(); // Cerrar la ventana después de la selección del pago
@@ -318,8 +319,8 @@ public class ComprarBoleto extends javax.swing.JFrame implements TemporizadorObs
     if (compraExitosa) {
         javax.swing.JOptionPane.showMessageDialog(this, "¡Compra realizada con éxito!");
         CordinadorPresentacion.getInstancia().abrirPantallaPrincipal(); // Regresar a la pantalla principal
+        this.dispose(); // Cerrar la ventana después de pasar los datos
     }
-    this.dispose(); // Cerrar la ventana después de pasar los datos
     }//GEN-LAST:event_btnCompraViajeActionPerformed
 
     private void campoNumeroTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoNumeroTarjetaActionPerformed

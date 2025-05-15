@@ -1,13 +1,14 @@
 package itson.rutappdto;
 
 import itson.rutappdto.AsientoDTO;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author chris
  */
-public class CamionDTO {
+public class CamionDTO implements Serializable{
     private Long idCamion;
     private String numeroCamion;
     private List<AsientoDTO> listaAsiento;

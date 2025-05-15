@@ -1,11 +1,13 @@
 
 package itson.rutappdto;
 
+import java.io.Serializable;
+
 /**
  *
  * @author BusSoft®
  */
-public class AsientoBoletoDTO {
+public class AsientoBoletoDTO implements Serializable{
     public AsientoDTO asiento;
     
     public BoletoDTO boleto;

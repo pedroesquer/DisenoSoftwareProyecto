@@ -1,12 +1,13 @@
 package itson.rutappdto;
 
 import enumm.estadoAsiento;
+import java.io.Serializable;
 
 /**
  *
  * @author pedro
  */
-public class AsientoDTO {
+public class AsientoDTO implements Serializable{
     private Long idAsiento;
     private estadoAsiento estado;
     private String numero;

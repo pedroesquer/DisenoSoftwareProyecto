@@ -299,8 +299,6 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
 
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
         JOptionPane.showMessageDialog(this, "Gracias por comprar con nosotros");
-        BoletoContext.limpiarBoleto();
-
         this.dispose();
         CordinadorPresentacion.getInstancia().abrirMetodoPago();
 
