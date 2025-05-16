@@ -6,7 +6,7 @@ import itson.rutappdto.UsuarioDTO;
  *
  * @author Juan Heras
  */
-public class UsuarioActivoManager {
+public final class UsuarioActivoManager {
     
     
     /**

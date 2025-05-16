@@ -4,6 +4,8 @@
  */
 package Frames;
 
+import itson.rutappbo.IUsuariosBO;
+import itson.rutappbo.implementaciones.UsuariosBO;
 import java.awt.Color;
 
 /**
@@ -12,6 +14,7 @@ import java.awt.Color;
  */
 public class InicioSesion extends javax.swing.JFrame {
 
+    IUsuariosBO usuariosBO;
     /**
      * Creates new form ComprarViaje
      */
@@ -37,9 +40,9 @@ public class InicioSesion extends javax.swing.JFrame {
         usuarioTxt = new javax.swing.JTextField();
         usuarioLbl = new javax.swing.JLabel();
         contraseniaLbl1 = new javax.swing.JLabel();
-        usuarioTxt1 = new javax.swing.JTextField();
+        contraseniaTxt = new javax.swing.JTextField();
         pnlBotonIniciar = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        iniciarSesionBtn = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -94,7 +97,7 @@ public class InicioSesion extends javax.swing.JFrame {
 
         contraseniaLbl1.setText("Contraseña");
         BackGround.add(contraseniaLbl1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 280, -1, -1));
-        BackGround.add(usuarioTxt1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 300, 300, 30));
+        BackGround.add(contraseniaTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 300, 300, 30));
 
         pnlBotonIniciar.setBackground(new java.awt.Color(255, 201, 98));
         pnlBotonIniciar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -108,24 +111,23 @@ public class InicioSesion extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Iniciar Sesion");
+        iniciarSesionBtn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        iniciarSesionBtn.setText("Iniciar Sesion");
+        iniciarSesionBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                iniciarSesionBtnMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlBotonIniciarLayout = new javax.swing.GroupLayout(pnlBotonIniciar);
         pnlBotonIniciar.setLayout(pnlBotonIniciarLayout);
         pnlBotonIniciarLayout.setHorizontalGroup(
             pnlBotonIniciarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlBotonIniciarLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+            .addComponent(iniciarSesionBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
         );
         pnlBotonIniciarLayout.setVerticalGroup(
             pnlBotonIniciarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlBotonIniciarLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(jLabel3)
-                .addContainerGap(15, Short.MAX_VALUE))
+            .addComponent(iniciarSesionBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
         );
 
         BackGround.add(pnlBotonIniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 360, 140, 50));
@@ -155,19 +157,26 @@ public class InicioSesion extends javax.swing.JFrame {
         pnlBotonIniciar.setBackground(new Color(255, 201, 98));
     }//GEN-LAST:event_pnlBotonIniciarMouseExited
 
-    
+    private void iniciarSesionBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_iniciarSesionBtnMouseClicked
+        String usuario = usuarioTxt.getText();
+        String contrasenia = contraseniaTxt.getText();
+        
+        
+
+    }//GEN-LAST:event_iniciarSesionBtnMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BackGround;
     private javax.swing.JPanel Footer;
     private javax.swing.JPanel Header;
     private javax.swing.JLabel contraseniaLbl1;
+    private javax.swing.JTextField contraseniaTxt;
+    private javax.swing.JLabel iniciarSesionBtn;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel pnlBotonIniciar;
     private javax.swing.JLabel usuarioLbl;
     private javax.swing.JTextField usuarioTxt;
-    private javax.swing.JTextField usuarioTxt1;
     // End of variables declaration//GEN-END:variables
 }

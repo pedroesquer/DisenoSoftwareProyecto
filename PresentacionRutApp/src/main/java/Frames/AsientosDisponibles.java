@@ -263,6 +263,7 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
         jScrollPane2 = new javax.swing.JScrollPane();
         resumenTextArea = new javax.swing.JTextArea();
         btnCompraViaje = new javax.swing.JButton();
+        lblLeyenda = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -319,7 +320,7 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
             .addGroup(FooterLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(botonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         BackGround.add(Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 540, 500, 60));
@@ -984,7 +985,7 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
 
         contenedorAsientos.add(botonAsientoVeintidos, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 50, -1, -1));
 
-        BackGround.add(contenedorAsientos, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, 350, 200));
+        BackGround.add(contenedorAsientos, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 350, 200));
 
         resumenTextArea.setEditable(false);
         resumenTextArea.setColumns(20);
@@ -1005,6 +1006,9 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
             }
         });
         BackGround.add(btnCompraViaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 480, 110, 40));
+
+        lblLeyenda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/leyendaAsientos.png"))); // NOI18N
+        BackGround.add(lblLeyenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 280, 370, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1178,6 +1182,7 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblLeyenda;
     private javax.swing.JLabel numeroAsiento10;
     private javax.swing.JLabel numeroAsiento11;
     private javax.swing.JLabel numeroAsiento12;

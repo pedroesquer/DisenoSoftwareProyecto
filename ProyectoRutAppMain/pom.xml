@@ -17,6 +17,7 @@
         <module>../ClienteBancoRMI</module>
         <module>UsuarioActivo</module>
         <module>PersistenciaRutApp</module>
+        <module>RutappBO</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

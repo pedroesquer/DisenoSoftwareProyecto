@@ -15,7 +15,6 @@ import itson.rutappdto.AccesoUsuarioDTO;
 public interface IUsuariosDAO {
      Usuario agregarUsuario(AccesoUsuarioDTO nuevoUsuario);
      Usuario consultarUsuarioPorNumeroTelefonico(String numeroTel);
-     boolean validarLogin(String numeroTelefonico, String contrasena);
-     
-     
+     Usuario validarLogin(String numeroTelefonico, String contrasena);
+     Usuario autenticarUsuario(AccesoUsuarioDTO accesoUsuario);
 }

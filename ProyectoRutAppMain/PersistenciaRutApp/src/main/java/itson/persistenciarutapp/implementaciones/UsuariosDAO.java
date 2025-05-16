@@ -8,7 +8,6 @@ import com.mongodb.client.model.Indexes;
 import itson.persistenciarutapp.IUsuariosDAO;
 import itson.rutappdto.AccesoUsuarioDTO;
 
-
 /**
  *
  * @author pedro
@@ -47,14 +46,19 @@ public class UsuariosDAO implements IUsuariosDAO {
         MongoCollection<Usuario> coleccion = baseDatos.getCollection(COLECCION, Usuario.class);
         return coleccion.find(eq("numeroTelefonico", numeroTel)).first();
     }
-    
+
     @Override
-    public boolean validarLogin(String numeroTelefonico, String contrasena) {
-    Usuario usuario = consultarUsuarioPorNumeroTelefonico(numeroTelefonico);
-    if (usuario == null) {
-        return false; // No existe el usuario
+    public Usuario validarLogin(String numeroTelefonico, String contrasena) {
+        Usuario usuario = consultarUsuarioPorNumeroTelefonico(numeroTelefonico);
+        if (usuario != null && usuario.getContrasenia().equals(contrasena)) {
+            return usuario; // No existe el usuario
+        }
+        return null;
     }
-    return usuario.getContrasenia().equals(contrasena);
-}
+
+    @Override
+    public Usuario autenticarUsuario(AccesoUsuarioDTO accesoUsuario) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
 }

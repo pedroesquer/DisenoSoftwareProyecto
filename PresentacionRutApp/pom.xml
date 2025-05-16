@@ -47,6 +47,11 @@
             <artifactId>UsuarioActivo</artifactId>
             <version>1.0</version>
         </dependency>
+        <dependency>
+            <groupId>itson</groupId>
+            <artifactId>RutappBO</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

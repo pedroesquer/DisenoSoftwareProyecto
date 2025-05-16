@@ -258,6 +258,10 @@ public class ComprarBoleto extends javax.swing.JFrame implements TemporizadorObs
         this.panelTarjeta.setVisible(false);
     }//GEN-LAST:event_botonPagarMonederoActionPerformed
 
+    /**
+     * 
+     * @param evt 
+     */
     private void btnCompraViajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompraViajeActionPerformed
     DetallesPagoDTO detallesPago;
 
