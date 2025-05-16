@@ -60,5 +60,4 @@ public final class UsuarioActivoManager {
         return usuario != null;
     }
     
-    
 }

@@ -7,14 +7,17 @@ package itson.persistenciarutapp;
 import itson.persistenciarutapp.implementaciones.Usuario;
 import itson.rutappdto.AccesoUsuarioDTO;
 
-
 /**
  *
  * @author pedro
  */
 public interface IUsuariosDAO {
-     Usuario agregarUsuario(AccesoUsuarioDTO nuevoUsuario);
-     Usuario consultarUsuarioPorNumeroTelefonico(String numeroTel);
-     Usuario validarLogin(String numeroTelefonico, String contrasena);
-     Usuario autenticarUsuario(AccesoUsuarioDTO accesoUsuario);
+
+    Usuario agregarUsuario(AccesoUsuarioDTO nuevoUsuario);
+
+    Usuario consultarUsuarioPorNumeroTelefonico(String numeroTel);
+
+    Usuario validarLogin(String numeroTelefonico, String contrasena);
+
+    Usuario autenticarUsuario(AccesoUsuarioDTO accesoUsuario);
 }

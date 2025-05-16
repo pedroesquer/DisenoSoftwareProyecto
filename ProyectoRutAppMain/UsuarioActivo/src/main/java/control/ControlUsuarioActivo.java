@@ -53,8 +53,5 @@ public class ControlUsuarioActivo {
     public boolean haySesionActiva(){
         return usuarioActivo.haySesionActiva();
     }
-            
-    
-    
-    
+
 }

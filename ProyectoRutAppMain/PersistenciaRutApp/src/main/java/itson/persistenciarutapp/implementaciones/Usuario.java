@@ -3,14 +3,15 @@ package itson.persistenciarutapp.implementaciones;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
-
 public class Usuario {
 
+    @BsonProperty("numeroTelefonico")
     private String numeroTelefonico;
 
     @BsonProperty("contrasenia")  // Mapea la propiedad 'contrasenia' en MongoDB
     private String contrasenia;
-    
+
+    @BsonProperty("saldo")
     private Double saldo;
 
     // Constructor por defecto
@@ -18,13 +19,11 @@ public class Usuario {
     }
 
     // Constructor con parámetros
-
     public Usuario(String numeroTelefonico, String contrasenia) {
         this.numeroTelefonico = numeroTelefonico;
         this.contrasenia = contrasenia;
         this.saldo = 0d;
     }
-    
 
     // Getters y Setters
     public String getNumeroTelefonico() {
@@ -47,17 +46,12 @@ public class Usuario {
         return saldo;
     }
 
-    public Usuario(Double saldo) {
-        this.saldo = saldo;
-    }
-    
-    
-
+//    public Usuario(Double saldo) {
+//        this.saldo = saldo;
+//    }
     @Override
     public String toString() {
         return "Usuario{" + "numeroTelefonico=" + numeroTelefonico + ", contrasenia=" + contrasenia + ", saldo=" + saldo + '}';
     }
-    
-    
-}
 
+}

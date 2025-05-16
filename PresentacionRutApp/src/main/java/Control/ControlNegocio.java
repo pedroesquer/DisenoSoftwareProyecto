@@ -10,8 +10,11 @@ import Interfaz.IComprarBoleto;
 import control.ControlSeleccionAsiento;
 import excepciones.PagoBoletoException;
 import excepciones.SeleccionAsientoException;
+import fachada.FUsuarioActivo;
+import interfaz.IUsuarioActivo;
 import itson.consultardisponibilidad.Interfaz.IConsultarDisponibilidad;
 import itson.consultardisponibilidad.fachada.FachadaConsultarDisponibilidad;
+import itson.rutappbo.implementaciones.UsuariosBO;
 import itson.rutappdto.AsientoAsignadoDTO;
 import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.AsientoDTO;
@@ -50,7 +53,11 @@ public class ControlNegocio {
 
     private static ControlNegocio instancia;
 
+    private IUsuarioActivo fachadaUsuarioActivo;
+
     public ControlNegocio() {
+        // Instanciamos la fachada que implementa la interfaz IUsuarioActivo
+        this.fachadaUsuarioActivo = new FUsuarioActivo();
     }
 
     public static ControlNegocio getInstancia() {
@@ -97,66 +104,11 @@ public class ControlNegocio {
         return null;
     }
 
-    ;
-    
-
-    public void comprarBoleto() {
-
-    }
-
-    public void obtenerCamioneesDisponibles() {
-
-    }
-
-    public void obtenerBoleto() {
-
-    }
-
-    public void obtenerDatosCompra() {
-
-    }
-
-    public void validarFecha() {
-
-    }
-
-    public void validarPago() {
-
-    }
-
-    public void obtenerFechaDisponible() {
-
-    }
-
-    public void obtenerMetodoPago() {
-
-    }
-
-    public void obtenerDatos() {
-
-    }
-
-    public void obtenerMonedero() {
-
-    }
-
-    public void cancelarAsientos() {
-
-    }
-
     public void apartarAsiento(AsientoDTO asiento) throws SeleccionAsientoException {
         if (asiento == null) {
             throw new SeleccionAsientoException("Error de asiento");
         }
         ControlSeleccionAsiento.getInstancia().apartarAsiento(asiento);
-    }
-
-    public void iniciarContador() {
-
-    }
-
-    public void registrarDetallesBoleto() {
-
     }
 
     public List<AsientoDTO> obtenerAsientos(CamionDTO camion) throws CompraBoletoException {
@@ -239,35 +191,57 @@ public class ControlNegocio {
         this.asientosSeleccionados = asientosSeleccionados;
     }
 
-public boolean comprarBoleto(DetallesPagoDTO detallesPago, UsuarioDTO usuarioDTO) throws CompraBoletoException, PagoBoletoException {
-    System.out.println("Paso 1: Validando detalles de pago");
+    public boolean comprarBoleto(DetallesPagoDTO detallesPago, UsuarioDTO usuarioDTO) throws CompraBoletoException, PagoBoletoException {
+        System.out.println("Paso 1: Validando detalles de pago");
 
-    if (detallesPago == null) {
-        throw new CompraBoletoException("Detalles de pago no válidos.");
+        if (detallesPago == null) {
+            throw new CompraBoletoException("Detalles de pago no válidos.");
+        }
+
+        boolean pagoExitoso;
+
+        System.out.println("Método de pago seleccionado: " + detallesPago.getMetodoPago());
+
+        if ("Tarjeta".equals(detallesPago.getMetodoPago()) && detallesPago.getDetallesTarjeta() != null) {
+            System.out.println("PAGO 1 LLEGO - Tarjeta");
+            pagoExitoso = comprarBoleto.procesarCompraDos(detallesPago, usuarioDTO);
+            System.out.println(pagoExitoso);
+        } else if ("Monedero".equals(detallesPago.getMetodoPago())) {
+            System.out.println("PAGO 1 LLEGO - Monedero");
+            pagoExitoso = comprarBoleto.procesarCompra(detallesPago, usuarioDTO);
+        } else {
+            throw new CompraBoletoException("Método de pago no válido.");
+        }
+
+        if (pagoExitoso) {
+            System.out.println("Compra exitosa.");
+            return true;
+        } else {
+            throw new CompraBoletoException("El pago no fue aprobado.");
+        }
     }
 
-    boolean pagoExitoso;
-
-    System.out.println("Método de pago seleccionado: " + detallesPago.getMetodoPago());
-
-    if ("Tarjeta".equals(detallesPago.getMetodoPago()) && detallesPago.getDetallesTarjeta() != null) {
-        System.out.println("PAGO 1 LLEGO - Tarjeta");
-        pagoExitoso = comprarBoleto.procesarCompraDos(detallesPago, usuarioDTO);
-        System.out.println(pagoExitoso);
-    } else if ("Monedero".equals(detallesPago.getMetodoPago())) {
-        System.out.println("PAGO 1 LLEGO - Monedero");
-        pagoExitoso = comprarBoleto.procesarCompra(detallesPago, usuarioDTO);
-    } else {
-        throw new CompraBoletoException("Método de pago no válido.");
+    // Método para iniciar sesión
+    public void iniciarSesion(UsuarioDTO usuarioDTO) {
+        // Usamos la fachada para iniciar la sesión
+        fachadaUsuarioActivo.iniciarSesion(usuarioDTO);
+        System.out.println("Sesión iniciada para el usuario: " + usuarioDTO.getNombre());
     }
 
-    if (pagoExitoso) {
-        System.out.println("Compra exitosa.");
-        return true;
-    } else {
-        throw new CompraBoletoException("El pago no fue aprobado.");
+    // Método para obtener el usuario actual
+    public UsuarioDTO obtenerUsuarioActivo() {
+        return fachadaUsuarioActivo.obtenerUsuarioActual();
     }
-}
 
+    // Método para verificar si hay sesión activa
+    public boolean haySesionActiva() {
+        return fachadaUsuarioActivo.haySesionActiva();
+    }
+
+    // Método para cerrar sesión
+    public void cerrarSesion() {
+        fachadaUsuarioActivo.cerrarCesion();
+        System.out.println("Sesión cerrada.");
+    }
 
 }

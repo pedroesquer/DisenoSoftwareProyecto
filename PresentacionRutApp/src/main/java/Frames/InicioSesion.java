@@ -4,6 +4,7 @@
  */
 package Frames;
 
+import Control.CordinadorPresentacion;
 import itson.rutappbo.IUsuariosBO;
 import itson.rutappbo.implementaciones.UsuariosBO;
 import java.awt.Color;
@@ -15,6 +16,9 @@ import java.awt.Color;
 public class InicioSesion extends javax.swing.JFrame {
 
     IUsuariosBO usuariosBO;
+
+    private javax.swing.JLabel lblMensaje;
+
     /**
      * Creates new form ComprarViaje
      */
@@ -22,6 +26,12 @@ public class InicioSesion extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setTitle("Rutapp");
+        //LABEL
+        lblMensaje = new javax.swing.JLabel();
+        lblMensaje.setForeground(java.awt.Color.RED);
+        lblMensaje.setText("");
+        BackGround.add(lblMensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 450, 320, 20));
+
     }
 
     /**
@@ -41,9 +51,8 @@ public class InicioSesion extends javax.swing.JFrame {
         usuarioLbl = new javax.swing.JLabel();
         contraseniaLbl1 = new javax.swing.JLabel();
         contraseniaTxt = new javax.swing.JTextField();
-        pnlBotonIniciar = new javax.swing.JPanel();
-        iniciarSesionBtn = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        IniciarSesionBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -90,6 +99,12 @@ public class InicioSesion extends javax.swing.JFrame {
         );
 
         BackGround.add(Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 490, 500, -1));
+
+        usuarioTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                usuarioTxtActionPerformed(evt);
+            }
+        });
         BackGround.add(usuarioTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 230, 300, 30));
 
         usuarioLbl.setText("Usuario");
@@ -97,43 +112,26 @@ public class InicioSesion extends javax.swing.JFrame {
 
         contraseniaLbl1.setText("Contraseña");
         BackGround.add(contraseniaLbl1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 280, -1, -1));
+
+        contraseniaTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contraseniaTxtActionPerformed(evt);
+            }
+        });
         BackGround.add(contraseniaTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 300, 300, 30));
-
-        pnlBotonIniciar.setBackground(new java.awt.Color(255, 201, 98));
-        pnlBotonIniciar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        pnlBotonIniciar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        pnlBotonIniciar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                pnlBotonIniciarMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                pnlBotonIniciarMouseExited(evt);
-            }
-        });
-
-        iniciarSesionBtn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        iniciarSesionBtn.setText("Iniciar Sesion");
-        iniciarSesionBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                iniciarSesionBtnMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout pnlBotonIniciarLayout = new javax.swing.GroupLayout(pnlBotonIniciar);
-        pnlBotonIniciar.setLayout(pnlBotonIniciarLayout);
-        pnlBotonIniciarLayout.setHorizontalGroup(
-            pnlBotonIniciarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(iniciarSesionBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
-        );
-        pnlBotonIniciarLayout.setVerticalGroup(
-            pnlBotonIniciarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(iniciarSesionBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
-        );
-
-        BackGround.add(pnlBotonIniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 360, 140, 50));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busPng.png"))); // NOI18N
         BackGround.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 80, 210, 120));
+
+        IniciarSesionBtn.setBackground(new java.awt.Color(255, 201, 98));
+        IniciarSesionBtn.setForeground(new java.awt.Color(0, 0, 0));
+        IniciarSesionBtn.setText("Iniciar Sesion");
+        IniciarSesionBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IniciarSesionBtnActionPerformed(evt);
+            }
+        });
+        BackGround.add(IniciarSesionBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 380, 130, 60));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -149,33 +147,46 @@ public class InicioSesion extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void pnlBotonIniciarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlBotonIniciarMouseEntered
-        pnlBotonIniciar.setBackground(new Color(232, 159, 19));
-    }//GEN-LAST:event_pnlBotonIniciarMouseEntered
+    private void contraseniaTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contraseniaTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_contraseniaTxtActionPerformed
 
-    private void pnlBotonIniciarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlBotonIniciarMouseExited
-        pnlBotonIniciar.setBackground(new Color(255, 201, 98));
-    }//GEN-LAST:event_pnlBotonIniciarMouseExited
+    private void usuarioTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuarioTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_usuarioTxtActionPerformed
 
-    private void iniciarSesionBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_iniciarSesionBtnMouseClicked
-        String usuario = usuarioTxt.getText();
-        String contrasenia = contraseniaTxt.getText();
-        
-        
+    private void IniciarSesionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IniciarSesionBtnActionPerformed
+        String numero = usuarioTxt.getText().trim();
+        String pass = contraseniaTxt.getText().trim();
 
-    }//GEN-LAST:event_iniciarSesionBtnMouseClicked
+        usuariosBO = new UsuariosBO();
+        // Asegúrate de tener la instancia
+
+        String resultado = usuariosBO.login(numero, pass);
+
+        lblMensaje.setText(resultado);
+
+        // Verificamos si fue exitoso para cambiar el color o redirigir
+        if (resultado.equals("Inicio de sesión exitoso.")) {
+            lblMensaje.setForeground(new Color(0, 128, 0)); // Verde
+            CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
+            this.dispose();
+        } else {
+            lblMensaje.setForeground(Color.RED); // Rojo si es error
+        }
+
+    }//GEN-LAST:event_IniciarSesionBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BackGround;
     private javax.swing.JPanel Footer;
     private javax.swing.JPanel Header;
+    private javax.swing.JButton IniciarSesionBtn;
     private javax.swing.JLabel contraseniaLbl1;
     private javax.swing.JTextField contraseniaTxt;
-    private javax.swing.JLabel iniciarSesionBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel pnlBotonIniciar;
     private javax.swing.JLabel usuarioLbl;
     private javax.swing.JTextField usuarioTxt;
     // End of variables declaration//GEN-END:variables

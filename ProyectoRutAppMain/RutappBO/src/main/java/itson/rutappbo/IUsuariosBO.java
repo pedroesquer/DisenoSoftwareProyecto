@@ -11,5 +11,10 @@ import itson.rutappdto.AccesoUsuarioDTO;
  * @author juanpheras
  */
 public interface IUsuariosBO {
-    Boolean autenticar(AccesoUsuarioDTO acceso);
+
+    String registrarUsuario(AccesoUsuarioDTO nuevoUsuario);
+
+    String login(String numeroTelefonico, String contrasena);
+
+    String autenticar(AccesoUsuarioDTO usuario);
 }
