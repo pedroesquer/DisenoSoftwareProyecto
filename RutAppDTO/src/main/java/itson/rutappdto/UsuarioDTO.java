@@ -6,12 +6,24 @@ import java.io.Serializable;
  *
  * @author pedro
  */
-public class UsuarioDTO implements Serializable{
+public class UsuarioDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     private String nombre;
+    private String numeroTelefonico;
+    private String contrasena;
     private Double saldoMonedero;
+
+    public UsuarioDTO() {
+    }
+
+    public UsuarioDTO(String numeroTelefonico, String contrasena, Double saldoMonedero) {
+        this.numeroTelefonico = numeroTelefonico;
+        this.contrasena = contrasena;
+        this.saldoMonedero = saldoMonedero;
+    }
+
     public UsuarioDTO(String nombre) {
         this.nombre = nombre;
         this.saldoMonedero = 0.0;
@@ -21,6 +33,7 @@ public class UsuarioDTO implements Serializable{
         return nombre;
     }
 
+    // Getters y setters
     public Double getSaldoMonedero() {
         return saldoMonedero;
     }
@@ -28,9 +41,26 @@ public class UsuarioDTO implements Serializable{
     public void setSaldoMonedero(Double saldoMonedero) {
         this.saldoMonedero = saldoMonedero;
     }
-    
-    
-    
-    
+
+    public String getNumeroTelefonico() {
+        return numeroTelefonico;
+    }
+
+    public void setNumeroTelefonico(String numeroTelefonico) {
+        this.numeroTelefonico = numeroTelefonico;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
+
+    @Override
+    public String toString() {
+        return "UsuarioDTO{" + "nombre=" + nombre + ", numeroTelefonico=" + numeroTelefonico + ", contrasena=" + contrasena + ", saldoMonedero=" + saldoMonedero + '}';
+    }
 
 }

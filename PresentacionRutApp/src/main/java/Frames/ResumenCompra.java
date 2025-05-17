@@ -8,6 +8,7 @@ import Control.ControlNegocio;
 import Control.ControlTimer;
 import Control.CordinadorPresentacion;
 import Interfaces.TemporizadorObserver;
+import control.ControlUsuarioActivo;
 import enumm.estadoAsiento;
 import itson.rutappdto.AsientoAsignadoDTO;
 import itson.rutappdto.AsientoBoletoDTO;
@@ -48,7 +49,7 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
         ControlTimer.getInstancia().limpiarObservadores();
         ControlTimer.getInstancia().agregarObservador(this);
         System.out.println("Observador agregado: " + this.hashCode());
-        
+
         initComponents();
         setTitle("Resumen de Compra");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -302,6 +303,16 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
         this.dispose();
         CordinadorPresentacion.getInstancia().abrirMetodoPago();
 
+        ControlUsuarioActivo controlUsuarioActivo = new ControlUsuarioActivo();
+        UsuarioDTO usuarioActivo = controlUsuarioActivo.obtenerUsuario();  // Obtienes el usuario autenticado
+
+// Asegúrate de que hay una sesión activa
+        if (usuarioActivo != null) {
+            System.out.println("Usuario actual: " + usuarioActivo.getNombre());
+            // Aquí puedes acceder a otros datos del usuario
+        } else {
+            System.out.println("No hay sesión activa.");
+        }
 
     }//GEN-LAST:event_botonAceptarActionPerformed
 

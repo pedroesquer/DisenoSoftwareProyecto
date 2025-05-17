@@ -4,9 +4,11 @@
  */
 package Frames;
 
+import Control.ControlNegocio;
 import Control.CordinadorPresentacion;
 import itson.rutappbo.IUsuariosBO;
 import itson.rutappbo.implementaciones.UsuariosBO;
+import itson.rutappdto.UsuarioDTO;
 import java.awt.Color;
 
 /**
@@ -14,9 +16,9 @@ import java.awt.Color;
  * @author mmax2
  */
 public class InicioSesion extends javax.swing.JFrame {
-
+    
     IUsuariosBO usuariosBO;
-
+    
     private javax.swing.JLabel lblMensaje;
 
     /**
@@ -31,7 +33,7 @@ public class InicioSesion extends javax.swing.JFrame {
         lblMensaje.setForeground(java.awt.Color.RED);
         lblMensaje.setText("");
         BackGround.add(lblMensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 450, 320, 20));
-
+        
     }
 
     /**
@@ -159,20 +161,28 @@ public class InicioSesion extends javax.swing.JFrame {
         String numero = usuarioTxt.getText().trim();
         String pass = contraseniaTxt.getText().trim();
 
-        usuariosBO = new UsuariosBO();
-        // Asegúrate de tener la instancia
+        // Usamos la fachada para acceder a la interfaz de usuario activo
+        UsuariosBO usuariosBO = new UsuariosBO(); // Para validar las credenciales en la base de datos
 
+        // Verificamos si las credenciales son correctas
         String resultado = usuariosBO.login(numero, pass);
-
         lblMensaje.setText(resultado);
-
-        // Verificamos si fue exitoso para cambiar el color o redirigir
+        
         if (resultado.equals("Inicio de sesión exitoso.")) {
             lblMensaje.setForeground(new Color(0, 128, 0)); // Verde
+
+            // Ahora, a través de la fachada, obtenemos el usuario autenticado
+            UsuarioDTO usuario = usuariosBO.obtenerUsuario();
+
+            // Llamamos al controlador de negocio para iniciar la sesión
+            // Llama a la capa de negocio para gestionar la sesión
+            ControlNegocio.getInstancia().iniciarSesion(usuario);
+
+            // Redirigimos a la pantalla principal
             CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
-            this.dispose();
+            this.dispose();  // Cierra la ventana de inicio de sesión
         } else {
-            lblMensaje.setForeground(Color.RED); // Rojo si es error
+            lblMensaje.setForeground(Color.RED);  // Rojo si es error
         }
 
     }//GEN-LAST:event_IniciarSesionBtnActionPerformed

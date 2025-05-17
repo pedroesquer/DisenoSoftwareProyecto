@@ -12,7 +12,7 @@ public class Usuario {
     private String contrasenia;
 
     @BsonProperty("saldo")
-    private Double saldo;
+    private Double saldoMonedero;
 
     // Constructor por defecto
     public Usuario() {
@@ -22,7 +22,14 @@ public class Usuario {
     public Usuario(String numeroTelefonico, String contrasenia) {
         this.numeroTelefonico = numeroTelefonico;
         this.contrasenia = contrasenia;
-        this.saldo = 0d;
+       
+    }
+
+    public Usuario(String numeroTelefonico, String contrasenia, Double saldoMonedero) {
+        this.numeroTelefonico = numeroTelefonico;
+        this.contrasenia = contrasenia;
+        this.saldoMonedero = saldoMonedero;
+      
     }
 
     // Getters y Setters
@@ -42,16 +49,18 @@ public class Usuario {
         this.contrasenia = contrasenia;
     }
 
-    public Double getSaldo() {
-        return saldo;
+    public Double getSaldoMonedero() {
+        return saldoMonedero;
     }
 
-//    public Usuario(Double saldo) {
-//        this.saldo = saldo;
-//    }
+    public void setSaldoMonedero(Double saldoMonedero) {
+        this.saldoMonedero = saldoMonedero;
+    }
+
     @Override
     public String toString() {
-        return "Usuario{" + "numeroTelefonico=" + numeroTelefonico + ", contrasenia=" + contrasenia + ", saldo=" + saldo + '}';
+        return "Usuario{" + "numeroTelefonico=" + numeroTelefonico + ", contrasenia=" + contrasenia + ", saldoMonedero=" + saldoMonedero + '}';
     }
+
 
 }

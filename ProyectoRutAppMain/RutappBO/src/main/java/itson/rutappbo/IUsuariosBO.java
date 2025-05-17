@@ -5,6 +5,7 @@
 package itson.rutappbo;
 
 import itson.rutappdto.AccesoUsuarioDTO;
+import itson.rutappdto.UsuarioDTO;
 
 /**
  *
@@ -17,4 +18,6 @@ public interface IUsuariosBO {
     String login(String numeroTelefonico, String contrasena);
 
     String autenticar(AccesoUsuarioDTO usuario);
+
+    public UsuarioDTO obtenerUsuario();
 }

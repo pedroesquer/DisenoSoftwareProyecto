@@ -5,23 +5,25 @@ import itson.persistenciarutapp.implementaciones.Usuario;
 import itson.persistenciarutapp.implementaciones.UsuariosDAO;
 import itson.rutappbo.IUsuariosBO;
 import itson.rutappdto.AccesoUsuarioDTO;
+import itson.rutappdto.UsuarioDTO;
 
 /**
  * ClaseBO que se comunica con Usuarios
  *
  * @author BusSoft®
  */
-public class UsuariosBO implements IUsuariosBO{
+public class UsuariosBO implements IUsuariosBO {
 
     private final IUsuariosDAO usuariosDAO;
+    private UsuarioDTO usuarioAutenticado;
 
-    
     public UsuariosBO() {
         this.usuariosDAO = new UsuariosDAO();
     }
 
     /**
      * Intenta registrar un usuario nuevo.
+     *
      * @param nuevoUsuario DTO con datos de registro
      * @return Mensaje de éxito o error
      */
@@ -41,29 +43,34 @@ public class UsuariosBO implements IUsuariosBO{
 
     /**
      * Intenta iniciar sesión.
+     *
      * @param numeroTelefonico número telefónico
      * @param contrasena contraseña
      * @return mensaje según resultado
      */
     public String login(String numeroTelefonico, String contrasena) {
-        if (numeroTelefonico == null || numeroTelefonico.trim().isEmpty()) {
-            return "Número telefónico requerido.";
-        }
+    if (numeroTelefonico == null || numeroTelefonico.trim().isEmpty()) {
+        return "Número telefónico requerido.";
+    }
 
-        if (!numeroTelefonico.matches("\\d{10}")) {
-            return "El número telefónico debe contener 10 dígitos.";
-        }
+    if (!numeroTelefonico.matches("\\d{10}")) {
+        return "El número telefónico debe contener 10 dígitos.";
+    }
 
-        if (contrasena == null || contrasena.trim().isEmpty()) {
-            return "Contraseña requerida.";
-        }
+    if (contrasena == null || contrasena.trim().isEmpty()) {
+        return "Contraseña requerida.";
+    }
 
-        Usuario usuario = usuariosDAO.validarLogin(numeroTelefonico, contrasena);
-        if (usuario == null) {
-            return "Número telefónico o contraseña incorrectos.";
-        }
+    // Validar login con los datos proporcionados
+    Usuario usuario = usuariosDAO.validarLogin(numeroTelefonico, contrasena);
+    if (usuario == null) {
+        return "Número telefónico o contraseña incorrectos.";
+    }
 
-        return "Inicio de sesión exitoso.";
+    // Asignar el usuario autenticado al DTO
+    usuarioAutenticado = new UsuarioDTO(usuario.getNumeroTelefonico(), contrasena, usuario.getSaldoMonedero());
+
+    return "Inicio de sesión exitoso.";
     }
 
     public String autenticar(AccesoUsuarioDTO usuario) {
@@ -72,11 +79,14 @@ public class UsuariosBO implements IUsuariosBO{
 
     /**
      * Valida los campos del DTO
+     *
      * @param usuario DTO
      * @return "OK" si es válido, mensaje de error si no
      */
     private String validarDatos(AccesoUsuarioDTO usuario) {
-        if (usuario == null) return "Datos de usuario no proporcionados.";
+        if (usuario == null) {
+            return "Datos de usuario no proporcionados.";
+        }
 
         String numero = usuario.getNumeroTelefonico();
         String pass = usuario.getContrasena();
@@ -99,4 +109,10 @@ public class UsuariosBO implements IUsuariosBO{
 
         return "OK";
     }
+
+    @Override
+    public UsuarioDTO obtenerUsuario() {
+        return usuarioAutenticado;
+    }
+
 }

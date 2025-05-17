@@ -7,6 +7,8 @@ import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
 import itson.persistenciarutapp.IUsuariosDAO;
 import itson.rutappdto.AccesoUsuarioDTO;
+import itson.rutappdto.UsuarioDTO;
+import org.bson.Document;
 
 /**
  *
@@ -40,11 +42,23 @@ public class UsuariosDAO implements IUsuariosDAO {
 
     @Override
     public Usuario consultarUsuarioPorNumeroTelefonico(String numeroTel) {
-        //Base de datos
-        MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
-        //Colección
-        MongoCollection<Usuario> coleccion = baseDatos.getCollection(COLECCION, Usuario.class);
-        return coleccion.find(eq("numeroTelefonico", numeroTel)).first();
+    // Recuperando la base de datos y la colección de usuarios
+    MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
+    MongoCollection<Document> coleccion = baseDatos.getCollection(COLECCION);
+
+    // Consulta para encontrar el usuario por número de teléfono
+    Document usuarioDoc = coleccion.find(eq(CAMPO_TELEFONICO, numeroTel)).first();
+
+    if (usuarioDoc != null) {
+        // Obtenemos el saldoMonedero, y otros campos, si están en el documento
+        String contrasena = usuarioDoc.getString("contrasenia");
+        Double saldoMonedero = usuarioDoc.getDouble("saldoMonedero"); // Asegúrate que este campo esté en la base de datos
+
+        // Crear el objeto Usuario con los datos obtenidos
+        return new Usuario(numeroTel, contrasena, saldoMonedero);  // Retornar un Usuario
+    }
+
+    return null;
     }
 
     @Override
