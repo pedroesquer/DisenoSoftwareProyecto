@@ -18,11 +18,20 @@ public class UsuarioDTO implements Serializable {
     public UsuarioDTO() {
     }
 
+    public UsuarioDTO(String nombre, String numeroTelefonico, String contrasena, Double saldoMonedero) {
+        this.nombre = nombre;
+        this.numeroTelefonico = numeroTelefonico;
+        this.contrasena = contrasena;
+        this.saldoMonedero = 0d;
+    }
+
     public UsuarioDTO(String numeroTelefonico, String contrasena, Double saldoMonedero) {
         this.numeroTelefonico = numeroTelefonico;
         this.contrasena = contrasena;
-        this.saldoMonedero = saldoMonedero;
+        this.saldoMonedero = 0d;
     }
+    
+    
 
     public UsuarioDTO(String nombre) {
         this.nombre = nombre;
@@ -32,6 +41,11 @@ public class UsuarioDTO implements Serializable {
     public String getNombre() {
         return nombre;
     }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    
 
     // Getters y setters
     public Double getSaldoMonedero() {

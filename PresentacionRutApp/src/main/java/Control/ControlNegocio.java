@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
+import usuarioActivoManager.UsuarioActivoManager;
 
 /**
  *
@@ -225,7 +226,7 @@ public class ControlNegocio {
     public void iniciarSesion(UsuarioDTO usuarioDTO) {
         // Usamos la fachada para iniciar la sesión
         fachadaUsuarioActivo.iniciarSesion(usuarioDTO);
-        System.out.println("Sesión iniciada para el usuario: " + usuarioDTO.getSaldoMonedero());
+        System.out.println("Sesión iniciada para el usuario: " + usuarioDTO.getNumeroTelefonico());
     }
 
     // Método para obtener el usuario actual

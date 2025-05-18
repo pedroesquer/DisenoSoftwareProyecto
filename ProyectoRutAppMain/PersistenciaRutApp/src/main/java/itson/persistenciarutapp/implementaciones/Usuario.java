@@ -7,6 +7,9 @@ public class Usuario {
 
     @BsonProperty("numeroTelefonico")
     private String numeroTelefonico;
+    
+    @BsonProperty("nombre")
+    private String nombre;
 
     @BsonProperty("contrasenia")  // Mapea la propiedad 'contrasenia' en MongoDB
     private String contrasenia;
@@ -25,14 +28,38 @@ public class Usuario {
        
     }
 
+    public Usuario(String numeroTelefonico, String nombre, String contrasenia) {
+        this.numeroTelefonico = numeroTelefonico;
+        this.nombre = nombre;
+        this.contrasenia = contrasenia;
+        this.saldoMonedero = 0d;
+    }
+
+    public Usuario(String numeroTelefonico, String nombre, String contrasenia, Double saldoMonedero) {
+        this.numeroTelefonico = numeroTelefonico;
+        this.nombre = nombre;
+        this.contrasenia = contrasenia;
+        this.saldoMonedero = saldoMonedero;
+    }
+    
+    
+
     public Usuario(String numeroTelefonico, String contrasenia, Double saldoMonedero) {
         this.numeroTelefonico = numeroTelefonico;
         this.contrasenia = contrasenia;
         this.saldoMonedero = saldoMonedero;
       
     }
+    
+    public String getNombre() {
+        return nombre;
+    }
 
     // Getters y Setters
+    public void setNombre(String nombre) {    
+        this.nombre = nombre;
+    }
+
     public String getNumeroTelefonico() {
         return numeroTelefonico;
     }

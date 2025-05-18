@@ -5,6 +5,7 @@
 //package itson.persistenciarutapp.implementaciones;
 //
 //import itson.rutappdto.AccesoUsuarioDTO;
+//import itson.rutappdto.UsuarioDTO;
 //import org.junit.jupiter.api.Test;
 //import static org.junit.jupiter.api.Assertions.*;
 //
@@ -23,7 +24,7 @@
 //    @Test
 //    public void testAgregarUsuario() {
 //        UsuariosDAO usuariosDAO = new UsuariosDAO();
-//        AccesoUsuarioDTO nuevoUsuario = new AccesoUsuarioDTO("2233445566", "ana");
+//        UsuarioDTO nuevoUsuario = new UsuarioDTO("Pedro Esquer", "6441157277", "mb");
 //        usuariosDAO.agregarUsuario(nuevoUsuario);
 //    }
 //

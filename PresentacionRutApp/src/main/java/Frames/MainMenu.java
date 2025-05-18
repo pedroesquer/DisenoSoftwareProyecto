@@ -5,6 +5,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import Control.CordinadorPresentacion;
+import usuarioActivoManager.UsuarioActivoManager;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -15,7 +17,7 @@ import Control.CordinadorPresentacion;
  * @author mmax2
  */
 public class MainMenu extends javax.swing.JFrame {
-    
+
     private ImageIcon imagen;
     private Icon icono;
 
@@ -27,6 +29,8 @@ public class MainMenu extends javax.swing.JFrame {
         this.setLocationRelativeTo(this);
         setTitle("Menú principal");
         this.pintarImg(this.fotoPerfil, "src\\main\\java\\img\\FotoPerfil.png");
+        Saldo1.setText(String.format("%.2f", UsuarioActivoManager.getInstancia().getUsuario().getSaldoMonedero()));
+        userName.setText(UsuarioActivoManager.getInstancia().getUsuario().getNombre());
     }
 
     /**
@@ -179,12 +183,12 @@ public class MainMenu extends javax.swing.JFrame {
         });
         BackGround.add(btnQR, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 350, 70, 30));
 
-        Saldo.setFont(new java.awt.Font("Roboto Condensed Medium", 0, 30)); // NOI18N
+        Saldo.setFont(new java.awt.Font("Roboto Condensed Medium", 0, 24)); // NOI18N
         Saldo.setForeground(new java.awt.Color(0, 0, 0));
         Saldo.setText("SALDO:");
         BackGround.add(Saldo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 160, 110, 30));
 
-        userName.setFont(new java.awt.Font("Roboto Condensed Medium", 0, 30)); // NOI18N
+        userName.setFont(new java.awt.Font("Roboto Condensed Medium", 0, 18)); // NOI18N
         userName.setForeground(new java.awt.Color(0, 0, 0));
         userName.setText("USUARIO");
         userName.addInputMethodListener(new java.awt.event.InputMethodListener() {
@@ -194,17 +198,17 @@ public class MainMenu extends javax.swing.JFrame {
                 userNameInputMethodTextChanged(evt);
             }
         });
-        BackGround.add(userName, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 120, 130, 40));
+        BackGround.add(userName, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 120, 130, 50));
 
         fotoPerfil.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         BackGround.add(fotoPerfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 150, 130));
 
-        Bienvenida.setFont(new java.awt.Font("Roboto Condensed Medium", 0, 30)); // NOI18N
+        Bienvenida.setFont(new java.awt.Font("Roboto Condensed Medium", 0, 24)); // NOI18N
         Bienvenida.setForeground(new java.awt.Color(0, 0, 0));
         Bienvenida.setText("BIENVENID@");
         BackGround.add(Bienvenida, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, 160, 40));
 
-        Saldo1.setFont(new java.awt.Font("Roboto Condensed Medium", 0, 30)); // NOI18N
+        Saldo1.setFont(new java.awt.Font("Roboto Condensed Medium", 0, 24)); // NOI18N
         Saldo1.setForeground(new java.awt.Color(0, 0, 0));
         Saldo1.setText("$...");
         BackGround.add(Saldo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 160, 110, 30));
@@ -247,20 +251,19 @@ public class MainMenu extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCompraViajeActionPerformed
 
-    
-    private void pintarImg (JLabel lbl, String ruta){
+    private void pintarImg(JLabel lbl, String ruta) {
         this.imagen = new ImageIcon(ruta);
         this.icono = new ImageIcon(
                 this.imagen.getImage().getScaledInstance(
-                    lbl.getWidth(), 
-                    lbl.getHeight(), 
-                    Image.SCALE_DEFAULT
+                        lbl.getWidth(),
+                        lbl.getHeight(),
+                        Image.SCALE_DEFAULT
                 )
         );
         lbl.setIcon(this.icono);
         this.repaint();
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BackGround;

@@ -13,11 +13,11 @@ import itson.rutappdto.UsuarioDTO;
  */
 public interface IUsuariosBO {
 
-    String registrarUsuario(AccesoUsuarioDTO nuevoUsuario);
+    String registrarUsuario(UsuarioDTO nuevoUsuario);
 
     String login(String numeroTelefonico, String contrasena);
 
-    String autenticar(AccesoUsuarioDTO usuario);
+    String autenticar(UsuarioDTO usuario);
 
     public UsuarioDTO obtenerUsuario();
 }

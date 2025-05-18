@@ -32,33 +32,30 @@ public class UsuariosDAO implements IUsuariosDAO {
     }
 
     @Override
-    public Usuario agregarUsuario(AccesoUsuarioDTO nuevoUsuario) {
+    public Usuario agregarUsuario(UsuarioDTO nuevoUsuario) {
         MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
         MongoCollection<Usuario> coleccion = baseDatos.getCollection(COLECCION, Usuario.class);
-        Usuario usuario = new Usuario(nuevoUsuario.getNumeroTelefonico(), nuevoUsuario.getContrasena());
+        Usuario usuario = new Usuario(nuevoUsuario.getNumeroTelefonico(), nuevoUsuario.getNombre(), nuevoUsuario.getContrasena());
         coleccion.insertOne(usuario);
         return usuario;
     }
 
     @Override
     public Usuario consultarUsuarioPorNumeroTelefonico(String numeroTel) {
-    // Recuperando la base de datos y la colección de usuarios
-    MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
-    MongoCollection<Document> coleccion = baseDatos.getCollection(COLECCION);
+        MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
+        MongoCollection<Document> coleccion = baseDatos.getCollection(COLECCION);
 
-    // Consulta para encontrar el usuario por número de teléfono
-    Document usuarioDoc = coleccion.find(eq(CAMPO_TELEFONICO, numeroTel)).first();
+        Document usuarioDoc = coleccion.find(eq(CAMPO_TELEFONICO, numeroTel)).first();
 
-    if (usuarioDoc != null) {
-        // Obtenemos el saldoMonedero, y otros campos, si están en el documento
-        String contrasena = usuarioDoc.getString("contrasenia");
-        Double saldoMonedero = usuarioDoc.getDouble("saldoMonedero"); // Asegúrate que este campo esté en la base de datos
+        if (usuarioDoc != null) {
+            String nombre = usuarioDoc.getString("nombre");
+            String contrasena = usuarioDoc.getString("contrasenia");
+            Double saldoMonedero = usuarioDoc.getDouble("saldo");
 
-        // Crear el objeto Usuario con los datos obtenidos
-        return new Usuario(numeroTel, contrasena, saldoMonedero);  // Retornar un Usuario
-    }
+            return new Usuario(numeroTel, nombre, contrasena, saldoMonedero); // ✅ orden correcto
+        }
 
-    return null;
+        return null;
     }
 
     @Override
@@ -68,11 +65,6 @@ public class UsuariosDAO implements IUsuariosDAO {
             return usuario; // No existe el usuario
         }
         return null;
-    }
-
-    @Override
-    public Usuario autenticarUsuario(AccesoUsuarioDTO accesoUsuario) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

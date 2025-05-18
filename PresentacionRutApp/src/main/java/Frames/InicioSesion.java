@@ -16,9 +16,9 @@ import java.awt.Color;
  * @author mmax2
  */
 public class InicioSesion extends javax.swing.JFrame {
-    
+
     IUsuariosBO usuariosBO;
-    
+
     private javax.swing.JLabel lblMensaje;
 
     /**
@@ -33,7 +33,7 @@ public class InicioSesion extends javax.swing.JFrame {
         lblMensaje.setForeground(java.awt.Color.RED);
         lblMensaje.setText("");
         BackGround.add(lblMensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 450, 320, 20));
-        
+
     }
 
     /**
@@ -167,12 +167,12 @@ public class InicioSesion extends javax.swing.JFrame {
         // Verificamos si las credenciales son correctas
         String resultado = usuariosBO.login(numero, pass);
         lblMensaje.setText(resultado);
-        
+
         if (resultado.equals("Inicio de sesión exitoso.")) {
             lblMensaje.setForeground(new Color(0, 128, 0)); // Verde
 
             // Ahora, a través de la fachada, obtenemos el usuario autenticado
-            UsuarioDTO usuario = usuariosBO.obtenerUsuario();
+            UsuarioDTO usuario = usuarioActivoManager.UsuarioActivoManager.getInstancia().getUsuario();
 
             // Llamamos al controlador de negocio para iniciar la sesión
             // Llama a la capa de negocio para gestionar la sesión
