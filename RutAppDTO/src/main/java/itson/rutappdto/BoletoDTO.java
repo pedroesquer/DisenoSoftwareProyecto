@@ -3,6 +3,7 @@ package itson.rutappdto;
 import itson.rutappdto.AsientoDTO;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ public class BoletoDTO implements Serializable {
     private String duracion;
     private CamionDTO camion;
     private List<AsientoBoletoDTO> listaAsiento;
-    private LocalDate fecha;
+    private LocalDateTime fecha;
 
 
 
@@ -117,11 +118,11 @@ public class BoletoDTO implements Serializable {
         this.listaAsiento = listaAsiento;
     }
 
-    public LocalDate getFecha() {
+    public LocalDateTime getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
 

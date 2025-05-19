@@ -9,6 +9,7 @@ import Control.CordinadorPresentacion;
 import itson.rutappdto.BoletoContext;
 import itson.rutappdto.ViajeDTO;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -224,8 +225,8 @@ public class BuscarViaje extends javax.swing.JFrame {
         }
 
         java.util.Date fecha = calendar.getTime();
-        LocalDate fechaSeleccionada = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate hoy = LocalDate.now();
+        LocalDateTime fechaSeleccionada = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        LocalDateTime hoy = LocalDateTime.now();
 
         // Validar que la fecha no sea anterior a hoy
         if (fechaSeleccionada.isBefore(hoy)) {

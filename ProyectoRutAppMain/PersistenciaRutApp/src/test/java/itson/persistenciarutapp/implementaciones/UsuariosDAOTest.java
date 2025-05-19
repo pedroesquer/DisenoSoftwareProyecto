@@ -24,7 +24,7 @@
 //    @Test
 //    public void testAgregarUsuario() {
 //        UsuariosDAO usuariosDAO = new UsuariosDAO();
-//        UsuarioDTO nuevoUsuario = new UsuarioDTO("Pedro Esquer", "6441157277", "mb");
+//        UsuarioDTO nuevoUsuario = new UsuarioDTO("Pedro Esquer", "6441157277", "mb",0d);
 //        usuariosDAO.agregarUsuario(nuevoUsuario);
 //    }
 //

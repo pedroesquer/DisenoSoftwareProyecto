@@ -1,6 +1,6 @@
 package itson.rutappdto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -14,9 +14,9 @@ public class ViajeDTO {
     private String destino;
     private String duracion;
     private CamionDTO camion;
-    private LocalDate fecha;
+    private LocalDateTime fecha;
 
-    public ViajeDTO(Double precio, String origen, String destino, String duracion, CamionDTO camion, LocalDate fecha) {
+    public ViajeDTO(Double precio, String origen, String destino, String duracion, CamionDTO camion, LocalDateTime fecha) {
         this.precio = precio;
         this.origen = origen;
         this.destino = destino;
@@ -65,14 +65,12 @@ public class ViajeDTO {
         this.camion = camion;
     }
 
-    public LocalDate getFecha() {
+    public LocalDateTime getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
-
-    
 
 }

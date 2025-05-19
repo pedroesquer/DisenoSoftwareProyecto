@@ -45,7 +45,7 @@ public class ControlNegocio {
     private String origenSeleccionado;
     private String destinoSeleccionado;
     private String horaSalidaSeleccionada;
-    private LocalDate fechaSeleccionada;
+    private LocalDateTime fechaSeleccionada;
     private Double precioSeleccionado;
     private String duracionSeleccionada;
     private CamionDTO camionSeleccionado;
@@ -89,7 +89,7 @@ public class ControlNegocio {
         return Arrays.asList("Huatabampo", "Los mochis", "Tucson Az.");
     }
 
-    public List<ViajeDTO> obtenerListaViajes(String origen, String Destino, LocalDate fecha) {
+    public List<ViajeDTO> obtenerListaViajes(String origen, String Destino, LocalDateTime fecha) {
         List<ViajeDTO> viajes = consultarDisponibilidad.consultarViajesDisponibles(origen, Destino, fecha);
         if (viajes.isEmpty()) {
             JOptionPane.showMessageDialog(null,
@@ -101,7 +101,7 @@ public class ControlNegocio {
         }
     }
 
-    public List<ViajeDTO> obtenerViajesDisponibles(String origen, String Destino, LocalDate fecha) {
+    public List<ViajeDTO> obtenerViajesDisponibles(String origen, String Destino, LocalDateTime fecha) {
         return null;
     }
 
@@ -126,7 +126,7 @@ public class ControlNegocio {
     }
 
     //METODO PARA GUARDAR LOS ATRIBUTOS DEL VIAJE
-    public void guardarBusqueda(String origen, String destino, LocalDate fecha) {
+    public void guardarBusqueda(String origen, String destino, LocalDateTime fecha) {
         this.origenSeleccionado = origen;
         this.destinoSeleccionado = destino;
         this.fechaSeleccionada = fecha;
@@ -140,7 +140,7 @@ public class ControlNegocio {
         return destinoSeleccionado;
     }
 
-    public LocalDate getFechaSeleccionada() {
+    public LocalDateTime getFechaSeleccionada() {
         return fechaSeleccionada;
     }
 

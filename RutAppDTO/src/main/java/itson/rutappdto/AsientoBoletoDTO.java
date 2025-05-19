@@ -1,4 +1,3 @@
-
 package itson.rutappdto;
 
 import java.io.Serializable;
@@ -7,13 +6,14 @@ import java.io.Serializable;
  *
  * @author BusSoft®
  */
-public class AsientoBoletoDTO implements Serializable{
+public class AsientoBoletoDTO implements Serializable {
+
     public AsientoDTO asiento;
-    
+
     public BoletoDTO boleto;
-    
+
     public String nombreAsiento;
-    
+
     public Double precioUnitario;
 
     public AsientoBoletoDTO() {
@@ -30,10 +30,6 @@ public class AsientoBoletoDTO implements Serializable{
         this.asiento = asiento;
         this.nombreAsiento = nombreAsiento;
     }
-    
-    
-    
-    
 
     public AsientoDTO getAsiento() {
         return asiento;
@@ -66,8 +62,5 @@ public class AsientoBoletoDTO implements Serializable{
     public void setPrecioUnitario(Double precioUnitario) {
         this.precioUnitario = precioUnitario;
     }
-    
-    
-    
-    
+
 }

@@ -10,17 +10,18 @@ import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.CamionDTO;
 import itson.rutappdto.ViajeDTO;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
  *
  * @author Bussoft®
  */
-public class FachadaConsultarDisponibilidad implements IConsultarDisponibilidad{
+public class FachadaConsultarDisponibilidad implements IConsultarDisponibilidad {
 
     @Override
-    public List<ViajeDTO> consultarViajesDisponibles(String origen, String destino, LocalDate fecha) {
-        return ControlConsultarDisponibilidad.getInstancia().obtenerViajesDisponibles( origen,  destino,  fecha);
+    public List<ViajeDTO> consultarViajesDisponibles(String origen, String destino, LocalDateTime fecha) {
+        return ControlConsultarDisponibilidad.getInstancia().obtenerViajesDisponibles(origen, destino, fecha);
     }
 
     @Override
@@ -32,6 +33,5 @@ public class FachadaConsultarDisponibilidad implements IConsultarDisponibilidad{
     public List<String> consultarDestinos(String origen) {
         return ControlConsultarDisponibilidad.getInstancia().obtenerDestinos(origen);
     }
-    
-    
+
 }

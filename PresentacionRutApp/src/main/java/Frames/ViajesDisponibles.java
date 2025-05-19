@@ -85,7 +85,7 @@ public class ViajesDisponibles extends javax.swing.JFrame {
                 + "<b>Duración:</b> " + viaje.getDuracion() + "<br>"
                 + "<b>Precio:</b> $" + viaje.getPrecio()
                 + "<br> <b>Numero camion:</b> " + viaje.getCamion().getNumeroCamion()
-                + "<b>  Fecha:</b> " + viaje.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "</html>";
+                + "<b>  Fecha:</b> " + viaje.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "</html>";
 
         JLabel label = new JLabel(viajeInfo);
         label.setFont(new Font("SansSerif", Font.PLAIN, 14));

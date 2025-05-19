@@ -23,6 +23,7 @@ import itson.rutappdto.BoletoContext;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -83,7 +84,7 @@ public class CordinadorPresentacion {
         return ControlNegocio.getInstancia().obtenerDestinosDisponibles(origen);
     }
 
-    public void mostrarViajesDisponibles(String origen, String destino, LocalDate fecha) {
+    public void mostrarViajesDisponibles(String origen, String destino, LocalDateTime fecha) {
         List<ViajeDTO> viajes = ControlNegocio.getInstancia().obtenerListaViajes(origen, destino, fecha);
         ViajesDisponibles ventana = new ViajesDisponibles(viajes);
         ventana.setVisible(true);

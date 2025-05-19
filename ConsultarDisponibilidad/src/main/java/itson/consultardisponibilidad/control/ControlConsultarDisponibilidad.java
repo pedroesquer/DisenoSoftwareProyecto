@@ -5,6 +5,7 @@ import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.CamionDTO;
 import itson.rutappdto.ViajeDTO;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -52,9 +53,10 @@ public class ControlConsultarDisponibilidad {
         return listaAsientos;
     }
 
-    
     /**
-     * Método que devuelve la lista de asientos de un camión para colorear los asientos.
+     * Método que devuelve la lista de asientos de un camión para colorear los
+     * asientos.
+     *
      * @param camion Camion del cual se desean obtener los asientos.
      * @return lista de asientos del viaje del camión que se seleccionó.
      */
@@ -65,13 +67,15 @@ public class ControlConsultarDisponibilidad {
     }
 
     /**
-     * Método que devuelve la lista de viajes disponibles segun el origen, el destino y la fecha.
+     * Método que devuelve la lista de viajes disponibles segun el origen, el
+     * destino y la fecha.
+     *
      * @param origen el origen seleccionado por el usuario.
      * @param destino Hacia donde desea ir el usuario.
-     * @param fecha La fecha en la que el usuario desea ir 
+     * @param fecha La fecha en la que el usuario desea ir
      * @return la lista de viajes encontrada con la coincidencia.
      */
-    public List<ViajeDTO> obtenerViajesDisponibles(String origen, String destino, LocalDate fecha) {
+    public List<ViajeDTO> obtenerViajesDisponibles(String origen, String destino, LocalDateTime fecha) {
         List<ViajeDTO> viajes = new ArrayList<>();
         Long contador = 0L;
         for (int i = 0; i < 6; i++) {
@@ -81,16 +85,16 @@ public class ControlConsultarDisponibilidad {
         }
         return viajes;
     }
-    
+
     /**
      * Método que devuelve la lista de destinos disponibles.
+     *
      * @param origen Desde donde se quiere ver los destinos.
      * @return la lista de destinos para un origen.
      */
-    public List<String> obtenerDestinos(String origen){
-        List<String> destinos = new ArrayList<>(Arrays.asList("Cd. Obregón", "Hermosillo", "Navojoa", "Caborca"));        
+    public List<String> obtenerDestinos(String origen) {
+        List<String> destinos = new ArrayList<>(Arrays.asList("Cd. Obregón", "Hermosillo", "Navojoa", "Caborca"));
         return destinos;
     }
 
-    
 }
