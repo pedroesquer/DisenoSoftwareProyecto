@@ -223,23 +223,23 @@ public class BuscarViaje extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Por favor selecciona una fecha.");
             return;
         }
+        java.util.Date fecha = calendar.getTime(); // fecha del JCalendar
 
-        java.util.Date fecha = calendar.getTime();
+// ✅ Convertir a LocalDate si tus métodos usan LocalDate
         LocalDateTime fechaSeleccionada = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        
+        
+//        // Validar que la fecha no sea anterior a hoy
         LocalDateTime hoy = LocalDateTime.now();
-
-        // Validar que la fecha no sea anterior a hoy
         if (fechaSeleccionada.isBefore(hoy)) {
             JOptionPane.showMessageDialog(this, "La fecha seleccionada no puede ser anterior a hoy.");
             return;
         }
-
         // Si todo está bien, continuar
         //Asignamos al boletoDTO los datos seleccionado por el usuario para proceder a la siguiente pantalla
-        BoletoContext.getBoleto().setOrigen(origen);
-        BoletoContext.getBoleto().setDestino(destino);
-        BoletoContext.getBoleto().setFecha(fechaSeleccionada);
 
+// Y así sí puedes usarla como antes:
+        BoletoContext.getBoleto().setFecha(fechaSeleccionada);
         ControlNegocio.getInstancia().obtenerListaViajes(origen, destino, fechaSeleccionada);
         CordinadorPresentacion.getInstancia().mostrarViajesDisponibles(origen, destino, fechaSeleccionada);
         dispose(); // Cerrar la ventana actual

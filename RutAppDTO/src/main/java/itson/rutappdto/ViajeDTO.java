@@ -1,6 +1,8 @@
 package itson.rutappdto;
 
 import java.time.LocalDateTime;
+import java.util.Date;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
 /**
  *
@@ -14,16 +16,21 @@ public class ViajeDTO {
     private String destino;
     private String duracion;
     private CamionDTO camion;
-    private LocalDateTime fecha;
+    
+    @BsonProperty("fechaHora")
+    private Date fecha;
     private String idViaje;
 
-    public ViajeDTO(Double precio, String origen, String destino, String duracion, CamionDTO camion, LocalDateTime fecha) {
+    public ViajeDTO(Double precio, String origen, String destino, String duracion, CamionDTO camion, Date fecha) {
         this.precio = precio;
         this.origen = origen;
         this.destino = destino;
         this.duracion = duracion;
         this.camion = camion;
         this.fecha = fecha;
+    }
+
+    public ViajeDTO() {
     }
 
     public Double getPrecio() {
@@ -66,11 +73,11 @@ public class ViajeDTO {
         this.camion = camion;
     }
 
-    public LocalDateTime getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDateTime fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 

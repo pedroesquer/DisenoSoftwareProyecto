@@ -21,9 +21,12 @@ import java.awt.HeadlessException;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -70,63 +73,70 @@ public class ViajesDisponibles extends javax.swing.JFrame {
 
     // Crear la tarjeta para un viaje
     private JPanel crearTarjetaViaje(ViajeDTO viaje) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-        panel.setBackground(new Color(173, 216, 230)); // Azul pastel
-        panel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(100, 149, 237), 1),
-                BorderFactory.createEmptyBorder(10, 15, 10, 15)
-        ));
-        panel.setPreferredSize(new Dimension(2, 100)); // Tamaño de la tarjeta
+    JPanel panel = new JPanel();
+    panel.setLayout(new BorderLayout());
+    panel.setBackground(new Color(173, 216, 230)); // Azul pastel
+    panel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(100, 149, 237), 1),
+            BorderFactory.createEmptyBorder(10, 15, 10, 15)
+    ));
+    panel.setPreferredSize(new Dimension(2, 100)); // Tamaño de la tarjeta
 
-        // Aquí usamos HTML para mostrar los detalles del viaje
-        String viajeInfo = "<html><b>Destino:  </b>" + viaje.getDestino()
-                + "<b>  Origen:</b> " + viaje.getOrigen() + "<br>"
-                + "<b>Duración:</b> " + viaje.getDuracion() + "<br>"
-                + "<b>Precio:</b> $" + viaje.getPrecio()
-                + "<br> <b>Numero camion:</b> " + viaje.getCamion().getNumeroCamion()
-                + "<b>  Fecha:</b> " + viaje.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "</html>";
-
-        JLabel label = new JLabel(viajeInfo);
-        label.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        panel.add(label, BorderLayout.CENTER);
-
-        // Añadir evento de clic para mostrar los detalles en un JOptionPane
-        panel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-
-                // Guardar los datos seleccionados del viaje
-                BoletoContext.getBoleto().setCamion(viaje.getCamion());
-                BoletoContext.getBoleto().setDuracion(viaje.getDuracion());
-                BoletoContext.getBoleto().setPrecio(viaje.getPrecio());
-                BoletoContext.getBoleto().setFecha(viaje.getFecha());
-
-                // Abrir el frame de asientos
-                CordinadorPresentacion.getInstancia().abrirAsientosDisponibles(viaje.getCamion());
-
-                // Cerrar esta ventana
-                Component comp = SwingUtilities.getWindowAncestor(panel);
-                if (comp instanceof JFrame) {
-                    ((JFrame) comp).dispose();
-                }
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                panel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                panel.setBackground(new Color(135, 206, 250)); // Azul más brillante al pasar mouse
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                panel.setBackground(new Color(173, 216, 230)); // Vuelve al color pastel
-            }
-        });
-        return panel;
-
+    String fechaTexto = "Fecha no disponible";
+    if (viaje.getFecha() != null) {
+        LocalDateTime fechaLocal = viaje.getFecha().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
+        fechaTexto = fechaLocal.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
     }
+
+    String viajeInfo = "<html><b>Destino:  </b>" + viaje.getDestino()
+            + "<b>  Origen:</b> " + viaje.getOrigen() + "<br>"
+            + "<b>Precio:</b> $" + viaje.getPrecio()
+            + "<br> <b>Numero camion:</b> " + viaje.getCamion().getNumeroCamion()+ "<br>"
+            + "<b>  Fecha:</b> " + fechaTexto + "</html>";
+
+    JLabel label = new JLabel(viajeInfo);
+    label.setFont(new Font("SansSerif", Font.PLAIN, 14));
+    panel.add(label, BorderLayout.CENTER);
+
+    panel.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if (viaje.getFecha() != null) {
+                LocalDateTime fechaLocal = viaje.getFecha().toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDateTime();
+                BoletoContext.getBoleto().setFecha(fechaLocal);
+            }
+
+            BoletoContext.getBoleto().setCamion(viaje.getCamion());
+            BoletoContext.getBoleto().setDuracion(viaje.getDuracion());
+            BoletoContext.getBoleto().setPrecio(viaje.getPrecio());
+
+            CordinadorPresentacion.getInstancia().abrirAsientosDisponibles(viaje.getCamion());
+
+            Component comp = SwingUtilities.getWindowAncestor(panel);
+            if (comp instanceof JFrame) {
+                ((JFrame) comp).dispose();
+            }
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            panel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            panel.setBackground(new Color(135, 206, 250));
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            panel.setBackground(new Color(173, 216, 230));
+        }
+    });
+
+    return panel;
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
