@@ -13,11 +13,11 @@ import java.util.List;
  */
 public interface IViajesDAO {
 
-    ViajeDTO agregarViaje(ViajeDTO viaje);
-
-    List<ViajeDTO> consultarViajesPorOrigenDestinoYFecha(String origen, String destino, String fecha);
+    List<ViajeDTO> consultarViajesPorOrigenDestinoYFecha(ViajeDTO viaje);
 
     ViajeDTO consultarViajePorId(String idViaje);
 
     List<ViajeDTO> obtenerTodosLosViajes();
+    
+    
 }

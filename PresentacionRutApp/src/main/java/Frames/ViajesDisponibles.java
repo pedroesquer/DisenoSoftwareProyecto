@@ -81,7 +81,8 @@ public class ViajesDisponibles extends javax.swing.JFrame {
                 BorderFactory.createEmptyBorder(10, 15, 10, 15)
         ));
         panel.setPreferredSize(new Dimension(2, 100)); // Tamaño de la tarjeta
-
+        System.out.println("Fecha de textos dsipo: " + viaje.getFecha());
+        
         String fechaTexto = "Fecha no disponible";
         if (viaje.getFecha() != null) {
             LocalDateTime fechaLocal = viaje.getFecha().toInstant()
@@ -104,10 +105,8 @@ public class ViajesDisponibles extends javax.swing.JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (viaje.getFecha() != null) {
-                    LocalDateTime fechaLocal = viaje.getFecha().toInstant()
-                            .atZone(ZoneId.systemDefault())
-                            .toLocalDateTime();
-                    BoletoContext.getBoleto().setFecha(fechaLocal);
+                    BoletoContext.getBoleto().setFecha(viaje.getFecha());
+
                 }
 
                 CamionDTO camion = viaje.getCamion();
@@ -115,7 +114,6 @@ public class ViajesDisponibles extends javax.swing.JFrame {
                         CordinadorPresentacion.getInstancia().consultarAsientosPorCamion(camion)
                 );
                 BoletoContext.getBoleto().setCamion(camion);
-                BoletoContext.getBoleto().setDuracion(viaje.getDuracion());
                 BoletoContext.getBoleto().setPrecio(viaje.getPrecio());
                 CordinadorPresentacion.getInstancia().abrirAsientosDisponibles(camion);
 

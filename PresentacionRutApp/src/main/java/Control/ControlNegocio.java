@@ -14,6 +14,7 @@ import fachada.FUsuarioActivo;
 import interfaz.IUsuarioActivo;
 import itson.consultardisponibilidad.Interfaz.IConsultarDisponibilidad;
 import itson.consultardisponibilidad.fachada.FachadaConsultarDisponibilidad;
+import itson.persistenciarutapp.implementaciones.Viaje;
 import itson.rutappbo.implementaciones.UsuariosBO;
 import itson.rutappdto.AsientoAsignadoDTO;
 import itson.rutappdto.AsientoBoletoDTO;
@@ -89,8 +90,8 @@ public class ControlNegocio {
         return Arrays.asList("Ciudad Obregon", "Hermosillo", "Guaymas", "Navojoa", "Nogales");
     }
 
-    public List<ViajeDTO> obtenerListaViajes(String origen, String Destino, LocalDateTime fecha) {
-        List<ViajeDTO> viajes = consultarDisponibilidad.consultarViajesDisponibles(origen, Destino, fecha);
+    public List<ViajeDTO> obtenerListaViajes(ViajeDTO viaje) {
+        List<ViajeDTO> viajes = consultarDisponibilidad.consultarViajesDisponibles(viaje);
         if (viajes.isEmpty()) {
             JOptionPane.showMessageDialog(null,
                     "No se encontraron viajes para estos parametros",
@@ -101,7 +102,7 @@ public class ControlNegocio {
         }
     }
 
-    public List<ViajeDTO> obtenerViajesDisponibles(String origen, String Destino, LocalDateTime fecha) {
+    public List<Viaje> obtenerViajesDisponibles(String origen, String Destino, LocalDateTime fecha) {
         return null;
     }
 

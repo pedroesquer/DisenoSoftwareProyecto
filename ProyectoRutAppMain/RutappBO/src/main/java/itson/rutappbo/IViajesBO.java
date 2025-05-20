@@ -4,6 +4,7 @@
  */
 package itson.rutappbo;
 
+import itson.persistenciarutapp.implementaciones.Viaje;
 import itson.rutappdto.ViajeDTO;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,9 +15,9 @@ import java.util.List;
  */
 public interface IViajesBO {
 
-    List<ViajeDTO> consultarViajesPorOrigenDestinoYFecha(String origen, String destino, LocalDateTime fecha);
+    List<ViajeDTO> consultarViajesPorOrigenDestinoYFecha(ViajeDTO viaje);
 
     List<ViajeDTO> consultarTodos();
 
-    void insertarViaje(ViajeDTO viaje);
+    void insertarViaje(Viaje viaje);
 }

@@ -1,6 +1,5 @@
 package itson.persistenciarutapp.implementaciones;
 
-import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
 public class Usuario {

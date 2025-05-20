@@ -4,7 +4,7 @@
  */
 package itson.persistenciarutapp.implementaciones;
 
-
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import static com.mongodb.client.model.Filters.*;
@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -23,45 +24,71 @@ import org.bson.types.ObjectId;
  * @author chris
  */
 public class ViajesDAO implements IViajesDAO {
-    
+
     private final String COLECCION = "viajes";
 
     @Override
-    public ViajeDTO agregarViaje(ViajeDTO viaje) {
+    public List<ViajeDTO> consultarViajesPorOrigenDestinoYFecha(ViajeDTO viaje) {
         MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
-        MongoCollection<ViajeDTO> coleccion = baseDatos.getCollection(COLECCION, ViajeDTO.class);
-        coleccion.insertOne(viaje);
-        return viaje;
-    }
+        MongoCollection<Viaje> coleccion = baseDatos.getCollection(COLECCION, Viaje.class);
 
-    @Override
-    public List<ViajeDTO> consultarViajesPorOrigenDestinoYFecha(String origen, String destino, String fechaStr) {
-        MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
-        MongoCollection<ViajeDTO> coleccion = baseDatos.getCollection(COLECCION, ViajeDTO.class);
+        Date fecha = viaje.getFecha();
+        LocalDate localDate = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        LocalDate fecha = LocalDate.parse(fechaStr); // formato: "yyyy-MM-dd"
-        Date desde = Date.from(fecha.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Date hasta = Date.from(fecha.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date desde = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date hasta = Date.from(localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        return coleccion.find(and(
-            eq("origen", origen),
-            eq("destino", destino),
-            gte("fechaHora", desde),
-            lt("fechaHora", hasta)
+        List<Viaje> resultados = coleccion.find(and(
+                eq("origen", viaje.getOrigen()),
+                eq("destino", viaje.getDestino()),
+                gte("fechaHora", desde),
+                lt("fechaHora", hasta)
         )).into(new ArrayList<>());
+
+        // Mapear de entidad a DTO
+        List<ViajeDTO> listaDTO = new ArrayList<>();
+        for (Viaje v : resultados) {
+            ViajeDTO viajeDTO = new ViajeDTO(v.getPrecio(), v.getOrigen(), v.getDestino(), v.getCamion(), v.getFecha());
+            listaDTO.add(viajeDTO);
+        }
+
+        return listaDTO;
+
     }
 
     @Override
     public ViajeDTO consultarViajePorId(String idViaje) {
         MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
-        MongoCollection<ViajeDTO> coleccion = baseDatos.getCollection(COLECCION, ViajeDTO.class);
-        return coleccion.find(eq("_id", new ObjectId(idViaje))).first();
+        MongoCollection<Viaje> coleccion = baseDatos.getCollection(COLECCION, Viaje.class);
+        Document filtros = new Document();
+        filtros.append("_id", new ObjectId(idViaje));
+        FindIterable<Viaje> resultados = coleccion.find(filtros);
+        Viaje viaje = resultados.first();
+        return parsearViajeDTO(viaje);
     }
 
     @Override
     public List<ViajeDTO> obtenerTodosLosViajes() {
         MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
-        MongoCollection<ViajeDTO> coleccion = baseDatos.getCollection(COLECCION, ViajeDTO.class);
-        return coleccion.find().into(new ArrayList<>());
+        MongoCollection<Viaje> coleccion = baseDatos.getCollection(COLECCION, Viaje.class);
+        List<ViajeDTO> listaDTO = new LinkedList<>();
+        FindIterable<Viaje> resultados = coleccion.find();
+        List<Viaje> listaResultados = new LinkedList<>();
+        return parsearListaViajeDTO(listaResultados);
+
+    }
+
+    public ViajeDTO parsearViajeDTO(Viaje viaje) {
+        return new ViajeDTO(
+                viaje.getPrecio(), viaje.getOrigen(), viaje.getDestino(), viaje.getCamion(), viaje.getFecha());
+    }
+
+    public List<ViajeDTO> parsearListaViajeDTO(List<Viaje> listaViajes) {
+        List<ViajeDTO> listaDTO = new LinkedList<>();
+
+        for (Viaje v : listaViajes) {
+            listaDTO.add(parsearViajeDTO(v));
+        }
+        return listaDTO;
     }
 }

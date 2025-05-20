@@ -1,31 +1,48 @@
-package itson.rutappdto;
+package itson.persistenciarutapp.implementaciones;
 
+import itson.rutappdto.CamionDTO;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.bson.types.ObjectId;
 
 /**
  *
  * @author pedro
  */
-public class ViajeDTO {
-
+public class Viaje {
+    private ObjectId id;
     private Double precio;
     private String origen;
     private String destino;
     private CamionDTO camion;
+    
+    @BsonProperty("fechaHora")
     private Date fecha;
+    
     private String idViaje;
 
-    public ViajeDTO(Double precio, String origen, String destino, CamionDTO camion, Date fecha) {
+    public Viaje() {
+    }
+
+    public Viaje(Double precio, String origen, String destino, CamionDTO camion, Date fecha, String idViaje) {
         this.precio = precio;
         this.origen = origen;
         this.destino = destino;
         this.camion = camion;
         this.fecha = fecha;
+        this.idViaje = idViaje;
     }
 
-    public ViajeDTO() {
+    public ObjectId getId() {
+        return id;
     }
 
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
+
+    
     public Double getPrecio() {
         return precio;
     }
@@ -49,7 +66,6 @@ public class ViajeDTO {
     public void setDestino(String destino) {
         this.destino = destino;
     }
-
 
     public CamionDTO getCamion() {
         return camion;
@@ -75,4 +91,10 @@ public class ViajeDTO {
         this.idViaje = idViaje;
     }
 
+    @Override
+    public String toString() {
+        return "Viaje{" + "precio=" + precio + ", origen=" + origen + ", destino=" + destino + ", camion=" + camion + ", fecha=" + fecha + ", idViaje=" + idViaje + '}';
+    }
+    
+    
 }

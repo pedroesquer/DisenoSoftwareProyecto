@@ -93,8 +93,8 @@ public class CordinadorPresentacion {
         return consultarDisponibilidad.consultarAsientosDisponibles(camion);
     }
 
-    public void mostrarViajesDisponibles(String origen, String destino, LocalDateTime fecha) {
-        List<ViajeDTO> viajes = ControlNegocio.getInstancia().obtenerListaViajes(origen, destino, fecha);
+    public void mostrarViajesDisponibles(ViajeDTO viaje) {
+        List<ViajeDTO> viajes = ControlNegocio.getInstancia().obtenerListaViajes(viaje);
         ViajesDisponibles ventana = new ViajesDisponibles(viajes);
         ventana.setVisible(true);
     }

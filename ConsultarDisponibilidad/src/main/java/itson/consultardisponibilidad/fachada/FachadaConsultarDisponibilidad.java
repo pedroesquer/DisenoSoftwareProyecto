@@ -6,6 +6,7 @@ package itson.consultardisponibilidad.fachada;
 
 import itson.consultardisponibilidad.Interfaz.IConsultarDisponibilidad;
 import itson.consultardisponibilidad.control.ControlConsultarDisponibilidad;
+import itson.persistenciarutapp.implementaciones.Viaje;
 import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.CamionDTO;
 import itson.rutappdto.ViajeDTO;
@@ -20,8 +21,8 @@ import java.util.List;
 public class FachadaConsultarDisponibilidad implements IConsultarDisponibilidad {
 
     @Override
-    public List<ViajeDTO> consultarViajesDisponibles(String origen, String destino, LocalDateTime fecha) {
-        return ControlConsultarDisponibilidad.getInstancia().obtenerViajesDisponibles(origen, destino, fecha);
+    public List<ViajeDTO> consultarViajesDisponibles(ViajeDTO viaje) {
+        return ControlConsultarDisponibilidad.getInstancia().obtenerViajesDisponibles(viaje);
     }
 
     @Override

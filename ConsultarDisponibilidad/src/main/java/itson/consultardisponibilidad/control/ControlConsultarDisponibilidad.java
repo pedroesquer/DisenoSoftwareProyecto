@@ -1,11 +1,8 @@
 package itson.consultardisponibilidad.control;
 
-import enumm.estadoAsiento;
 import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.CamionDTO;
-import itson.rutappdto.ViajeDTO;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -15,13 +12,11 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Projections.include;
-import com.mongodb.client.model.Aggregates;
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Sorts;
 import itson.persistenciarutapp.implementaciones.ManejadorConexiones;
 import org.bson.Document;
 import com.mongodb.Block;
 import itson.persistenciarutapp.implementaciones.CamionesDAO;
+import itson.rutappdto.ViajeDTO;
 
 /**
  *
@@ -95,10 +90,10 @@ public class ControlConsultarDisponibilidad {
      * @param fecha La fecha en la que el usuario desea ir
      * @return la lista de viajes encontrada con la coincidencia.
      */
-    public List<ViajeDTO> obtenerViajesDisponibles(String origen, String destino, LocalDateTime fecha) {
+    public List<ViajeDTO> obtenerViajesDisponibles(ViajeDTO viaje) {
         try {
-            String fechaStr = fecha.toLocalDate().toString(); // yyyy-MM-dd
-            return viajesDAO.consultarViajesPorOrigenDestinoYFecha(origen, destino, fechaStr);
+            String fechaStr = viaje.getFecha().toString();
+            return viajesDAO.consultarViajesPorOrigenDestinoYFecha(viaje);
         } catch (Exception e) {
             System.err.println("Error al consultar los viajes desde MongoDB: " + e.getMessage());
             return new ArrayList<>();
