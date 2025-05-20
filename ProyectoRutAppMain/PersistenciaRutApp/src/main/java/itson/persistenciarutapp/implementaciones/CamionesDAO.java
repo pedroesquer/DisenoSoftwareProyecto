@@ -7,12 +7,16 @@ package itson.persistenciarutapp.implementaciones;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import static com.mongodb.client.model.Filters.eq;
 import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
+import enumm.estadoAsiento;
 import itson.rutappdto.CamionDTO;
 import java.util.ArrayList;
 import java.util.List;
 import itson.persistenciarutapp.ICamionesDAO;
+import itson.rutappdto.AsientoDTO;
+import org.bson.Document;
 
 /**
  *
@@ -28,10 +32,10 @@ public class CamionesDAO implements ICamionesDAO {
         MongoCollection<Camion> coleccion = baseDatos.getCollection(COLECCION, Camion.class);
 
         // Crear índice único por _id si no existiera
-        coleccion.createIndex(
-                Indexes.ascending("_id"),
-                new IndexOptions().unique(true)
-        );
+//        coleccion.createIndex(
+//                Indexes.ascending("numeroDeCamion"),
+//                new IndexOptions().unique(true)
+//        );
     }
 
     @Override
@@ -57,6 +61,26 @@ public class CamionesDAO implements ICamionesDAO {
                 Filters.eq("numeroDeCamion", camion.getNumeroDeCamion()),
                 camion
         );
+    }
+
+    public List<AsientoDTO> obtenerAsientosDisponibles(CamionDTO camion) {
+        MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
+        MongoCollection<Document> coleccion = baseDatos.getCollection("camiones");
+
+        Document camionDoc = coleccion.find(eq("numeroDeCamion", camion.getNumeroCamion())).first();
+
+        List<AsientoDTO> listaAsientos = new ArrayList<>();
+        if (camionDoc != null && camionDoc.containsKey("asientos")) {
+            List<Document> asientosDoc = (List<Document>) camionDoc.get("asientos");
+            for (Document a : asientosDoc) {
+                Long id = a.getInteger("numero").longValue();
+                String estadoStr = a.getString("estado");
+                estadoAsiento estado = estadoStr.equalsIgnoreCase("OCUPADO") ? estadoAsiento.OCUPADO : estadoAsiento.LIBRE;
+                listaAsientos.add(new AsientoDTO(id, estado, String.valueOf(id)));
+            }
+        }
+
+        return listaAsientos;
     }
 
 }

@@ -9,6 +9,6 @@ package enumm;
  * @author multaslokas33
  */
 public enum estadoAsiento {
-    DISPONIBLE,
+    LIBRE,
     OCUPADO
 }

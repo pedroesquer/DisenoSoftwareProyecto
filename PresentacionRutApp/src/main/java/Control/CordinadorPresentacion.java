@@ -19,6 +19,7 @@ import fachada.SeleccionAsiento;
 import interfaz.ISeleccionAsiento;
 import itson.consultardisponibilidad.Interfaz.IConsultarDisponibilidad;
 import itson.consultardisponibilidad.fachada.FachadaConsultarDisponibilidad;
+import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.BoletoContext;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -71,9 +72,13 @@ public class CordinadorPresentacion {
 //        forma.setVisible(true);
 //    }
     public void abrirAsientosDisponibles(CamionDTO camion) {
+        // Cargar los asientos reales desde MongoDB usando la fachada
+        List<AsientoDTO> asientos = consultarDisponibilidad.consultarAsientosDisponibles(camion);
+        camion.setListaAsiento(asientos);
+
+        // Mostrar la ventana con los asientos ya cargados
         AsientosDisponibles formAsientosDisponibles = new AsientosDisponibles(camion);
         formAsientosDisponibles.setVisible(true);
-
     }
 
     public List<String> buscarOrigenesDisponibles() {
@@ -82,6 +87,10 @@ public class CordinadorPresentacion {
 
     public List<String> buscarDestinosDisponibles(String origen) {
         return ControlNegocio.getInstancia().obtenerDestinosDisponibles(origen);
+    }
+
+    public List<AsientoDTO> consultarAsientosPorCamion(CamionDTO camion) {
+        return consultarDisponibilidad.consultarAsientosDisponibles(camion);
     }
 
     public void mostrarViajesDisponibles(String origen, String destino, LocalDateTime fecha) {
@@ -113,7 +122,7 @@ public class CordinadorPresentacion {
         controlTimer.agregarObservador(obs);
     }
 
-    public void abrirLogin(){
+    public void abrirLogin() {
         InicioSesion inicioSesion = new InicioSesion();
         inicioSesion.setVisible(true);
     }

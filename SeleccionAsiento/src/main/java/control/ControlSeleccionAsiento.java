@@ -47,11 +47,11 @@ public class ControlSeleccionAsiento {
     List<AsientoDTO> listaAsientos = new ArrayList<>();
 
     {
-        listaAsientos.add(new AsientoDTO(1L, estadoAsiento.DISPONIBLE, "A1"));
+        listaAsientos.add(new AsientoDTO(1L, estadoAsiento.LIBRE, "A1"));
         listaAsientos.add(new AsientoDTO(2L, estadoAsiento.OCUPADO, "A2"));
-        listaAsientos.add(new AsientoDTO(3L, estadoAsiento.DISPONIBLE, "A3"));
-        listaAsientos.add(new AsientoDTO(4L, estadoAsiento.DISPONIBLE, "A4"));
-        listaAsientos.add(new AsientoDTO(5L, estadoAsiento.DISPONIBLE, "A5"));
+        listaAsientos.add(new AsientoDTO(3L, estadoAsiento.LIBRE, "A3"));
+        listaAsientos.add(new AsientoDTO(4L, estadoAsiento.LIBRE, "A4"));
+        listaAsientos.add(new AsientoDTO(5L, estadoAsiento.LIBRE, "A5"));
     }
 
     /**
@@ -60,10 +60,10 @@ public class ControlSeleccionAsiento {
      * @param asiento El objeto AsientoDTO cuyo estado se desea actualizar.
      */
     public void actualizarEstadoAsiento(AsientoDTO asiento) {
-        if (asiento.getEstado() == estadoAsiento.DISPONIBLE) {
+        if (asiento.getEstado() == estadoAsiento.LIBRE) {
             asiento.setEstado(estadoAsiento.OCUPADO);
         } else {
-            asiento.setEstado(estadoAsiento.DISPONIBLE);
+            asiento.setEstado(estadoAsiento.LIBRE);
         }
     }
 
@@ -106,7 +106,7 @@ public class ControlSeleccionAsiento {
         if (asiento == null) {
             throw new SeleccionAsientoException("Error al obtener el asiento.");
         }
-        return asiento.getEstado() == estadoAsiento.DISPONIBLE;
+        return asiento.getEstado() == estadoAsiento.LIBRE;
     }
 
     public List<AsientoDTO> mostradoListaAsientos(CamionDTO camion) {
@@ -151,7 +151,6 @@ public class ControlSeleccionAsiento {
 //        }
 //        contadorIniciado = false;
 //    }
-
     //TIMER
     public void agregarObservador(ITemporizadorObserver obs) {
         observadores.add(obs);

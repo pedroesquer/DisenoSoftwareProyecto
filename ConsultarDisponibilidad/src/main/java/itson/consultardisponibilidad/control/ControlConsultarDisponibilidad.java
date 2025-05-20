@@ -21,6 +21,7 @@ import com.mongodb.client.model.Sorts;
 import itson.persistenciarutapp.implementaciones.ManejadorConexiones;
 import org.bson.Document;
 import com.mongodb.Block;
+import itson.persistenciarutapp.implementaciones.CamionesDAO;
 
 /**
  *
@@ -29,6 +30,8 @@ import com.mongodb.Block;
 public class ControlConsultarDisponibilidad {
 
     private final IViajesDAO viajesDAO = new ViajesDAO();
+
+    private final CamionesDAO camionesDAO = new CamionesDAO();
 
     private static ControlConsultarDisponibilidad instance;
 
@@ -52,20 +55,20 @@ public class ControlConsultarDisponibilidad {
      *
      * @return
      */
-    private List<AsientoDTO> crearListaAsientos() {
-        List<AsientoDTO> listaAsientos = new ArrayList<>();
-        //Cuando le quitemos el mockeo seria CamionDTO.getListaAsientos();
-        for (long i = 0; i < 24; i++) {
-            String numero = String.valueOf(i);
-            if (i == 5 || i == 7 || i == 20 || i == 21 || i == 1) {
-                listaAsientos.add(new AsientoDTO(i, estadoAsiento.OCUPADO, numero));
-            } else {
-                listaAsientos.add(new AsientoDTO(i, estadoAsiento.DISPONIBLE, numero));
-            }
-
-        }
-        return listaAsientos;
-    }
+//    private List<AsientoDTO> crearListaAsientos() {
+//        List<AsientoDTO> listaAsientos = new ArrayList<>();
+//        //Cuando le quitemos el mockeo seria CamionDTO.getListaAsientos();
+//        for (long i = 0; i < 24; i++) {
+//            String numero = String.valueOf(i);
+//            if (i == 5 || i == 7 || i == 20 || i == 21 || i == 1) {
+//                listaAsientos.add(new AsientoDTO(i, estadoAsiento.OCUPADO, numero));
+//            } else {
+//                listaAsientos.add(new AsientoDTO(i, estadoAsiento.DISPONIBLE, numero));
+//            }
+//
+//        }
+//        return listaAsientos;
+//    }
 
     /**
      * Método que devuelve la lista de asientos de un camión para colorear los
@@ -75,9 +78,12 @@ public class ControlConsultarDisponibilidad {
      * @return lista de asientos del viaje del camión que se seleccionó.
      */
     public List<AsientoDTO> obtenerAsientosDisponibles(CamionDTO camion) {
-        //Cuando le quitemos el mockeo seria CamionDTO.getListaAsientos();
-
-        return crearListaAsientos();
+        try {
+            return camionesDAO.obtenerAsientosDisponibles(camion);
+        } catch (Exception e) {
+            System.err.println("Error al consultar asientos de MongoDB: " + e.getMessage());
+            return new ArrayList<>();
+        }
     }
 
     /**
@@ -121,5 +127,4 @@ public class ControlConsultarDisponibilidad {
                 });
         return destinos;
     }
-
 }
