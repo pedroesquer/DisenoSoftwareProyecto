@@ -1,36 +1,37 @@
-
 package itson.persistenciarutapp.implementaciones;
 
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
-import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
-import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
+import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
-
-/**
- *
- * @author pedro
- */
 public class ManejadorConexiones {
-    private static final String BASE_DATOS = "RutAppDB";
+
+    private static final String BASE_DATOS = "RutAppBD";
     
-        public static MongoDatabase obtenerBaseDatos() {
-        //Configuraciones del mapeador automático
-        CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
-                fromProviders(PojoCodecProvider.builder().automatic(true).build()));
-        
-        //asignar la confirmacion del mapeador con la conexion para que nuestras clases POJO sean reconocidas en automático
+    // Reemplaza <db_password> con tu contraseña codificada si tiene caracteres especiales
+    private static final String URL = "mongodb+srv://rutapp:rutappdiseno@clusterrutapp.fjy5ye9.mongodb.net/?retryWrites=true&w=majority";
+
+    public static MongoDatabase obtenerBaseDatos() {
+        // Configurar Codec para soportar POJOs automáticamente
+        CodecRegistry pojoCodecRegistry = CodecRegistries.fromRegistries(
+            MongoClientSettings.getDefaultCodecRegistry(),
+            CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build())
+        );
+
+        // Configurar cliente con URI y Codec
         MongoClientSettings configuraciones = MongoClientSettings.builder()
-                                                                .codecRegistry(pojoCodecRegistry)
-                                                                .build();
-        //Objeto que representa una conexión a la base de datos
+            .applyConnectionString(new com.mongodb.ConnectionString(URL))
+            .codecRegistry(pojoCodecRegistry)
+            .build();
+
+        // Crear cliente
         MongoClient cliente = MongoClients.create(configuraciones);
-        //Base de datos
-        MongoDatabase baseDatos = cliente.getDatabase(BASE_DATOS);
-        return baseDatos;
-        }
+
+        // Obtener base de datos
+        return cliente.getDatabase(BASE_DATOS);
+    }
 }
