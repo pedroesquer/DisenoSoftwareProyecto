@@ -4,17 +4,31 @@ import enumm.estadoAsiento;
 import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.CamionDTO;
 import itson.rutappdto.ViajeDTO;
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
+import itson.persistenciarutapp.IViajesDAO;
+import itson.persistenciarutapp.implementaciones.ViajesDAO;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Projections.include;
+import com.mongodb.client.model.Aggregates;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Sorts;
+import itson.persistenciarutapp.implementaciones.ManejadorConexiones;
+import org.bson.Document;
+import com.mongodb.Block;
 
 /**
  *
  * @author Bussoft®
  */
 public class ControlConsultarDisponibilidad {
+
+    private final IViajesDAO viajesDAO = new ViajesDAO();
 
     private static ControlConsultarDisponibilidad instance;
 
@@ -76,14 +90,13 @@ public class ControlConsultarDisponibilidad {
      * @return la lista de viajes encontrada con la coincidencia.
      */
     public List<ViajeDTO> obtenerViajesDisponibles(String origen, String destino, LocalDateTime fecha) {
-        List<ViajeDTO> viajes = new ArrayList<>();
-        Long contador = 0L;
-        for (int i = 0; i < 6; i++) {
-            contador++;
-            CamionDTO camion = new CamionDTO(contador, (i + 1) + "a", crearListaAsientos());
-            viajes.add(new ViajeDTO(300.00, origen, destino, "3hr 30min", camion, fecha));
+        try {
+            String fechaStr = fecha.toLocalDate().toString(); // yyyy-MM-dd
+            return viajesDAO.consultarViajesPorOrigenDestinoYFecha(origen, destino, fechaStr);
+        } catch (Exception e) {
+            System.err.println("Error al consultar los viajes desde MongoDB: " + e.getMessage());
+            return new ArrayList<>();
         }
-        return viajes;
     }
 
     /**
@@ -93,7 +106,19 @@ public class ControlConsultarDisponibilidad {
      * @return la lista de destinos para un origen.
      */
     public List<String> obtenerDestinos(String origen) {
-        List<String> destinos = new ArrayList<>(Arrays.asList("Cd. Obregón", "Hermosillo", "Navojoa", "Caborca"));
+        List<String> destinos = new ArrayList<>();
+
+        MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
+        MongoCollection<Document> coleccion = baseDatos.getCollection("viajes");
+
+        coleccion.find(eq("origen", origen))
+                .projection(include("destino"))
+                .forEach((Block<Document>) doc -> {
+                    String destino = doc.getString("destino");
+                    if (!destinos.contains(destino)) {
+                        destinos.add(destino);
+                    }
+                });
         return destinos;
     }
 

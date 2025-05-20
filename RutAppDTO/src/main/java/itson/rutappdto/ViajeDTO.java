@@ -15,6 +15,7 @@ public class ViajeDTO {
     private String duracion;
     private CamionDTO camion;
     private LocalDateTime fecha;
+    private String idViaje;
 
     public ViajeDTO(Double precio, String origen, String destino, String duracion, CamionDTO camion, LocalDateTime fecha) {
         this.precio = precio;
@@ -71,6 +72,14 @@ public class ViajeDTO {
 
     public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
+    }
+
+    public String getIdViaje() {
+        return idViaje;
+    }
+
+    public void setIdViaje(String idViaje) {
+        this.idViaje = idViaje;
     }
 
 }

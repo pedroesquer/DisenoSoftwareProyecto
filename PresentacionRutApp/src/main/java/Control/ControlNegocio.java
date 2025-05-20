@@ -86,7 +86,7 @@ public class ControlNegocio {
     }
 
     public List<String> obtenerOrigenesDisponibles() {
-        return Arrays.asList("Huatabampo", "Los mochis", "Tucson Az.");
+        return Arrays.asList("Ciudad Obregon", "Hermosillo", "Guaymas", "Navojoa", "Nogales");
     }
 
     public List<ViajeDTO> obtenerListaViajes(String origen, String Destino, LocalDateTime fecha) {
