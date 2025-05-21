@@ -33,6 +33,7 @@ public class InicioSesion extends javax.swing.JFrame {
         lblMensaje.setForeground(java.awt.Color.RED);
         lblMensaje.setText("");
         BackGround.add(lblMensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 450, 320, 20));
+        contraseniaPsw.setText("");
 
     }
 
@@ -52,9 +53,9 @@ public class InicioSesion extends javax.swing.JFrame {
         usuarioTxt = new javax.swing.JTextField();
         usuarioLbl = new javax.swing.JLabel();
         contraseniaLbl1 = new javax.swing.JLabel();
-        contraseniaTxt = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         IniciarSesionBtn = new javax.swing.JButton();
+        contraseniaPsw = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -109,24 +110,16 @@ public class InicioSesion extends javax.swing.JFrame {
         });
         BackGround.add(usuarioTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 230, 300, 30));
 
-        usuarioLbl.setText("Usuario");
+        usuarioLbl.setText("Numero de telefono");
         BackGround.add(usuarioLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 210, 130, -1));
 
         contraseniaLbl1.setText("Contraseña");
         BackGround.add(contraseniaLbl1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 280, -1, -1));
 
-        contraseniaTxt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                contraseniaTxtActionPerformed(evt);
-            }
-        });
-        BackGround.add(contraseniaTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 300, 300, 30));
-
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busPng.png"))); // NOI18N
         BackGround.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 80, 210, 120));
 
         IniciarSesionBtn.setBackground(new java.awt.Color(255, 201, 98));
-        IniciarSesionBtn.setForeground(new java.awt.Color(0, 0, 0));
         IniciarSesionBtn.setText("Iniciar Sesion");
         IniciarSesionBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -134,6 +127,9 @@ public class InicioSesion extends javax.swing.JFrame {
             }
         });
         BackGround.add(IniciarSesionBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 380, 130, 60));
+
+        contraseniaPsw.setText("jPasswordField1");
+        BackGround.add(contraseniaPsw, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 310, 300, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -149,17 +145,13 @@ public class InicioSesion extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void contraseniaTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contraseniaTxtActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_contraseniaTxtActionPerformed
-
     private void usuarioTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuarioTxtActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_usuarioTxtActionPerformed
 
     private void IniciarSesionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IniciarSesionBtnActionPerformed
         String numero = usuarioTxt.getText().trim();
-        String pass = contraseniaTxt.getText().trim();
+        String pass = new String(contraseniaPsw.getPassword()).trim();
         UsuarioDTO usuarioPresentacion = new UsuarioDTO(numero, pass);
         // Usamos la fachada para acceder a la interfaz de usuario activo
         IUsuariosBO usuariosBO = new UsuariosBO(); // Para validar las credenciales en la base de datos
@@ -194,7 +186,7 @@ public class InicioSesion extends javax.swing.JFrame {
     private javax.swing.JPanel Header;
     private javax.swing.JButton IniciarSesionBtn;
     private javax.swing.JLabel contraseniaLbl1;
-    private javax.swing.JTextField contraseniaTxt;
+    private javax.swing.JPasswordField contraseniaPsw;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel usuarioLbl;

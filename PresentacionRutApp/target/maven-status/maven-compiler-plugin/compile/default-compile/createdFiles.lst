@@ -44,7 +44,6 @@ Frames/AsientosDisponibles$2.class
 Frames/MainMenu$2.class
 Control/ControlNegocio.class
 Control/CordinadorPresentacion.class
-Frames/InicioSesion$3.class
 Interfaces/TemporizadorObserver.class
 Frames/MainMenu$5.class
 Frames/ComprarBoleto$2.class
