@@ -22,7 +22,7 @@ public class FUsuarioActivo implements IUsuarioActivo{
     }
 
     @Override
-    public void cerrarCesion() {
+    public void cerrarSesion() {
         controlUsuarioActivo.cerrarSesion();
     }
 

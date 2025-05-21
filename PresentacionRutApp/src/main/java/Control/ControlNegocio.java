@@ -70,6 +70,12 @@ public class ControlNegocio {
         this.fachadaUsuarioActivo = new FUsuarioActivo();
     }
 
+    
+    /**
+     * Método singleton para obtener la instancia de ControlNegocio.
+     * Se usa para poder llamarla de cualquier lado y tratar de controlar el solo tener una instancia global.
+     * @return 
+     */
     public static ControlNegocio getInstancia() {
         if (instancia == null) {
             instancia = new ControlNegocio();
@@ -94,10 +100,19 @@ public class ControlNegocio {
         return destinos;
     }
 
+    /**
+     * Método para obtener los origenes de las rutas.
+     * @return Lista de strings con los origenes.
+     */
     public List<String> obtenerOrigenesDisponibles() {
         return Arrays.asList("Ciudad Obregon", "Hermosillo", "Guaymas", "Navojoa", "Nogales");
     }
 
+    /**
+     * Método para obtener la lista de viajes en función de los parametros de busqueda empaquetados en viajeDTO.
+     * @param viaje instancia de viajeDTO que empaqueta origen, destino y fecha.
+     * @return 
+     */
     public List<ViajeDTO> obtenerListaViajes(ViajeDTO viaje) {
         List<ViajeDTO> viajes = consultarDisponibilidad.consultarViajesDisponibles(viaje);
         if (viajes.isEmpty()) {
@@ -114,6 +129,11 @@ public class ControlNegocio {
         return null;
     }
 
+    /**
+     * Método que cambia el estado del asiento momentaneamente a ocupado.
+     * @param asiento asiento el cual se apartará.
+     * @throws SeleccionAsientoException 
+     */
     public void apartarAsiento(AsientoDTO asiento) throws SeleccionAsientoException {
         if (asiento == null) {
             throw new SeleccionAsientoException("Error de asiento");
@@ -121,6 +141,12 @@ public class ControlNegocio {
         ControlSeleccionAsiento.getInstancia().apartarAsiento(asiento);
     }
 
+    /**
+     * Método para obtener la lista de asientos segun el camión.
+     * @param camion Camion del cual se desea obtener los asientos.
+     * @return
+     * @throws CompraBoletoException 
+     */
     public List<AsientoDTO> obtenerAsientos(CamionDTO camion) throws CompraBoletoException {
         return consultarDisponibilidad.consultarAsientosDisponibles(camion);
 
@@ -201,6 +227,16 @@ public class ControlNegocio {
         this.asientosSeleccionados = asientosSeleccionados;
     }
 
+    
+    /**
+     * Método  que se comunica con el subsistema de comprar boleto y regresa en función del subsistema.
+     * Si los datos de de tarjeta en detallesPago son nulos se toma como monedero.
+     * @param detallesPago los detalles del pago si es con tarjeta o monedero.
+     * @param usuarioDTO Usuario actual de la sesión.
+     * @return True si la compra fue exitosa, false de lo contrario.
+     * @throws CompraBoletoException
+     * @throws PagoBoletoException 
+     */
     public boolean comprarBoleto(DetallesPagoDTO detallesPago, UsuarioDTO usuarioDTO) throws CompraBoletoException, PagoBoletoException {
         System.out.println("Paso 1: Validando detalles de pago");
 
@@ -253,27 +289,38 @@ public class ControlNegocio {
         }
     }
 
-    // Método para iniciar sesión
+    /**
+     * Método que establece el usuario de la clase singleton como la unica instacia.
+     * @param usuarioDTO Usuario obtenido en la base de datos.
+     */
     public void iniciarSesion(UsuarioDTO usuarioDTO) {
         // Usamos la fachada para iniciar la sesión
         fachadaUsuarioActivo.iniciarSesion(usuarioDTO);
-        System.out.println("_------------------------------------------------------------");
-        System.out.println("Sesión iniciada para el usuario: " + usuarioDTO.getNumeroTelefonico() + "con nombre de " + usuarioDTO.getNombre() + " y saldo de " + usuarioDTO.getSaldoMonedero());
     }
 
-    // Método para obtener el usuario actual
+    /**
+     * Método para obtener el usuario activo de la clase UsuarioActivaManager.
+     * @return el Usuario que esta iniciado en la sesión.
+     */
     public UsuarioDTO obtenerUsuarioActivo() {
         return fachadaUsuarioActivo.obtenerUsuarioActual();
     }
 
-    // Método para verificar si hay sesión activa
+    /** 
+     * Método para verificar si hay sesión activa
+     * 
+     * @return True si una sesión esta iniciada, false si no.
+     */
     public boolean haySesionActiva() {
         return fachadaUsuarioActivo.haySesionActiva();
     }
 
-    // Método para cerrar sesión
+    /**
+     * Método para sacar al usuario de la sesión actual.
+     * Establece el usuarioDTO como null. 
+     */
     public void cerrarSesion() {
-        fachadaUsuarioActivo.cerrarCesion();
+        fachadaUsuarioActivo.cerrarSesion();
         System.out.println("Sesión cerrada.");
     }
 

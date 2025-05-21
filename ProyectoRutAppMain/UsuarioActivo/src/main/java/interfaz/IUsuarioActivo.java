@@ -12,7 +12,7 @@ public interface IUsuarioActivo {
     
     public abstract void iniciarSesion(UsuarioDTO usuario);
     
-    public abstract void cerrarCesion();
+    public abstract void cerrarSesion();
    
     public UsuarioDTO obtenerUsuarioActual();
     
