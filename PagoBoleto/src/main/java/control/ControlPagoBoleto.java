@@ -64,7 +64,7 @@ public class ControlPagoBoleto {
      *
      * @return Si la fecha de vencimiento es válida o no.
      */
-    public boolean validarFechaVencimiento(String fecha) {
+    public boolean validarFechaVencimiento(String fecha) throws PagoBoletoException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yy");
         YearMonth fechaActual = YearMonth.now();
 
@@ -72,7 +72,7 @@ public class ControlPagoBoleto {
             YearMonth fechaVencimiento = YearMonth.parse(fecha, formatter);
             return !fechaVencimiento.isBefore(fechaActual);
         } catch (DateTimeParseException e) {
-            return false;
+            throw new PagoBoletoException("Error fecha vencimiento");
         }
     }
 
@@ -82,13 +82,13 @@ public class ControlPagoBoleto {
      *
      * @return Si hay saldo para cubrir el importe o no.
      */
-    public boolean validarSaldoMonedero(UsuarioDTO usuarioDTO, Double importe) {
+    public boolean validarSaldoMonedero(UsuarioDTO usuarioDTO, Double importe) throws PagoBoletoException {
         Double saldoDisponible = usuarioDTO.getSaldoMonedero();
 
         if (saldoDisponible != null && saldoDisponible >= importe) {
             return true;
         } else {
-            return false;
+            throw new PagoBoletoException("Saldo insuficiente;");
         }
     }
 
@@ -98,12 +98,13 @@ public class ControlPagoBoleto {
      *
      * @param usuarioDTO
      * @param cantidad
+     * @throws excepciones.PagoBoletoException
      */
-    public void descontarSaldoMonedero(UsuarioDTO usuarioDTO, Double cantidad) {
+    public void descontarSaldoMonedero(UsuarioDTO usuarioDTO, Double cantidad) throws PagoBoletoException {
         if (validarSaldoMonedero(usuarioDTO, cantidad)) {
             usuarioDTO.setSaldoMonedero(usuarioDTO.getSaldoMonedero() - cantidad);
             usuariosBO.descontarSaldo(usuarioDTO);
-        }
+        } 
     }
 
     /**
@@ -145,18 +146,16 @@ public class ControlPagoBoleto {
                 descontarSaldoMonedero(usuarioDTO, monto);
                 
                 //AQUI YA SE LE AGREGA EL SALDO
-                agregarSaldoMonedero(usuarioDTO, calcularPuntosRecompensa(monto)); //Aqui se supone que calcula el 5% de la compra y lo suma
+                agregarSaldoMonedero(usuarioDTO, calcularPuntosRecompensa(monto)); 
                 System.out.println("Pago con monedero aprobado.");
                 return true;
             } else {
-                System.out.println("Saldo insuficiente en monedero.");
-                return false;
+                throw new PagoBoletoException("Saldo insuficiente en monedero.");
             }
         } else {
             // Validaciones locales
             if (!validarNumeroTarjeta(tarjeta.getNumeroTarjeta())) {
-                System.out.println("Número de tarjeta inválido.");
-                return false;
+                throw new PagoBoletoException("Numero de tarjeta invalido");
             }
 
             //Enviar al banco ficticio (servidor RMI)

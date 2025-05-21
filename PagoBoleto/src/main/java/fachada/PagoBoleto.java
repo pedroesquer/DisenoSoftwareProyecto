@@ -13,7 +13,7 @@ import itson.rutappdto.UsuarioDTO;
 public class PagoBoleto implements IPagoBoleto {
 
     @Override
-    public boolean procesarPagoMonedero(UsuarioDTO usuarioDTO, Double cantidad) {
+    public boolean procesarPagoMonedero(UsuarioDTO usuarioDTO, Double cantidad) throws PagoBoletoException{
         if (usuarioDTO != null) {
             ControlPagoBoleto.getInstancia().descontarSaldoMonedero(usuarioDTO, cantidad);
             return true;

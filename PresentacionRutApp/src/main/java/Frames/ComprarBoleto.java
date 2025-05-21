@@ -298,7 +298,6 @@ public class ComprarBoleto extends javax.swing.JFrame implements TemporizadorObs
         // Crear DetallesPagoDTO para pago con monedero sin detalles de tarjeta
         detallesPago = new DetallesPagoDTO("Monedero", (BoletoContext.getBoleto().getPrecio() * BoletoContext.getBoleto().getListaAsiento().size()),
                 BoletoContext.getBoleto());  // No pasa detallesTarjeta
-        javax.swing.JOptionPane.showMessageDialog(this, "¡Pago con monedero procesado con éxito!");
 //        CordinadorPresentacion.getInstancia().abrirResumenCompra(); // Navegar al resumen
 //        this.dispose(); // Cerrar la ventana después de la selección del pago
     } else {
@@ -309,13 +308,10 @@ public class ComprarBoleto extends javax.swing.JFrame implements TemporizadorObs
     // Ahora llamamos al método de negocio para procesar la compra
     boolean compraExitosa = false;
     try {
-        System.out.println("DEBUGPRESENTACION");
         compraExitosa = ControlNegocio.getInstancia().comprarBoleto(detallesPago, usuarioActivo.obtenerUsuarioActual());
     } catch (PagoBoletoException ex) {
-        Logger.getLogger(ComprarBoleto.class.getName()).log(Level.SEVERE, "Error al procesar el pago: ", ex);
         javax.swing.JOptionPane.showMessageDialog(this, "Error en el procesamiento del pago. Por favor, intente nuevamente.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
     } catch (CompraBoletoException ex) {
-        Logger.getLogger(ComprarBoleto.class.getName()).log(Level.SEVERE, "Error en la compra del boleto: ", ex);
         javax.swing.JOptionPane.showMessageDialog(this, "Error en la compra del boleto. Por favor, intente nuevamente.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
     }
 

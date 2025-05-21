@@ -129,7 +129,7 @@ public class InicioSesion extends javax.swing.JFrame {
         BackGround.add(IniciarSesionBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 380, 130, 60));
 
         contraseniaPsw.setText("jPasswordField1");
-        BackGround.add(contraseniaPsw, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 310, 300, -1));
+        BackGround.add(contraseniaPsw, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 302, 300, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

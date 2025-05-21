@@ -10,7 +10,7 @@ import itson.rutappdto.UsuarioDTO;
  */
 public interface IPagoBoleto {
     void agregarSaldoMonedero(UsuarioDTO usuarioDTO, Double cantidad);
-    boolean procesarPagoMonedero(UsuarioDTO usuarioDTO, Double cantidad);
+    boolean procesarPagoMonedero(UsuarioDTO usuarioDTO, Double cantidad) throws PagoBoletoException;
     boolean procesarPagoTarjeta(String fecha, String numeroTarjeta) throws PagoBoletoException;
     boolean procesarPago(DetallesPagoDTO detalles, UsuarioDTO usuarioDTO) throws PagoBoletoException;
 }
