@@ -7,7 +7,6 @@ package itson.persistenciarutapp.implementaciones;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import itson.persistenciarutapp.IBoletoDAO;
-import itson.rutappdto.BoletoDTO;
 
 /**
  *

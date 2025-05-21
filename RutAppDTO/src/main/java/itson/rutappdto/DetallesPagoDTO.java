@@ -17,6 +17,7 @@ public class DetallesPagoDTO implements Serializable{
     private Integer terminacionTarjeta;
     private BoletoDTO boleto;
     private TarjetaCreditoDTO detallesTarjeta;
+    
 
     public DetallesPagoDTO() {
     }

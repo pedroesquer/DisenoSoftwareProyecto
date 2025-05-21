@@ -156,7 +156,6 @@ public class ControlPagoBoleto {
 
             //Enviar al banco ficticio (servidor RMI)
             try {
-                System.out.println("PEPONGAAAS");
                 ClienteBancoRMI cliente = new ClienteBancoRMI();
                 boolean aprobado = cliente.realizarPago(detalles);
 
