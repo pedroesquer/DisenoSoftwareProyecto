@@ -88,20 +88,20 @@ public class CamionesDAO implements ICamionesDAO {
     }
 
     @Override
-    public void ocuparAsientos(String idCamion, List<AsientoBoletoDTO> asientos) {
+    public void ocuparAsientos(String numeroCamion, List<AsientoBoletoDTO> asientos) {
 
         MongoDatabase db = ManejadorConexiones.obtenerBaseDatos();
         MongoCollection<Document> camiones = db.getCollection("camiones");
 
         for (AsientoBoletoDTO asientoBoleto : asientos) {
-            String numeroAsiento = asientoBoleto.getAsiento().getNumero();
+            int numeroAsiento = Integer.parseInt(asientoBoleto.getAsiento().getNumero());
 
             // Actualiza el estado del asiento específico usando arrayFilters
             camiones.updateOne(
-                    Filters.eq("_id", new ObjectId(idCamion)),
+                    Filters.eq("numeroDeCamion", numeroCamion),
                     Updates.set("asientos.$[elem].estado", "OCUPADO"),
                     new UpdateOptions().arrayFilters(List.of(
-                            Filters.eq("elem.numeroAsiento", numeroAsiento)
+                            Filters.eq("elem.numero", numeroAsiento)
                     ))
             );
         }

@@ -42,8 +42,6 @@ public class ComprarBoleto implements IComprarBoleto {
 
     @Override
     public boolean procesarCompra(DetallesPagoDTO detalles, UsuarioDTO usuario) throws CompraBoletoException, PagoBoletoException {
-
-        System.out.println("Soy gay");
         try {
             // Aquí va el código que realiza el pago
             System.out.println("Pago en proceso...");

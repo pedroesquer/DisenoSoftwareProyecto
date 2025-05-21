@@ -1,4 +1,4 @@
-excepciones/PagoBoletoException.class
-control/ControlPagoBoleto.class
-interfaz/IPagoBoleto.class
-fachada/PagoBoleto.class
+control\ControlPagoBoleto.class
+excepciones\PagoBoletoException.class
+fachada\PagoBoleto.class
+interfaz\IPagoBoleto.class

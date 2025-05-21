@@ -217,6 +217,7 @@ public class ControlNegocio {
             System.out.println(pagoExitoso);
         } else if ("Monedero".equals(detallesPago.getMetodoPago())) {
             System.out.println("PAGO 1 LLEGO - Monedero");
+            System.out.println(BoletoContext.getBoleto().getViaje().getCamion());
             pagoExitoso = comprarBoleto.procesarCompra(detallesPago, usuarioDTO);
         } else {
             throw new CompraBoletoException("Método de pago no válido.");

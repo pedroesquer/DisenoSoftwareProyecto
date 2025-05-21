@@ -171,6 +171,6 @@ public class ControlSeleccionAsiento {
     
     public void venderAsientos(BoletoDTO boleto) throws NegocioException{
         ICamionesBO camionesBO = new CamionesBO();
-        camionesBO.ocuparAsientos(boleto.getCamion().getIdCamion().toString(), boleto.getListaAsiento());
+        camionesBO.ocuparAsientos(boleto.getViaje().getCamion().getNumeroCamion(),boleto.getListaAsiento());
     }
 }
