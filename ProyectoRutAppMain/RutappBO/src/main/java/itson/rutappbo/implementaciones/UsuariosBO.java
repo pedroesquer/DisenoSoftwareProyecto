@@ -134,4 +134,19 @@ public class UsuariosBO implements IUsuariosBO {
         return false;
     }
 
+    /**
+     * Método que en base al saldo de la clase del usuarioDTO actualiza el saldo en la base de datos.
+     * @param usuario usuarioDTO
+     * @return True si fue exitoso, false si no
+     */
+    @Override
+    public boolean agregarSaldo(UsuarioDTO usuario) {
+        if (usuario != null) {
+            return usuariosDAO.actualizarSaldo(usuario);
+        }
+        return false;
+    }
+    
+    
+
 }

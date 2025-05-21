@@ -109,6 +109,8 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
         botonAceptar = new javax.swing.JButton();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        lblMonedero = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -213,8 +215,8 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
 
         jLabel9.setBackground(new java.awt.Color(255, 255, 255));
         jLabel9.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        jLabel9.setText("Precio");
-        BackGround.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, 160, -1));
+        jLabel9.setText("Monedero generado");
+        BackGround.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 380, 160, -1));
         BackGround.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 112, 530, 20));
         BackGround.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 530, 20));
         BackGround.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 463, 460, 0));
@@ -273,6 +275,16 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
         jLabel18.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
         jLabel18.setText("Camion");
         BackGround.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 160, -1));
+
+        jLabel10.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel10.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
+        jLabel10.setText("Precio");
+        BackGround.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, 160, -1));
+
+        lblMonedero.setBackground(new java.awt.Color(255, 255, 255));
+        lblMonedero.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
+        lblMonedero.setText("$....");
+        BackGround.add(lblMonedero, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 370, 160, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -340,6 +352,7 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
     private javax.swing.JButton botonAceptar;
     private javax.swing.JButton botonCancelar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -358,6 +371,7 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
     private javax.swing.JLabel lbCamion;
     private javax.swing.JLabel lblAsientos;
     private javax.swing.JLabel lblDestino;
+    private javax.swing.JLabel lblMonedero;
     private javax.swing.JLabel lblNombres;
     private javax.swing.JLabel lblOrigen;
     private javax.swing.JLabel lblPrecio;
@@ -388,9 +402,11 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
         // Precio por asiento
         double precio = boleto.getPrecio();
         double total = precio * BoletoContext.getBoleto().getListaAsiento().size();
+        double monederoGenerado = total * 0.05;
 
         lblPrecio.setText("$" + precio);
         lblTotal.setText("$" + total);
+        lblMonedero.setText("$" + monederoGenerado);
     }
 
     @Override

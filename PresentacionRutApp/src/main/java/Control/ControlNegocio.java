@@ -270,7 +270,7 @@ public class ControlNegocio {
                         viajeDTO.getOrigen(),
                         viajeDTO.getDestino(),
                         viajeDTO.getCamion(),
-                        viajeDTO.getFecha(), // o .getFecha() si así se llama
+                        viajeDTO.getFecha(), 
                         viajeDTO.getIdViaje()
                 );
 

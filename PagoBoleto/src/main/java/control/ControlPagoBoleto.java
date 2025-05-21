@@ -115,13 +115,14 @@ public class ControlPagoBoleto {
     public void agregarSaldoMonedero(UsuarioDTO usuarioDTO, Double cantidad) {
         if (usuarioDTO.getSaldoMonedero() != null) {
             usuarioDTO.setSaldoMonedero(usuarioDTO.getSaldoMonedero() + cantidad);
+            usuariosBO.agregarSaldo(usuarioDTO);
         }
     }
 
     /**
      * Método el cual se encarga de procesar el pago.Si el pago es con monedero
- lo hace manual dentro del método y si es con tarjeta llama a
- Infraestructura.
+        lo hace manual dentro del método y si es con tarjeta llama a
+        Infraestructura.
      *
      * @param detalles detalles del pago.
      * @param usuarioDTO
@@ -140,7 +141,11 @@ public class ControlPagoBoleto {
         if (tarjeta == null) {
             // Pago con monedero
             if (validarSaldoMonedero(usuarioDTO, monto)) {
+                //AQUI SE LE DESCUENTA EL SALDO 
                 descontarSaldoMonedero(usuarioDTO, monto);
+                
+                //AQUI YA SE LE AGREGA EL SALDO
+                agregarSaldoMonedero(usuarioDTO, calcularPuntosRecompensa(monto)); //Aqui se supone que calcula el 5% de la compra y lo suma
                 System.out.println("Pago con monedero aprobado.");
                 return true;
             } else {
@@ -158,7 +163,9 @@ public class ControlPagoBoleto {
             try {
                 ClienteBancoRMI cliente = new ClienteBancoRMI();
                 boolean aprobado = cliente.realizarPago(detalles);
-
+                if(aprobado){
+                    agregarSaldoMonedero(usuarioDTO, calcularPuntosRecompensa(monto));
+                }
                 return aprobado;
 
             } catch (Exception e) {
@@ -166,6 +173,20 @@ public class ControlPagoBoleto {
                 return false;
             }
         }
+    }
+    
+    
+    
+    /**
+     * Método privado para calcular la recompensa del sistema de puntos.
+     * Se calcula el 5% de la compra para despues añadirlo al monedero del usuario.
+     * @param monto Monto total de la compra.
+     * @return el monto de los puntos a sumar
+     */
+    private double calcularPuntosRecompensa(Double monto){
+        Double montoPuntos = monto * .05; //Es el cinco %
+        
+        return montoPuntos;
     }
 
 }

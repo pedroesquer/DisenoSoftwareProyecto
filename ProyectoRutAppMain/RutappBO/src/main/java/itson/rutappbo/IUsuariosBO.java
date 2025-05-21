@@ -23,4 +23,6 @@ public interface IUsuariosBO {
     
     boolean descontarSaldo(UsuarioDTO usuario);
     
+    boolean agregarSaldo(UsuarioDTO usuario);
+    
 }

@@ -1,5 +1,7 @@
 package utilerias;
 
+import java.time.YearMonth;
+import java.time.format.DateTimeParseException;
 import javax.swing.text.*;
 
 /**
@@ -16,102 +18,109 @@ import javax.swing.text.*;
 public class FechaDocumentFilter extends DocumentFilter {
 
     /**
-     * Maneja la inserción de nuevos caracteres al documento. Inserta
-     * automáticamente '/' si se han escrito más de dos dígitos.
-     *
-     * @param fb El bypass del filtro
-     * @param offset Posición de inserción
-     * @param string Texto a insertar
-     * @param attr Atributos del texto
+     * Maneja la inserción de nuevos caracteres en el documento.
+     * Inserta '/' automáticamente después de los dos primeros dígitos
+     * y valida que la fecha tenga un formato lógico y no esté vencida.
      */
     @Override
     public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
             throws BadLocationException {
-        if (string == null) {
-            return;
-        }
+        if (string == null) return;
 
-        // Construye el texto completo como si ya se hubiera insertado
+        // Construye el texto resultante al insertar
         StringBuilder sb = new StringBuilder(fb.getDocument().getText(0, fb.getDocument().getLength()));
         sb.insert(offset, string);
-
         String resultado = formatear(sb.toString());
 
-        // Reemplaza el contenido solo si es válido
+        // Reemplaza solo si el resultado es válido
         if (resultado != null) {
             fb.replace(0, fb.getDocument().getLength(), resultado, attr);
         }
     }
 
     /**
-     * Maneja el reemplazo de texto existente en el documento. Se asegura de
-     * mantener el formato dd/MM.
-     *
-     * @param fb El bypass del filtro
-     * @param offset Posición inicial del reemplazo
-     * @param length Longitud del texto a reemplazar
-     * @param text Texto nuevo a insertar
-     * @param attrs Atributos del texto
+     * Maneja la sustitución de texto existente en el documento.
+     * Aplica validaciones de formato y valores lógicos.
      */
     @Override
     public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
             throws BadLocationException {
-        if (text == null) {
-            return;
-        }
+        if (text == null) return;
 
-        // Simula el texto resultante si se realiza el reemplazo
+        // Simula el texto con el reemplazo
         StringBuilder sb = new StringBuilder(fb.getDocument().getText(0, fb.getDocument().getLength()));
         sb.replace(offset, offset + length, text);
-
         String resultado = formatear(sb.toString());
 
+        // Aplica el reemplazo solo si es válido
         if (resultado != null) {
             fb.replace(0, fb.getDocument().getLength(), resultado, attrs);
         }
     }
 
     /**
-     * Maneja la eliminación de texto del documento. Aplica el formato restante
-     * tras eliminar caracteres.
-     *
-     * @param fb El bypass del filtro
-     * @param offset Posición de inicio de eliminación
-     * @param length Longitud del texto a eliminar
+     * Maneja la eliminación de texto del documento.
+     * Revalida y reformatea el texto restante después de eliminar.
      */
     @Override
     public void remove(FilterBypass fb, int offset, int length)
             throws BadLocationException {
-        // Simula el texto resultante si se elimina parte del contenido
+        // Simula el texto tras eliminar
         StringBuilder sb = new StringBuilder(fb.getDocument().getText(0, fb.getDocument().getLength()));
         sb.delete(offset, offset + length);
-
         String resultado = formatear(sb.toString());
 
+        // Aplica el nuevo texto formateado o limpia si es inválido
         fb.replace(0, fb.getDocument().getLength(), resultado != null ? resultado : "", null);
     }
 
     /**
-     * Aplica formato dd/MM al texto dado, insertando una barra automáticamente
-     * después de los dos primeros dígitos.
+     * Aplica formato MM/YY a una cadena numérica.
+     * También valida que el mes sea válido (1-12) y que la fecha no esté vencida.
      *
-     * @param texto Texto a formatear
-     * @return Texto con formato dd/MM o null si es inválido
+     * @param texto Entrada numérica del usuario
+     * @return Cadena formateada o null si es inválida
      */
     private String formatear(String texto) {
-        // Elimina todo carácter que no sea dígito
+        // Elimina caracteres no numéricos
         String limpio = texto.replaceAll("[^\\d]", "");
 
-        // Si hay más de 4 dígitos, no se permite
+        // Limita a 4 dígitos numéricos (MMYY)
         if (limpio.length() > 4) {
             return null;
         }
 
-        // Inserta la barra si hay al menos 3 dígitos
+        // Inserta el slash automáticamente
+        String formateado;
         if (limpio.length() > 2) {
-            return limpio.substring(0, 2) + "/" + limpio.substring(2);
+            formateado = limpio.substring(0, 2) + "/" + limpio.substring(2);
         } else {
-            return limpio;
+            formateado = limpio;
         }
+
+        // Validar mes y año si ya están completos
+        if (limpio.length() == 4) {
+            try {
+                int mes = Integer.parseInt(limpio.substring(0, 2));
+                int anio = Integer.parseInt("20" + limpio.substring(2));
+
+                // Validar que el mes esté en el rango correcto
+                if (mes < 1 || mes > 12) {
+                    return null;
+                }
+
+                // Verificar que la fecha no sea pasada
+                YearMonth fechaIngresada = YearMonth.of(anio, mes);
+                YearMonth actual = YearMonth.now();
+                if (fechaIngresada.isBefore(actual)) {
+                    return null;
+                }
+
+            } catch (NumberFormatException | DateTimeParseException e) {
+                return null;
+            }
+        }
+
+        return formateado;
     }
 }

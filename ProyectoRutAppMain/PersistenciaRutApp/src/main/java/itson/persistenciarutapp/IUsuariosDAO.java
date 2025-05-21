@@ -21,5 +21,7 @@ public interface IUsuariosDAO {
     UsuarioDTO validarLogin(UsuarioDTO usuario);
     
     boolean actualizarSaldo(UsuarioDTO usuario);
+    
+    boolean agregarSaldo(UsuarioDTO usuario);
 
 }

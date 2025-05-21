@@ -98,4 +98,15 @@ public class UsuariosDAO implements IUsuariosDAO {
 
         return coleccion.updateOne(filtro, actualizacion).getModifiedCount() > 0;    }
 
+    @Override
+    public boolean agregarSaldo(UsuarioDTO usuario) {
+        MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
+        MongoCollection<Document> coleccion = baseDatos.getCollection(COLECCION);
+
+        Document filtro = new Document("numeroTelefonico", usuario.getNumeroTelefonico());
+        Document actualizacion = new Document("$set", new Document("saldoMonedero", usuario.getSaldoMonedero()));
+
+        return coleccion.updateOne(filtro, actualizacion).getModifiedCount() > 0; 
+    }
+
 }
