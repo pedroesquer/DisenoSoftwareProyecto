@@ -1,10 +1,15 @@
 package control;
 
 import enumm.estadoAsiento;
+import excepciones.NegocioException;
 import excepciones.SeleccionAsientoException;
 import interfaz.ITemporizadorObserver;
+import itson.rutappbo.ICamionesBO;
+import itson.rutappbo.implementaciones.CamionesBO;
+import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.BoletoContext;
+import itson.rutappdto.BoletoDTO;
 import itson.rutappdto.CamionDTO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -161,5 +166,11 @@ public class ControlSeleccionAsiento {
         for (ITemporizadorObserver obs : observadores) {
             obs.tiempoAgotado();
         }
+    }
+    
+    
+    public void venderAsientos(BoletoDTO boleto) throws NegocioException{
+        ICamionesBO camionesBO = new CamionesBO();
+        camionesBO.ocuparAsientos(boleto.getCamion().getIdCamion().toString(), boleto.getListaAsiento());
     }
 }

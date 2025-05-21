@@ -1030,7 +1030,7 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
 
     private void btnCompraViajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompraViajeActionPerformed
         List<AsientoBoletoDTO> lista = obtenerAsientosYPasajeros(); // tu método original
-        BoletoContext.getBoleto().setListaAsiento(lista);
+        BoletoContext.getBoleto().setListaAsiento(lista);   
         CordinadorPresentacion.getInstancia().abrirResumenCompra();
         this.dispose();
     }//GEN-LAST:event_btnCompraViajeActionPerformed
@@ -1039,7 +1039,7 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
         int confirmacion = JOptionPane.showConfirmDialog(null, "Confirmar cancelación", "¿Estas seguro de cancelar"
                 + "la operacion? Se borrará tu progreso", JOptionPane.YES_NO_OPTION);
 
-        if (confirmacion == JOptionPane.YES_OPTION) {   
+        if (confirmacion == JOptionPane.YES_OPTION) {
             ControlTimer.getInstancia().finalizarTemporizador();   //DETENEMOS EL TIEMPO
             BoletoContext.limpiarBoleto();                         //LIMPIAMOS EL BOLETO QUE CREAMOS CON LOS DATOS
             reiniciarAsientosSeleccionados();                      //SE LIBERA VISUALMENTE LOS ASIENTOS SELECCIONADOS

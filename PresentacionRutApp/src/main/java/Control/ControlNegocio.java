@@ -8,9 +8,12 @@ import Ex.CompraBoletoException;
 import Fachada.ComprarBoleto;
 import Interfaz.IComprarBoleto;
 import control.ControlSeleccionAsiento;
+import excepciones.NegocioException;
 import excepciones.PagoBoletoException;
 import excepciones.SeleccionAsientoException;
 import fachada.FUsuarioActivo;
+import fachada.SeleccionAsiento;
+import interfaz.ISeleccionAsiento;
 import interfaz.IUsuarioActivo;
 import itson.consultardisponibilidad.Interfaz.IConsultarDisponibilidad;
 import itson.consultardisponibilidad.fachada.FachadaConsultarDisponibilidad;
@@ -19,6 +22,7 @@ import itson.rutappbo.implementaciones.UsuariosBO;
 import itson.rutappdto.AsientoAsignadoDTO;
 import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.AsientoDTO;
+import itson.rutappdto.BoletoContext;
 import itson.rutappdto.CamionDTO;
 import itson.rutappdto.DetallesPagoDTO;
 import itson.rutappdto.UsuarioDTO;
@@ -28,6 +32,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import usuarioActivoManager.UsuarioActivoManager;
 
@@ -41,6 +47,7 @@ public class ControlNegocio {
 
     IConsultarDisponibilidad consultarDisponibilidad = new FachadaConsultarDisponibilidad();
     IComprarBoleto comprarBoleto = new ComprarBoleto();
+    ISeleccionAsiento seleccionAsiento = new SeleccionAsiento();
 
     //VARIABLES PARA GUARDAR LOS DATOS DEL BOLETO 
     private String origenSeleccionado;
@@ -217,10 +224,18 @@ public class ControlNegocio {
 
         if (pagoExitoso) {
             System.out.println("Compra exitosa.");
+            try {
+                seleccionAsiento.ocuparAsientos(BoletoContext.getBoleto());
+            } catch (NegocioException ex) {
+                Logger.getLogger(ControlNegocio.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Error al apartar los asientos, revisar código");
+            }
             return true;
         } else {
             throw new CompraBoletoException("El pago no fue aprobado.");
         }
+        
+        
     }
 
     // Método para iniciar sesión

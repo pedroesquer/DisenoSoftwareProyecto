@@ -5,6 +5,7 @@
 package itson.persistenciarutapp;
 
 import itson.persistenciarutapp.implementaciones.Camion;
+import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.CamionDTO;
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface ICamionesDAO {
     List<Camion> consultarTodosLosCamiones();
 
     void actualizarCamion(Camion camion);
+    
+    void ocuparAsientos(String idCamion, List<AsientoBoletoDTO> asientos);
 }

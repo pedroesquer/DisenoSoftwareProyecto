@@ -2,8 +2,10 @@ package fachada;
 
 import control.ControlSeleccionAsiento;
 import enumm.estadoAsiento;
+import excepciones.NegocioException;
 import interfaz.ISeleccionAsiento;
 import itson.rutappdto.AsientoDTO;
+import itson.rutappdto.BoletoDTO;
 import itson.rutappdto.CamionDTO;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,11 @@ public class SeleccionAsiento implements ISeleccionAsiento {
 //    public void finalizarTemporizador() {
 //        ControlSeleccionAsiento.getInstancia().finalizarTimer();
 //    }
+
+    @Override
+    public void ocuparAsientos(BoletoDTO boleto) throws NegocioException {
+        ControlSeleccionAsiento.getInstancia().venderAsientos(boleto);
+    }
     
     
 

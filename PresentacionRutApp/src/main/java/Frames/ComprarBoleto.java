@@ -323,6 +323,7 @@ public class ComprarBoleto extends javax.swing.JFrame implements TemporizadorObs
     if (compraExitosa) {
         javax.swing.JOptionPane.showMessageDialog(this, "¡Compra realizada con éxito!");
         CordinadorPresentacion.getInstancia().abrirPantallaPrincipal(); // Regresar a la pantalla principal
+        
         this.dispose(); // Cerrar la ventana después de pasar los datos
     }
     }//GEN-LAST:event_btnCompraViajeActionPerformed

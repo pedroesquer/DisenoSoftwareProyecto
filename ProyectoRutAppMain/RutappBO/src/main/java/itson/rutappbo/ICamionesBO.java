@@ -4,7 +4,9 @@
  */
 package itson.rutappbo;
 
+import excepciones.NegocioException;
 import itson.persistenciarutapp.implementaciones.Camion;
+import itson.rutappdto.AsientoBoletoDTO;
 import java.util.List;
 
 /**
@@ -20,4 +22,7 @@ public interface ICamionesBO {
     int contarAsientosLibres(String numeroDeCamion);
 
     boolean cambiarEstadoAsiento(String numeroDeCamion, int numeroAsiento, String nuevoEstado);
+    
+    void ocuparAsientos(String idCamion, List<AsientoBoletoDTO> asientos) throws NegocioException;
+
 }

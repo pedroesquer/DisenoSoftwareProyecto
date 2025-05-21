@@ -4,11 +4,13 @@
  */
 package itson.rutappbo.implementaciones;
 
+import excepciones.NegocioException;
 import itson.persistenciarutapp.ICamionesDAO;
 import itson.persistenciarutapp.implementaciones.Asiento;
 import itson.persistenciarutapp.implementaciones.Camion;
 import itson.persistenciarutapp.implementaciones.CamionesDAO;
 import itson.rutappbo.ICamionesBO;
+import itson.rutappdto.AsientoBoletoDTO;
 import java.util.List;
 
 /**
@@ -61,5 +63,13 @@ public class CamionesBO implements ICamionesBO {
         }
         return false;
     }   
+
+    @Override
+    public void ocuparAsientos(String idCamion, List<AsientoBoletoDTO> asientos) throws NegocioException {
+        if (asientos.isEmpty()){
+            throw new NegocioException("No hay asientos seleccionados");
+        }
+        camionesDAO.ocuparAsientos(idCamion, asientos);
+    }
 }
 

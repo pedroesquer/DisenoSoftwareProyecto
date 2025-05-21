@@ -1,6 +1,8 @@
 package interfaz;
 
+import excepciones.NegocioException;
 import itson.rutappdto.AsientoDTO;
+import itson.rutappdto.BoletoDTO;
 import itson.rutappdto.CamionDTO;
 import java.util.List;
 
@@ -13,4 +15,6 @@ public interface ISeleccionAsiento {
     List<AsientoDTO> obtenerAsientos(CamionDTO camion);
 //    void iniciarTemporizador(Runnable reiniciarAsientosCallback);
 //    void finalizarTemporizador();
+    
+    void ocuparAsientos(BoletoDTO boleto) throws NegocioException;
 }

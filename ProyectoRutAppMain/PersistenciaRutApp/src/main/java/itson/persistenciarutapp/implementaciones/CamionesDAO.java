@@ -10,13 +10,17 @@ import com.mongodb.client.model.Filters;
 import static com.mongodb.client.model.Filters.eq;
 import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.model.Updates;
 import enumm.estadoAsiento;
 import itson.rutappdto.CamionDTO;
 import java.util.ArrayList;
 import java.util.List;
 import itson.persistenciarutapp.ICamionesDAO;
+import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.AsientoDTO;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -81,6 +85,26 @@ public class CamionesDAO implements ICamionesDAO {
         }
 
         return listaAsientos;
+    }
+
+    @Override
+    public void ocuparAsientos(String idCamion, List<AsientoBoletoDTO> asientos) {
+
+        MongoDatabase db = ManejadorConexiones.obtenerBaseDatos();
+        MongoCollection<Document> camiones = db.getCollection("camiones");
+
+        for (AsientoBoletoDTO asientoBoleto : asientos) {
+            String numeroAsiento = asientoBoleto.getAsiento().getNumero();
+
+            // Actualiza el estado del asiento específico usando arrayFilters
+            camiones.updateOne(
+                    Filters.eq("_id", new ObjectId(idCamion)),
+                    Updates.set("asientos.$[elem].estado", "OCUPADO"),
+                    new UpdateOptions().arrayFilters(List.of(
+                            Filters.eq("elem.numeroAsiento", numeroAsiento)
+                    ))
+            );
+        }
     }
 
 }

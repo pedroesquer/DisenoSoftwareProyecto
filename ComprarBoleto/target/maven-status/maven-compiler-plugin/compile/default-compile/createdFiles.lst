@@ -1,5 +1,5 @@
-Ex\CompraBoletoException.class
-Interfaz\IComprarBoleto.class
-Fachada\ComprarBoleto.class
-com\mycompany\comprarboleto\ComprarBoleto.class
-Control\ControlComprarBoleto.class
+Control/ControlComprarBoleto.class
+Fachada/ComprarBoleto.class
+com/mycompany/comprarboleto/ComprarBoleto.class
+Ex/CompraBoletoException.class
+Interfaz/IComprarBoleto.class
