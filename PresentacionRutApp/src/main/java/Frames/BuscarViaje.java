@@ -228,8 +228,7 @@ public class BuscarViaje extends javax.swing.JFrame {
         System.out.println(fecha.toString());
         // ✅ Convertir a LocalDate si tus métodos usan LocalDate
         LocalDateTime fechaSeleccionada = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        
-        
+
         // Validar que la fecha no sea anterior a hoy
         LocalDateTime hoy = LocalDateTime.now();
         if (fechaSeleccionada.isBefore(hoy)) {
@@ -240,14 +239,14 @@ public class BuscarViaje extends javax.swing.JFrame {
         //Asignamos al boletoDTO los datos seleccionado por el usuario para proceder a la siguiente pantalla
 
 // Y así sí puedes usarla como antes:
-
         BoletoContext.getBoleto().setFecha(fecha);
 
         ViajeDTO viaje = new ViajeDTO();
         viaje.setOrigen(origen);
         viaje.setDestino(destino);
         viaje.setFecha(BoletoContext.getBoleto().getFecha());
-                
+        
+        BoletoContext.getBoleto().setViaje(viaje);
         ControlNegocio.getInstancia().obtenerListaViajes(viaje);
         CordinadorPresentacion.getInstancia().mostrarViajesDisponibles(viaje);
         dispose(); // Cerrar la ventana actual

@@ -24,6 +24,7 @@ public class BoletoDTO implements Serializable {
     private CamionDTO camion;
     private List<AsientoBoletoDTO> listaAsiento;
     private Date fecha;
+    private ViajeDTO viaje;
 
 
 
@@ -48,6 +49,13 @@ public class BoletoDTO implements Serializable {
         this.duracion = duracion;
         this.camion = camion;
         this.listaAsiento = listaAsiento;
+    }
+
+    public BoletoDTO(UsuarioDTO usuario, Double precio, List<AsientoBoletoDTO> listaAsiento, ViajeDTO viaje) {
+        this.usuario = usuario;
+        this.precio = precio;
+        this.listaAsiento = listaAsiento;
+        this.viaje = viaje;
     }
 
   
@@ -125,6 +133,14 @@ public class BoletoDTO implements Serializable {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    public ViajeDTO getViaje() {
+        return viaje;
+    }
+
+    public void setViaje(ViajeDTO viaje) {
+        this.viaje = viaje;
     }
 
     

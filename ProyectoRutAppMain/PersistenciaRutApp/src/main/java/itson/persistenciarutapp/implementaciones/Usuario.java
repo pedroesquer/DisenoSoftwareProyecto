@@ -13,7 +13,7 @@ public class Usuario {
     @BsonProperty("contrasenia")  // Mapea la propiedad 'contrasenia' en MongoDB
     private String contrasenia;
 
-    @BsonProperty("saldo")
+    @BsonProperty("saldoMonedero")
     private Double saldoMonedero;
 
     // Constructor por defecto

@@ -113,8 +113,10 @@ public class ViajesDisponibles extends javax.swing.JFrame {
                 camion.setListaAsiento(
                         CordinadorPresentacion.getInstancia().consultarAsientosPorCamion(camion)
                 );
-                BoletoContext.getBoleto().setCamion(camion);
+                
+                BoletoContext.getBoleto().getViaje().setCamion(camion);
                 BoletoContext.getBoleto().setPrecio(viaje.getPrecio());
+                
                 CordinadorPresentacion.getInstancia().abrirAsientosDisponibles(camion);
 
                 Component comp = SwingUtilities.getWindowAncestor(panel);

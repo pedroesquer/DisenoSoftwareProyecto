@@ -15,9 +15,12 @@ public interface IUsuariosBO {
 
     String registrarUsuario(UsuarioDTO nuevoUsuario);
 
-    String login(String numeroTelefonico, String contrasena);
+    String login(UsuarioDTO usuario);
 
     String autenticar(UsuarioDTO usuario);
 
-    public UsuarioDTO obtenerUsuario();
+    UsuarioDTO obtenerUsuario();
+    
+    boolean descontarSaldo(UsuarioDTO usuario);
+    
 }

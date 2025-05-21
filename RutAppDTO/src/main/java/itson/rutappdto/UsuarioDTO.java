@@ -18,24 +18,30 @@ public class UsuarioDTO implements Serializable {
     public UsuarioDTO() {
     }
 
+    public UsuarioDTO(String numeroTelefonico, String contrasena) {
+        this.numeroTelefonico = numeroTelefonico;
+        this.contrasena = contrasena;
+    }
+
+    
     public UsuarioDTO(String nombre, String numeroTelefonico, String contrasena, Double saldoMonedero) {
         this.nombre = nombre;
         this.numeroTelefonico = numeroTelefonico;
         this.contrasena = contrasena;
-        this.saldoMonedero = 0d;
+        this.saldoMonedero = saldoMonedero;
     }
 
     public UsuarioDTO(String numeroTelefonico, String contrasena, Double saldoMonedero) {
         this.numeroTelefonico = numeroTelefonico;
         this.contrasena = contrasena;
-        this.saldoMonedero = 0d;
+        this.saldoMonedero = saldoMonedero;
     }
     
     
 
     public UsuarioDTO(String nombre) {
         this.nombre = nombre;
-        this.saldoMonedero = 0.0;
+        this.saldoMonedero = saldoMonedero;
     }
 
     public String getNombre() {

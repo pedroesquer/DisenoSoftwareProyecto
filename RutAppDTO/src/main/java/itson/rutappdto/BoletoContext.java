@@ -5,7 +5,7 @@ package itson.rutappdto;
  *
  * @author BusSoft®
  */
-public class BoletoContext {
+    public class BoletoContext {
     
     private static BoletoDTO boletoActual;
     

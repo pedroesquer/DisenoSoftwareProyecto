@@ -227,7 +227,8 @@ public class ControlNegocio {
     public void iniciarSesion(UsuarioDTO usuarioDTO) {
         // Usamos la fachada para iniciar la sesión
         fachadaUsuarioActivo.iniciarSesion(usuarioDTO);
-        System.out.println("Sesión iniciada para el usuario: " + usuarioDTO.getNumeroTelefonico());
+        System.out.println("_------------------------------------------------------------");
+        System.out.println("Sesión iniciada para el usuario: " + usuarioDTO.getNumeroTelefonico() + "con nombre de " + usuarioDTO.getNombre() +" y saldo de " + usuarioDTO.getSaldoMonedero());
     }
 
     // Método para obtener el usuario actual

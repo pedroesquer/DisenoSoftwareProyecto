@@ -9,15 +9,13 @@ import Control.ControlTimer;
 import Control.CordinadorPresentacion;
 import Interfaces.TemporizadorObserver;
 import control.ControlUsuarioActivo;
-import enumm.estadoAsiento;
-import itson.rutappdto.AsientoAsignadoDTO;
 import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.BoletoContext;
 import itson.rutappdto.BoletoDTO;
 import itson.rutappdto.CamionDTO;
-import itson.rutappdto.DetallesPagoDTO;
 import itson.rutappdto.UsuarioDTO;
+import itson.rutappdto.ViajeDTO;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
@@ -95,7 +93,6 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
         lblOrigen = new javax.swing.JLabel();
         lblDestino = new javax.swing.JLabel();
         lblAsientos = new javax.swing.JLabel();
-        lblDuracion = new javax.swing.JLabel();
         lblNombres = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jSeparator3 = new javax.swing.JSeparator();
@@ -107,10 +104,11 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
         jLabel13 = new javax.swing.JLabel();
         lblPrecio = new javax.swing.JLabel();
         lblTotal = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
+        lbCamion = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         botonAceptar = new javax.swing.JButton();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -174,7 +172,7 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
             .addGroup(FooterLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(botonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         BackGround.add(Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 670, 60));
@@ -208,15 +206,10 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
         lblAsientos.setText("Asiento(s)");
         BackGround.add(lblAsientos, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 210, 160, -1));
 
-        lblDuracion.setBackground(new java.awt.Color(255, 255, 255));
-        lblDuracion.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        lblDuracion.setText("00:00");
-        BackGround.add(lblDuracion, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 250, 160, -1));
-
         lblNombres.setBackground(new java.awt.Color(255, 255, 255));
         lblNombres.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
         lblNombres.setText("Nombre(s)");
-        BackGround.add(lblNombres, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 290, 250, -1));
+        BackGround.add(lblNombres, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 250, 250, -1));
 
         jLabel9.setBackground(new java.awt.Color(255, 255, 255));
         jLabel9.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
@@ -252,15 +245,10 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
         lblTotal.setText("$....");
         BackGround.add(lblTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 420, 160, -1));
 
-        jLabel15.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel15.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        jLabel15.setText("Duracion");
-        BackGround.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 160, -1));
-
-        jLabel16.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel16.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        jLabel16.setText("Nombre(s)");
-        BackGround.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 160, -1));
+        lbCamion.setBackground(new java.awt.Color(255, 255, 255));
+        lbCamion.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
+        lbCamion.setText("Camion");
+        BackGround.add(lbCamion, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 290, 160, -1));
 
         jLabel3.setBackground(new java.awt.Color(255, 255, 255));
         jLabel3.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
@@ -275,6 +263,16 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
             }
         });
         BackGround.add(botonAceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 480, 180, 40));
+
+        jLabel17.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel17.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
+        jLabel17.setText("Nombre(s)");
+        BackGround.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 160, -1));
+
+        jLabel18.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel18.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
+        jLabel18.setText("Camion");
+        BackGround.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 160, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -345,8 +343,8 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel9;
@@ -357,9 +355,9 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
+    private javax.swing.JLabel lbCamion;
     private javax.swing.JLabel lblAsientos;
     private javax.swing.JLabel lblDestino;
-    private javax.swing.JLabel lblDuracion;
     private javax.swing.JLabel lblNombres;
     private javax.swing.JLabel lblOrigen;
     private javax.swing.JLabel lblPrecio;
@@ -367,13 +365,14 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
     // End of variables declaration//GEN-END:variables
 
     public void mostrarResumen(BoletoDTO boleto) {
+        ViajeDTO viaje = boleto.getViaje();
         // Origen y destino
-        lblOrigen.setText(boleto.getOrigen());
-        lblDestino.setText(boleto.getDestino());
+        lblOrigen.setText(viaje.getOrigen());
+        lblDestino.setText(viaje.getDestino());
+        lbCamion.setText(boleto.getViaje().getCamion().getNumeroCamion());
 
         // Duración (puedes ajustarlo según tus datos)
-        lblDuracion.setText(boleto.getDuracion());
-
+//        lblDuracion.setText(boleto.getDuracion());
         // Asientos y nombres
         StringBuilder asientos = new StringBuilder();
         StringBuilder nombres = new StringBuilder();

@@ -160,12 +160,12 @@ public class InicioSesion extends javax.swing.JFrame {
     private void IniciarSesionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IniciarSesionBtnActionPerformed
         String numero = usuarioTxt.getText().trim();
         String pass = contraseniaTxt.getText().trim();
-
+        UsuarioDTO usuarioPresentacion = new UsuarioDTO(numero, pass);
         // Usamos la fachada para acceder a la interfaz de usuario activo
-        UsuariosBO usuariosBO = new UsuariosBO(); // Para validar las credenciales en la base de datos
+        IUsuariosBO usuariosBO = new UsuariosBO(); // Para validar las credenciales en la base de datos
 
         // Verificamos si las credenciales son correctas
-        String resultado = usuariosBO.login(numero, pass);
+        String resultado = usuariosBO.login(usuarioPresentacion);
         lblMensaje.setText(resultado);
 
         if (resultado.equals("Inicio de sesión exitoso.")) {

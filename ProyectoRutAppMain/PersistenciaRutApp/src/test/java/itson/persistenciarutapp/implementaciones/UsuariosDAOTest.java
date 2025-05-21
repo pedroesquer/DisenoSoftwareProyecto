@@ -35,14 +35,15 @@
 //    public void testConsultarUsuarioPorNumeroTelefonico() {
 //        UsuariosDAO usuariosDAO = new UsuariosDAO();
 //       
-//        System.out.println(usuariosDAO.consultarUsuarioPorNumeroTelefonico("64421558877"));
+//        System.out.println(usuariosDAO.consultarUsuarioPorNumeroTelefonico("6441157277"));
 //    }
 //    
-//    @Test
-//    public void testConsultarUsuarioyContrasena() {
-//        UsuariosDAO usuariosDAO = new UsuariosDAO();
-//        
-//        System.out.println(usuariosDAO.validarLogin("64421558877", "ana"));
-//    }
+////    @Test
+////    public void testConsultarUsuarioyContrasena() {
+////        UsuariosDAO usuariosDAO = new UsuariosDAO();
+////        UsuarioDTO usuario = new UsuarioDTO("6441157277", "mb");
+////        
+////        System.out.println(usuariosDAO.validarLogin("64421558877", "ana"));
+////    }
 //    
 //}

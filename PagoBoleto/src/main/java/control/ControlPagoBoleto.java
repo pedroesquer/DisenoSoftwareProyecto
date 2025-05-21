@@ -3,6 +3,8 @@ package control;
 //import itson.cliente.ClienteBancoRMI;
 import Cliente.ClienteBancoRMI;
 import excepciones.PagoBoletoException;
+import itson.rutappbo.IUsuariosBO;
+import itson.rutappbo.implementaciones.UsuariosBO;
 import itson.rutappdto.DetallesPagoDTO;
 import itson.rutappdto.TarjetaCreditoDTO;
 import itson.rutappdto.UsuarioDTO;
@@ -17,7 +19,7 @@ import java.time.format.DateTimeParseException;
 public class ControlPagoBoleto {
 
     private static ControlPagoBoleto instance;
-
+    IUsuariosBO usuariosBO = new UsuariosBO();
     public ControlPagoBoleto() {
     }
 
@@ -100,6 +102,7 @@ public class ControlPagoBoleto {
     public void descontarSaldoMonedero(UsuarioDTO usuarioDTO, Double cantidad) {
         if (validarSaldoMonedero(usuarioDTO, cantidad)) {
             usuarioDTO.setSaldoMonedero(usuarioDTO.getSaldoMonedero() - cantidad);
+            usuariosBO.descontarSaldo(usuarioDTO);
         }
     }
 

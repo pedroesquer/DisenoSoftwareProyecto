@@ -14,10 +14,12 @@ import itson.rutappdto.UsuarioDTO;
  */
 public interface IUsuariosDAO {
 
-    Usuario agregarUsuario(UsuarioDTO nuevoUsuario);
+    UsuarioDTO agregarUsuario(UsuarioDTO nuevoUsuario);
 
-    Usuario consultarUsuarioPorNumeroTelefonico(String numeroTel);
+    UsuarioDTO consultarUsuarioPorNumeroTelefonico(String numeroTel);
 
-    Usuario validarLogin(String numeroTelefonico, String contrasena);
+    UsuarioDTO validarLogin(UsuarioDTO usuario);
+    
+    boolean actualizarSaldo(UsuarioDTO usuario);
 
 }

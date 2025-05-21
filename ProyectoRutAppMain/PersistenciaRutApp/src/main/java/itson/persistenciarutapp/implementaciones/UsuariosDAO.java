@@ -8,6 +8,9 @@ import com.mongodb.client.model.Indexes;
 import itson.persistenciarutapp.IUsuariosDAO;
 import itson.rutappdto.AccesoUsuarioDTO;
 import itson.rutappdto.UsuarioDTO;
+import itson.rutappdto.ViajeDTO;
+import java.util.LinkedList;
+import java.util.List;
 import org.bson.Document;
 
 /**
@@ -32,16 +35,16 @@ public class UsuariosDAO implements IUsuariosDAO {
     }
 
     @Override
-    public Usuario agregarUsuario(UsuarioDTO nuevoUsuario) {
+    public UsuarioDTO agregarUsuario(UsuarioDTO nuevoUsuario) {
         MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
         MongoCollection<Usuario> coleccion = baseDatos.getCollection(COLECCION, Usuario.class);
         Usuario usuario = new Usuario(nuevoUsuario.getNumeroTelefonico(), nuevoUsuario.getNombre(), nuevoUsuario.getContrasena());
         coleccion.insertOne(usuario);
-        return usuario;
+        return parsearUsuariosDTO(usuario);
     }
 
     @Override
-    public Usuario consultarUsuarioPorNumeroTelefonico(String numeroTel) {
+    public UsuarioDTO consultarUsuarioPorNumeroTelefonico(String numeroTel) {
         MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
         MongoCollection<Document> coleccion = baseDatos.getCollection(COLECCION);
 
@@ -50,21 +53,49 @@ public class UsuariosDAO implements IUsuariosDAO {
         if (usuarioDoc != null) {
             String nombre = usuarioDoc.getString("nombre");
             String contrasena = usuarioDoc.getString("contrasenia");
-            Double saldoMonedero = usuarioDoc.getDouble("saldo");
+            Double saldoMonedero = usuarioDoc.getDouble("saldoMonedero");
 
-            return new Usuario(numeroTel, nombre, contrasena, saldoMonedero); // ✅ orden correcto
+            Usuario usuario = new Usuario(numeroTel, nombre, contrasena, saldoMonedero); // ✅ orden correcto
+            return parsearUsuariosDTO(usuario);
         }
 
         return null;
     }
 
     @Override
-    public Usuario validarLogin(String numeroTelefonico, String contrasena) {
-        Usuario usuario = consultarUsuarioPorNumeroTelefonico(numeroTelefonico);
-        if (usuario != null && usuario.getContrasenia().equals(contrasena)) {
-            return usuario; // No existe el usuario
+    public UsuarioDTO validarLogin(UsuarioDTO usuario) {
+        UsuarioDTO usuarioConsultado = consultarUsuarioPorNumeroTelefonico(usuario.getNumeroTelefonico());
+        if (usuarioConsultado != null && usuarioConsultado.getContrasena().equals(usuario.getContrasena())) {
+            return usuarioConsultado;
         }
         return null;
     }
+
+    public UsuarioDTO parsearUsuariosDTO(Usuario usuario) {
+        UsuarioDTO usuarioDTO = new UsuarioDTO(
+                usuario.getNombre(), usuario.getNumeroTelefonico(), usuario.getContrasenia(), usuario.getSaldoMonedero());
+        usuarioDTO.setSaldoMonedero(usuario.getSaldoMonedero());
+
+        return usuarioDTO;
+    }
+
+    public List<UsuarioDTO> parsearListaUsuariosDTO(List<Usuario> listaUsuarios) {
+        List<UsuarioDTO> listaDTO = new LinkedList<>();
+
+        for (Usuario v : listaUsuarios) {
+            listaDTO.add(parsearUsuariosDTO(v));
+        }
+        return listaDTO;
+    }
+
+    @Override
+    public boolean actualizarSaldo(UsuarioDTO usuario) {
+        MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
+        MongoCollection<Document> coleccion = baseDatos.getCollection(COLECCION);
+
+        Document filtro = new Document("numeroTelefonico", usuario.getNumeroTelefonico());
+        Document actualizacion = new Document("$set", new Document("saldoMonedero", usuario.getSaldoMonedero()));
+
+        return coleccion.updateOne(filtro, actualizacion).getModifiedCount() > 0;    }
 
 }

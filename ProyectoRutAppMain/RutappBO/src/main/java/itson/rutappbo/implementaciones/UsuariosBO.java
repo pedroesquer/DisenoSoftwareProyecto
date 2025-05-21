@@ -49,38 +49,43 @@ public class UsuariosBO implements IUsuariosBO {
      * @param contrasena contraseña
      * @return mensaje según resultado
      */
-    public String login(String numeroTelefonico, String contrasena) {
-        if (numeroTelefonico == null || numeroTelefonico.trim().isEmpty()) {
+    @Override
+    public String login(UsuarioDTO usuario) {
+        if (usuario.getNumeroTelefonico() == null || usuario.getNumeroTelefonico().trim().isEmpty()) {
             return "Número telefónico requerido.";
         }
 
-        if (!numeroTelefonico.matches("\\d{10}")) {
+        if (!usuario.getNumeroTelefonico().matches("\\d{10}")) {
             return "El número telefónico debe contener 10 dígitos.";
         }
 
-        if (contrasena == null || contrasena.trim().isEmpty()) {
+        if (usuario.getContrasena() == null || usuario.getContrasena().trim().isEmpty()) {
             return "Contraseña requerida.";
         }
 
         // Validar login con los datos proporcionados
-        Usuario usuario = usuariosDAO.validarLogin(numeroTelefonico, contrasena);
-        if (usuario == null) {
+        UsuarioDTO usuarioValidado = usuariosDAO.validarLogin(usuario);
+        if (usuarioValidado == null) {
             return "Número telefónico o contraseña incorrectos.";
         }
 
+//        System.out.println("---------NEGOCIOOOOOO------------");
+//        
+//        System.out.println("nombre  "+ usuarioValidado.getNombre());
+//        System.out.println("saldo  "+ usuarioValidado.getSaldoMonedero());
         // Asignar el usuario autenticado al DTO
-        UsuarioDTO usuarioDTO = new UsuarioDTO(usuario.getNombre(), usuario.getNumeroTelefonico(), usuario.getContrasenia(), usuario.getSaldoMonedero());
-        usuarioDTO.setNombre(usuario.getNombre());
-        UsuarioActivoManager.getInstancia().iniciarSesion(usuarioDTO);
+        UsuarioActivoManager.getInstancia().iniciarSesion(usuarioValidado);
         // Confirmamos que lo guardó
         System.out.println("Manager tiene: " + usuarioActivoManager.UsuarioActivoManager.getInstancia().getUsuario().getNombre());
         System.out.println("Manager nombre: " + usuarioActivoManager.UsuarioActivoManager.getInstancia().getUsuario().getNumeroTelefonico());
+        System.out.println("Manager nombre: " + usuarioActivoManager.UsuarioActivoManager.getInstancia().getUsuario().getSaldoMonedero());
+
         return "Inicio de sesión exitoso.";
 
     }
 
     public String autenticar(UsuarioDTO usuario) {
-        return login(usuario.getNumeroTelefonico(), usuario.getContrasena());
+        return login(usuario);
     }
 
     /**
@@ -121,6 +126,12 @@ public class UsuariosBO implements IUsuariosBO {
         return usuarioAutenticado;
     }
 
-
+    @Override
+    public boolean descontarSaldo(UsuarioDTO usuario) {
+        if (usuario != null) {
+            return usuariosDAO.actualizarSaldo(usuario);
+        }
+        return false;
+    }
 
 }
