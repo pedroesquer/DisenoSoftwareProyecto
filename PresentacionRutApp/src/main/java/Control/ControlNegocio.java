@@ -18,6 +18,7 @@ import interfaz.IUsuarioActivo;
 import itson.consultardisponibilidad.Interfaz.IConsultarDisponibilidad;
 import itson.consultardisponibilidad.fachada.FachadaConsultarDisponibilidad;
 import itson.persistenciarutapp.implementaciones.Viaje;
+import itson.rutappbo.implementaciones.BoletoBO;
 import itson.rutappbo.implementaciones.UsuariosBO;
 import itson.rutappdto.AsientoAsignadoDTO;
 import itson.rutappdto.AsientoBoletoDTO;
@@ -227,6 +228,21 @@ public class ControlNegocio {
             System.out.println("Compra exitosa.");
             try {
                 seleccionAsiento.ocuparAsientos(BoletoContext.getBoleto());
+                ViajeDTO viajeDTO = BoletoContext.getBoleto().getViaje();
+                Viaje viajeEntidad = new Viaje(
+                        viajeDTO.getPrecio(),
+                        viajeDTO.getOrigen(),
+                        viajeDTO.getDestino(),
+                        viajeDTO.getCamion(),
+                        viajeDTO.getFecha(), // o .getFecha() si así se llama
+                        viajeDTO.getIdViaje()
+                );
+
+                new BoletoBO().guardarBoletoDesdeContexto(
+                        usuarioDTO,
+                        viajeEntidad,
+                        BoletoContext.getBoleto().getListaAsiento()
+                );
             } catch (NegocioException ex) {
                 Logger.getLogger(ControlNegocio.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null, "Error al apartar los asientos, revisar código");
@@ -235,8 +251,6 @@ public class ControlNegocio {
         } else {
             throw new CompraBoletoException("El pago no fue aprobado.");
         }
-        
-        
     }
 
     // Método para iniciar sesión
@@ -244,7 +258,7 @@ public class ControlNegocio {
         // Usamos la fachada para iniciar la sesión
         fachadaUsuarioActivo.iniciarSesion(usuarioDTO);
         System.out.println("_------------------------------------------------------------");
-        System.out.println("Sesión iniciada para el usuario: " + usuarioDTO.getNumeroTelefonico() + "con nombre de " + usuarioDTO.getNombre() +" y saldo de " + usuarioDTO.getSaldoMonedero());
+        System.out.println("Sesión iniciada para el usuario: " + usuarioDTO.getNumeroTelefonico() + "con nombre de " + usuarioDTO.getNombre() + " y saldo de " + usuarioDTO.getSaldoMonedero());
     }
 
     // Método para obtener el usuario actual

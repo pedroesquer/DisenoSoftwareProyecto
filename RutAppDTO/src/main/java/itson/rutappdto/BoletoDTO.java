@@ -57,10 +57,6 @@ public class BoletoDTO implements Serializable {
         this.listaAsiento = listaAsiento;
         this.viaje = viaje;
     }
-
-  
-
-
     
 
     public String getOrigen() {

@@ -1,12 +1,13 @@
 package itson.rutappdto;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author pedro
  */
-public class ViajeDTO {
+public class ViajeDTO implements Serializable{
 
     private Double precio;
     private String origen;

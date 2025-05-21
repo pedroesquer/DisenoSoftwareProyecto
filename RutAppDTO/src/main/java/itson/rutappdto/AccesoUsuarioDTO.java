@@ -1,13 +1,15 @@
 
 package itson.rutappdto;
 
+import java.io.Serializable;
+
 /**
  * Esta clase representa un objeto de acceso para un usuario, con los detalles de su número telefónico 
  * y su contraseña. Se utiliza para almacenar y gestionar los datos de acceso de un usuario.
  * 
  * @author BusSoft®
  */
-public class AccesoUsuarioDTO {
+public class AccesoUsuarioDTO implements Serializable{
 
     private String id;
     private String numeroTelefonico;

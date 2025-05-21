@@ -4,11 +4,13 @@
  */
 package itson.rutappdto;
 
+import java.io.Serializable;
+
 /**
  *
  * @author chris
  */
-public class AsientoAsignadoDTO {
+public class AsientoAsignadoDTO implements Serializable{
 
     private String numeroAsiento;
     private String nombrePasajero;
