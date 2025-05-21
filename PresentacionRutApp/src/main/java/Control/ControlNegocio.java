@@ -250,7 +250,7 @@ public class ControlNegocio {
 
         if ("Tarjeta".equals(detallesPago.getMetodoPago()) && detallesPago.getDetallesTarjeta() != null) {
             System.out.println("PAGO 1 LLEGO - Tarjeta");
-            pagoExitoso = comprarBoleto.procesarCompraDos(detallesPago, usuarioDTO);
+            pagoExitoso = comprarBoleto.procesarCompra(detallesPago, usuarioDTO);
             System.out.println(pagoExitoso);
         } else if ("Monedero".equals(detallesPago.getMetodoPago())) {
             System.out.println("PAGO 1 LLEGO - Monedero");

@@ -27,6 +27,7 @@ public class ControlComprarBoleto {
 
         IPagoBoleto pagoBoleto = new PagoBoleto();
         boolean pagoProcesado = pagoBoleto.procesarPago(detallesPago, usuario);
+        System.out.println("----------RESULTADO DEL PAGO PROCESADO: " + pagoProcesado + "--------------------");
         if (pagoProcesado) {
             System.out.println("El pago procesado fue " + pagoProcesado);
             Date fecha = new Date();

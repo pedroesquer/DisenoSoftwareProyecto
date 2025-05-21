@@ -165,14 +165,15 @@ public class ControlPagoBoleto {
                 boolean aprobado = cliente.realizarPago(detalles);
                 if(aprobado){
                     agregarSaldoMonedero(usuarioDTO, calcularPuntosRecompensa(monto));
+                    return true;
                 }
-                return aprobado;
 
             } catch (Exception e) {
                 System.err.println("Error al contactar al servidor de banco: " + e.getMessage());
                 return false;
             }
         }
+        return false;
     }
     
     
