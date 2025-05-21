@@ -45,7 +45,7 @@ public class ComprarBoleto implements IComprarBoleto {
         try {
             // Aquí va el código que realiza el pago
             System.out.println("Pago en proceso...");
-            boolean pagoExitoso = pagoBoleto.procesarPago(detalles, UsuarioActivoManager.getInstancia().getUsuario());
+            boolean pagoExitoso = control.comprarBoleto(detalles, UsuarioActivoManager.getInstancia().getUsuario());
             System.out.println("Resultado del pago: " + pagoExitoso);
             return pagoExitoso;
         } catch (PagoBoletoException e) {

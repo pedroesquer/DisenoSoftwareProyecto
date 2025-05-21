@@ -28,11 +28,13 @@ public class ControlComprarBoleto {
         IPagoBoleto pagoBoleto = new PagoBoleto();
         boolean pagoProcesado = pagoBoleto.procesarPago(detallesPago, usuario);
         if (pagoProcesado) {
+            System.out.println("El pago procesado fue " + pagoProcesado);
             Date fecha = new Date();
             PagoDTO pagoDTO = new PagoDTO();
             pagoDTO.setMetodoPago(detallesPago.getMetodoPago());
             pagoDTO.setMonto(detallesPago.getMonto());
             pagoDTO.setFecha(fecha);
+            System.out.println(pagoDTO.toString());
             IPagosBO pagosBO = new PagosBO();
             pagosBO.agregarPago(pagoDTO);
 
