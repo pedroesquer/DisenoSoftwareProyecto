@@ -1,17 +1,21 @@
 package Frames;
 
+import Control.ControlNegocio;
 import java.awt.Image;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import Control.CordinadorPresentacion;
+import itson.rutappdto.AsientoBoletoDTO;
+import itson.rutappdto.CompraDTO;
+import itson.rutappdto.UsuarioDTO;
+import java.util.List;
 import usuarioActivoManager.UsuarioActivoManager;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author mmax2
@@ -244,7 +248,28 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMisViajesActionPerformed
 
     private void btnMisBoletosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMisBoletosActionPerformed
-        // TODO add your handling code here:
+
+        List<CompraDTO> compras = ControlNegocio.getInstancia()
+                .obtenerComprasUsuario(UsuarioActivoManager.getInstancia().getUsuario());
+        
+        for (CompraDTO compra : compras) {
+            System.out.println("----------- BOLETO -----------");
+            System.out.println("Origen: " + compra.getOrigen());
+            System.out.println("Destino: " + compra.getDestino());
+            System.out.println("Hora: " + compra.getHrSalida());
+            System.out.println("Fecha: " + compra.getFecha());
+            System.out.println("Precio: $" + compra.getPrecio());
+            System.out.println("Camión: " + compra.getCamion().getNumeroCamion());
+
+            System.out.println("Asientos:");
+            for (AsientoBoletoDTO ab : compra.getListaAsiento()) {
+                System.out.println("  - " + ab.getAsiento().getNumero()
+                        + " (" + ab.getAsiento().getEstado() + ") - "
+                        + "Nombre: " + ab.getNombreAsiento());
+            }
+
+            System.out.println();
+        }
     }//GEN-LAST:event_btnMisBoletosActionPerformed
 
     private void btnCompraViajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompraViajeActionPerformed

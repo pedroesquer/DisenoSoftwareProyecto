@@ -8,17 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import itson.persistenciarutapp.IViajesDAO;
 import itson.persistenciarutapp.implementaciones.ViajesDAO;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Projections.include;
-import itson.persistenciarutapp.implementaciones.ManejadorConexiones;
-import org.bson.Document;
-import com.mongodb.Block;
-import itson.persistenciarutapp.implementaciones.CamionesDAO;
 import itson.rutappbo.ICamionesBO;
+import itson.rutappbo.IComprasBO;
 import itson.rutappbo.IViajesBO;
 import itson.rutappbo.implementaciones.CamionesBO;
+import itson.rutappbo.implementaciones.ComprasBO;
 import itson.rutappbo.implementaciones.ViajesBO;
 import itson.rutappdto.CompraDTO;
 import itson.rutappdto.UsuarioDTO;
@@ -33,15 +27,16 @@ public class ControlConsultarDisponibilidad {
     private final IViajesDAO viajesDAO = new ViajesDAO();
 
     //private final CamionesDAO camionesDAO 
-    
     private static ControlConsultarDisponibilidad instance;
 
     private final IViajesBO viajesBO;
     private final ICamionesBO camionesBO;
+    private final IComprasBO compraBO;
 
     private ControlConsultarDisponibilidad() {
         this.viajesBO = new ViajesBO(new ViajesDAO());
         this.camionesBO = new CamionesBO();
+        this.compraBO = new ComprasBO();
     }
 
     /**
@@ -55,7 +50,7 @@ public class ControlConsultarDisponibilidad {
         }
         return instance;
     }
-    
+
     /**
      * Método que devuelve la lista de asientos de un camión para colorear los
      * asientos.
@@ -98,11 +93,10 @@ public class ControlConsultarDisponibilidad {
      * @return la lista de destinos para un origen.
      */
     public List<String> obtenerDestinos(String origen) {
-        return viajesBO.obtenerDestinos(origen); 
+        return viajesBO.obtenerDestinos(origen);
     }
-    
-    
-    public List<CompraDTO> obtenerCompras(UsuarioDTO usuario){
-        
+
+    public List<CompraDTO> obtenerCompras(UsuarioDTO usuario) {
+        return compraBO.obtenerComprasNoVencidasPorUsuario(usuario);
     }
 }

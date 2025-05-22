@@ -20,6 +20,6 @@ public class SistemaRutaApp {
 
         InicioSesion inicio = new InicioSesion();
         inicio.setVisible(true);
-
     }
+    
 }

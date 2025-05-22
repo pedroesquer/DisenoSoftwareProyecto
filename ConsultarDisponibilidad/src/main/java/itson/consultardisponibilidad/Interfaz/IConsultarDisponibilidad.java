@@ -21,7 +21,9 @@ public interface IConsultarDisponibilidad {
     public abstract List<AsientoDTO> consultarAsientosDisponibles(CamionDTO camion);
 
     public abstract List<String> consultarDestinos(String origen);
-    
+
     public abstract List<CompraDTO> consultarComprasPorUsuario(UsuarioDTO usuario);
+
+    List<CompraDTO> obtenerCompras(UsuarioDTO usuario);
 
 }

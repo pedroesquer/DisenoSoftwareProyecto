@@ -7,10 +7,14 @@ import java.io.Serializable;
  *
  * @author pedro
  */
-public class AsientoDTO implements Serializable{
+public class AsientoDTO implements Serializable {
+
     private Long idAsiento;
     private estadoAsiento estado;
     private String numero;
+
+    public AsientoDTO() {
+    }
 
     public AsientoDTO(Long idAsiento, estadoAsiento estado, String numero) {
         this.idAsiento = idAsiento;
@@ -42,7 +46,4 @@ public class AsientoDTO implements Serializable{
         this.numero = numero;
     }
 
-   
-
-   
 }

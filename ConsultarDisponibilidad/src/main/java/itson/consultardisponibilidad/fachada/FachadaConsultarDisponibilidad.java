@@ -6,14 +6,11 @@ package itson.consultardisponibilidad.fachada;
 
 import itson.consultardisponibilidad.Interfaz.IConsultarDisponibilidad;
 import itson.consultardisponibilidad.control.ControlConsultarDisponibilidad;
-import itson.persistenciarutapp.implementaciones.Viaje;
 import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.CamionDTO;
 import itson.rutappdto.CompraDTO;
 import itson.rutappdto.UsuarioDTO;
 import itson.rutappdto.ViajeDTO;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -39,6 +36,11 @@ public class FachadaConsultarDisponibilidad implements IConsultarDisponibilidad 
 
     @Override
     public List<CompraDTO> consultarComprasPorUsuario(UsuarioDTO usuario) {
+        return ControlConsultarDisponibilidad.getInstancia().obtenerCompras(usuario);
+    }
+
+    @Override
+    public List<CompraDTO> obtenerCompras(UsuarioDTO usuario) {
         return ControlConsultarDisponibilidad.getInstancia().obtenerCompras(usuario);
     }
 

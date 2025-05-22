@@ -8,6 +8,7 @@ import itson.persistenciarutapp.implementaciones.Viaje;
 import itson.rutappdto.ViajeDTO;
 import java.util.Date;
 import java.util.List;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -22,5 +23,7 @@ public interface IViajesDAO {
     public List<Viaje> obtenerTodosLosViajes();
     
     List<String> obtenerDestinosPorOrigen(String origen);
+    
+    Viaje consultarViajePorId(ObjectId idViaje);
     
 }

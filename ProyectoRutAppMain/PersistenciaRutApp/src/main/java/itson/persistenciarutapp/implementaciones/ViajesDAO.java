@@ -3,6 +3,7 @@ package itson.persistenciarutapp.implementaciones;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Projections.include;
 import itson.persistenciarutapp.IViajesDAO;
@@ -68,5 +69,12 @@ public class ViajesDAO implements IViajesDAO {
 
         return destinos;
     }
+    
+    public Viaje consultarViajePorId(ObjectId idViaje) {
+    MongoDatabase db = ManejadorConexiones.obtenerBaseDatos();
+    MongoCollection<Viaje> coleccion = db.getCollection("viajes", Viaje.class);
+
+    return coleccion.find(Filters.eq("_id", idViaje)).first();
+}
 
 }
