@@ -75,8 +75,8 @@ public class ComprasDAO implements IComprasDAO {
         List<Bson> pipeline = Arrays.asList(
                 Aggregates.match(Filters.eq("usuario", idUsuario)),
                 Aggregates.lookup("viajes", "viaje", "_id", "viajeInfo"),
-                Aggregates.unwind("$viajeInfo"),
-                Aggregates.match(Filters.gt("viajeInfo.fecha", new Date())) // ← filtra con la fecha del viaje
+                Aggregates.unwind("$viajeInfo")
+//                Aggregates.match(Filters.gt("viajeInfo.fechaHora", new Date())) // ← filtra con la fecha del viaje
         );
 
         List<Compra> compras = new ArrayList<>();

@@ -248,28 +248,8 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMisViajesActionPerformed
 
     private void btnMisBoletosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMisBoletosActionPerformed
-
-        List<CompraDTO> compras = ControlNegocio.getInstancia()
-                .obtenerComprasUsuario(UsuarioActivoManager.getInstancia().getUsuario());
-        
-        for (CompraDTO compra : compras) {
-            System.out.println("----------- BOLETO -----------");
-            System.out.println("Origen: " + compra.getOrigen());
-            System.out.println("Destino: " + compra.getDestino());
-            System.out.println("Hora: " + compra.getHrSalida());
-            System.out.println("Fecha: " + compra.getFecha());
-            System.out.println("Precio: $" + compra.getPrecio());
-            System.out.println("Camión: " + compra.getCamion().getNumeroCamion());
-
-            System.out.println("Asientos:");
-            for (AsientoBoletoDTO ab : compra.getListaAsiento()) {
-                System.out.println("  - " + ab.getAsiento().getNumero()
-                        + " (" + ab.getAsiento().getEstado() + ") - "
-                        + "Nombre: " + ab.getNombreAsiento());
-            }
-
-            System.out.println();
-        }
+        CordinadorPresentacion.getInstancia().abrirMisBoletos();
+        this.dispose();
     }//GEN-LAST:event_btnMisBoletosActionPerformed
 
     private void btnCompraViajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompraViajeActionPerformed

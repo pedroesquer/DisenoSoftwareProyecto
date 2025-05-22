@@ -18,6 +18,7 @@ Frames\asientos$1.class
 Frames\ComprarBoleto$5.class
 Frames\ViajesDisponibles$1.class
 Frames\ComprarBoleto.class
+Frames\MisBoletos$1.class
 Frames\BuscarViaje$1.class
 Frames\MainMenu$6.class
 Frames\InicioSesion$1.class
@@ -27,6 +28,7 @@ Frames\ResumenCompra$4.class
 Frames\ComprarBoleto$1.class
 Frames\ComprarBoleto$4.class
 Frames\BuscarViaje$4.class
+Frames\MisBoletos.class
 Frames\MainMenu$3.class
 Frames\InicioSesion.class
 Frames\InicioSesion$2.class
@@ -38,6 +40,7 @@ Frames\ResumenCompra.class
 Control\ControlTimer$1.class
 Frames\ResumenCompra$3.class
 Frames\MainMenu$7.class
+Frames\MisBoletos$2.class
 Frames\AsientosDisponibles$1.class
 Frames\ComprarBoleto$3.class
 Frames\BuscarViaje$3.class

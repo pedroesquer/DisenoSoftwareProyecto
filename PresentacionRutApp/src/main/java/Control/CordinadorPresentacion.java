@@ -11,6 +11,7 @@ import Frames.BuscarViaje;
 import Frames.ComprarBoleto;
 import Frames.InicioSesion;
 import Frames.MainMenu;
+import Frames.MisBoletos;
 import Frames.ResumenCompra;
 import Frames.ViajesDisponibles;
 import Interfaces.TemporizadorObserver;
@@ -125,5 +126,10 @@ public class CordinadorPresentacion {
     public void abrirLogin() {
         InicioSesion inicioSesion = new InicioSesion();
         inicioSesion.setVisible(true);
+    }
+    
+    public void abrirMisBoletos() {
+        MisBoletos misboletos = new MisBoletos();
+        misboletos.setVisible(true);
     }
 }
