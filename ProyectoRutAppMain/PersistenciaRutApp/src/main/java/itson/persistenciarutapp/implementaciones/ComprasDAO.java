@@ -26,6 +26,7 @@ import org.bson.types.ObjectId;
  * @author pedro
  */
 public class ComprasDAO implements IComprasDAO {
+    
 
     private final String COLECCION = "compras";
 
@@ -33,6 +34,7 @@ public class ComprasDAO implements IComprasDAO {
     public Compra agregarCompras(Compra nuevaCompra) {
         MongoDatabase db = ManejadorConexiones.obtenerBaseDatos();
         MongoCollection<Compra> coleccion = db.getCollection(COLECCION, Compra.class);
+        System.out.println("HOOOOOHAYOOO");
 
         coleccion.insertOne(nuevaCompra);
         return nuevaCompra;
@@ -74,7 +76,7 @@ public class ComprasDAO implements IComprasDAO {
                 Aggregates.match(Filters.eq("usuario", idUsuario)),
                 Aggregates.lookup("viajes", "viaje", "_id", "viajeInfo"),
                 Aggregates.unwind("$viajeInfo"),
-               Aggregates.match(Filters.gt("viajeInfo.fecha", new Date())) // ← filtra con la fecha del viaje
+                Aggregates.match(Filters.gt("viajeInfo.fecha", new Date())) // ← filtra con la fecha del viaje
         );
 
         List<Compra> compras = new ArrayList<>();
