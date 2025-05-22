@@ -20,6 +20,8 @@ import itson.rutappbo.ICamionesBO;
 import itson.rutappbo.IViajesBO;
 import itson.rutappbo.implementaciones.CamionesBO;
 import itson.rutappbo.implementaciones.ViajesBO;
+import itson.rutappdto.CompraDTO;
+import itson.rutappdto.UsuarioDTO;
 import itson.rutappdto.ViajeDTO;
 
 /**
@@ -97,5 +99,10 @@ public class ControlConsultarDisponibilidad {
      */
     public List<String> obtenerDestinos(String origen) {
         return viajesBO.obtenerDestinos(origen); 
+    }
+    
+    
+    public List<CompraDTO> obtenerCompras(UsuarioDTO usuario){
+        
     }
 }

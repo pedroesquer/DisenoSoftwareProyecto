@@ -3,6 +3,8 @@ package itson.consultardisponibilidad.Interfaz;
 import itson.persistenciarutapp.implementaciones.Viaje;
 import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.CamionDTO;
+import itson.rutappdto.CompraDTO;
+import itson.rutappdto.UsuarioDTO;
 import itson.rutappdto.ViajeDTO;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,5 +21,7 @@ public interface IConsultarDisponibilidad {
     public abstract List<AsientoDTO> consultarAsientosDisponibles(CamionDTO camion);
 
     public abstract List<String> consultarDestinos(String origen);
+    
+    public abstract List<CompraDTO> consultarComprasPorUsuario(UsuarioDTO usuario);
 
 }
