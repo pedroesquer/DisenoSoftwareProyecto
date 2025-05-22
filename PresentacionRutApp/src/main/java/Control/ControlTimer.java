@@ -22,7 +22,7 @@ public class ControlTimer {
 
     private Timer temporizador;
     private boolean contadorIniciado = false;
-    private final int DURACION_CONTADOR = 5 * 1000 * 60 ; // 5 minutos
+    private final int DURACION_CONTADOR = 5 * 1000 * 60; // 5 minutos
 
     private List<TemporizadorObserver> observadores = new ArrayList<>();
 
@@ -43,21 +43,32 @@ public class ControlTimer {
         JOptionPane.showMessageDialog(null, "Tienes 5 minutos para realizar la compra");
         contadorIniciado = true;
 
-        temporizador = new Timer(DURACION_CONTADOR, new ActionListener() {
+        final int[] segundosRestantes = {300}; // 5 minutos * 60 segundos
+
+        temporizador = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                temporizador.stop();
-                contadorIniciado = false;
+                segundosRestantes[0]--;
 
-                //JOptionPane.showMessageDialog(null, "El tiempo se ha acabado. Inténtelo de nuevo.");
-                BoletoContext.limpiarBoleto();
-                if (reiniciarCallback != null) {
-                    reiniciarCallback.run();
+                // ⏱️ Actualizar visualmente
+                Clases.TemporizadorVisual.getInstancia().actualizarEtiqueta(segundosRestantes[0]);
+
+                // 🧨 Fin del contador
+                if (segundosRestantes[0] <= 0) {
+                    temporizador.stop();
+                    contadorIniciado = false;
+
+                    itson.rutappdto.BoletoContext.limpiarBoleto();
+
+                    if (reiniciarCallback != null) {
+                        reiniciarCallback.run();
+                    }
+
+                    notificarObservadores();
                 }
-                notificarObservadores();
             }
         });
-        temporizador.setRepeats(false);
+
         temporizador.start();
     }
 

@@ -228,6 +228,7 @@ public class MainMenu extends javax.swing.JFrame {
 
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
         CordinadorPresentacion.getInstancia().abrirLogin();
+        this.dispose();
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     private void brnActualizarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brnActualizarPerfilActionPerformed

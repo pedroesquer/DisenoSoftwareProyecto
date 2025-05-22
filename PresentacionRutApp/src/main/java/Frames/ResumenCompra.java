@@ -49,6 +49,7 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
         System.out.println("Observador agregado: " + this.hashCode());
 
         initComponents();
+        Clases.TemporizadorVisual.getInstancia().registrarEtiqueta(lblTemporizador);
         setTitle("Resumen de Compra");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -111,6 +112,7 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
         jLabel18 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         lblMonedero = new javax.swing.JLabel();
+        lblTemporizador = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -220,7 +222,7 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
         BackGround.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 112, 530, 20));
         BackGround.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 530, 20));
         BackGround.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 463, 460, 0));
-        BackGround.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 460, 530, 10));
+        BackGround.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 450, 530, 10));
 
         jLabel11.setBackground(new java.awt.Color(255, 255, 255));
         jLabel11.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
@@ -285,6 +287,7 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
         lblMonedero.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
         lblMonedero.setText("$....");
         BackGround.add(lblMonedero, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 370, 160, 30));
+        BackGround.add(lblTemporizador, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 460, 170, 10));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -333,6 +336,7 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
             BoletoContext.limpiarBoleto();
             JOptionPane.showMessageDialog(null, "Has cancelado el proceso.\n Regresaras a la pantalla principal");
             CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
+            ControlTimer.getInstancia().finalizarTemporizador();
             this.dispose();
             //AQUI DEBERIA DE IR ALGO PARA REGRESAR LOS ASIENTOS A DISPONIBLES
         }
@@ -374,6 +378,7 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
     private javax.swing.JLabel lblNombres;
     private javax.swing.JLabel lblOrigen;
     private javax.swing.JLabel lblPrecio;
+    private javax.swing.JLabel lblTemporizador;
     private javax.swing.JLabel lblTotal;
     // End of variables declaration//GEN-END:variables
 

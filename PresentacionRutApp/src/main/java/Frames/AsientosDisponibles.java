@@ -36,7 +36,6 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
     private Map<String, JPanel> mapaAsientos = new HashMap<>();
 
     //private JLabel lblTemporizador = new JLabel("Tiempo restante: 05:00");
-
     CamionDTO camion;
 
     public AsientosDisponibles() {
@@ -1024,7 +1023,6 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
         BackGround.add(lblLeyenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 280, 370, 40));
 
         lblTemporizador.setForeground(new java.awt.Color(0, 0, 0));
-        lblTemporizador.setText("jLabel3");
         BackGround.add(lblTemporizador, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 460, 230, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1062,6 +1060,7 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
             reiniciarAsientosSeleccionados();                      //SE LIBERA VISUALMENTE LOS ASIENTOS SELECCIONADOS
             JOptionPane.showMessageDialog(null, "Has cancelado el proceso.\n Regresaras a la pantalla principal");
             CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
+            ControlTimer.getInstancia().finalizarTemporizador();
             this.dispose();
             //AQUI DEBERIA DE IR ALGO PARA REGRESAR LOS ASIENTOS A DISPONIBLES
         }
@@ -1112,6 +1111,8 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
                 mapaEstadosAsientos.put(panel, EstadoAsiento.SELECCIONADO);
                 mapaNombresPasajeros.put(panel, nombrePasajero.trim());
                 actualizarResumenAsientos();
+                ControlTimer.getInstancia().agregarObservador(this);
+
                 ControlTimer.getInstancia().iniciarTemporizador(() -> reiniciarAsientosSeleccionados());
                 //CordinadorPresentacion.getInstancia().iniciarTemporizador(() -> reiniciarAsientosSeleccionados());
                 break;
