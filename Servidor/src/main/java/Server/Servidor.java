@@ -89,6 +89,7 @@ public class Servidor extends UnicastRemoteObject implements ServidorInterface {
 
         double nuevoSaldo = tarjetaInterna.getSaldo() - montoAPagar;
         tarjetaInterna.setSaldo(nuevoSaldo);
+        tarjetaCliente.setCvv(null);
 
         System.out.println("Pago procesado exitosamente para tarjeta " + tarjetaInterna.getNumero());
         System.out.println("Monto descontado: " + montoAPagar + ". Nuevo saldo: " + nuevoSaldo);

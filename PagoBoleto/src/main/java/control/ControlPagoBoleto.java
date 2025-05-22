@@ -121,9 +121,8 @@ public class ControlPagoBoleto {
     }
 
     /**
-     * Método el cual se encarga de procesar el pago.Si el pago es con monedero
-        lo hace manual dentro del método y si es con tarjeta llama a
-        Infraestructura.
+     * Método el cual se encarga de procesar el pago.
+     * Si el pago es con monedero lo hace manual dentro del método y si es con tarjeta llama a Infraestructura.
      *
      * @param detalles detalles del pago.
      * @param usuarioDTO
@@ -153,10 +152,10 @@ public class ControlPagoBoleto {
                 throw new PagoBoletoException("Saldo insuficiente en monedero.");
             }
         } else {
-            // Validaciones locales
-            if (!validarNumeroTarjeta(tarjeta.getNumeroTarjeta())) {
-                throw new PagoBoletoException("Numero de tarjeta invalido");
-            }
+//            // Validaciones locales
+//            if (!validarNumeroTarjeta(tarjeta.getNumeroTarjeta())) {
+//                throw new PagoBoletoException("Numero de tarjeta invalido");
+//            }
 
             //Enviar al banco ficticio (servidor RMI)
             try {
