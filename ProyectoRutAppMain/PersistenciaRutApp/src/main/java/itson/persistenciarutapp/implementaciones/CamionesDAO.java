@@ -35,11 +35,6 @@ public class CamionesDAO implements ICamionesDAO {
         MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
         MongoCollection<Camion> coleccion = baseDatos.getCollection(COLECCION, Camion.class);
 
-        // Crear índice único por _id si no existiera
-//        coleccion.createIndex(
-//                Indexes.ascending("numeroDeCamion"),
-//                new IndexOptions().unique(true)
-//        );
     }
 
     @Override
@@ -67,20 +62,20 @@ public class CamionesDAO implements ICamionesDAO {
         );
     }
 
-    public List<AsientoDTO> obtenerAsientosDisponibles(CamionDTO camion) {
+    @Override
+    public List<Asiento> obtenerAsientosDisponibles(String numeroDeCamion) {
         MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
         MongoCollection<Document> coleccion = baseDatos.getCollection("camiones");
 
-        Document camionDoc = coleccion.find(eq("numeroDeCamion", camion.getNumeroCamion())).first();
+        Document camionDoc = coleccion.find(eq("numeroDeCamion", numeroDeCamion)).first();
 
-        List<AsientoDTO> listaAsientos = new ArrayList<>();
+        List<Asiento> listaAsientos = new ArrayList<>();
         if (camionDoc != null && camionDoc.containsKey("asientos")) {
             List<Document> asientosDoc = (List<Document>) camionDoc.get("asientos");
             for (Document a : asientosDoc) {
-                Long id = a.getInteger("numero").longValue();
-                String estadoStr = a.getString("estado");
-                estadoAsiento estado = estadoStr.equalsIgnoreCase("OCUPADO") ? estadoAsiento.OCUPADO : estadoAsiento.LIBRE;
-                listaAsientos.add(new AsientoDTO(id, estado, String.valueOf(id)));
+                int numero = a.getInteger("numero");
+                String estado = a.getString("estado");
+                listaAsientos.add(new Asiento(numero, estado));
             }
         }
 

@@ -4,7 +4,9 @@
  */
 package itson.persistenciarutapp;
 
+import itson.persistenciarutapp.implementaciones.Viaje;
 import itson.rutappdto.ViajeDTO;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -13,11 +15,12 @@ import java.util.List;
  */
 public interface IViajesDAO {
 
-    List<ViajeDTO> consultarViajesPorOrigenDestinoYFecha(ViajeDTO viaje);
+   public List<Viaje> consultarViajesPorOrigenDestinoYFecha(String origen, String destino, Date fecha);
 
-    ViajeDTO consultarViajePorId(String idViaje);
+    public Viaje consultarViajePorId(String idViaje);
 
-    List<ViajeDTO> obtenerTodosLosViajes();
+    public List<Viaje> obtenerTodosLosViajes();
     
+    List<String> obtenerDestinosPorOrigen(String origen);
     
 }

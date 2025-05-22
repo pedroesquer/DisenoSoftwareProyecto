@@ -8,9 +8,7 @@ import itson.rutappdto.PagoDTO;
  * @author pedro
  */
 public interface IPagosDAO {
-    Pago agregarPago(PagoDTO pagoDTO);
-    
-    
-    
+
+    Pago agregarPago(Pago pago);
 
 }

@@ -4,6 +4,7 @@
  */
 package itson.rutappbo.implementaciones;
 
+import enumm.estadoAsiento;
 import excepciones.NegocioException;
 import itson.persistenciarutapp.ICamionesDAO;
 import itson.persistenciarutapp.implementaciones.Asiento;
@@ -11,7 +12,9 @@ import itson.persistenciarutapp.implementaciones.Camion;
 import itson.persistenciarutapp.implementaciones.CamionesDAO;
 import itson.rutappbo.ICamionesBO;
 import itson.rutappdto.AsientoBoletoDTO;
+import itson.rutappdto.AsientoDTO;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -71,5 +74,16 @@ public class CamionesBO implements ICamionesBO {
         }
         camionesDAO.ocuparAsientos(idCamion, asientos);
     }
+    
+    @Override
+    public List<AsientoDTO> obtenerAsientosDisponibles(String numeroDeCamion) {
+    List<Asiento> asientos = camionesDAO.obtenerAsientosDisponibles(numeroDeCamion);
+
+    return asientos.stream().map(a -> new AsientoDTO(
+        (long) a.getNumero(),
+        "OCUPADO".equalsIgnoreCase(a.getEstado()) ? estadoAsiento.OCUPADO : estadoAsiento.LIBRE,
+        String.valueOf(a.getNumero())
+    )).collect(Collectors.toList());
+}
 }
 

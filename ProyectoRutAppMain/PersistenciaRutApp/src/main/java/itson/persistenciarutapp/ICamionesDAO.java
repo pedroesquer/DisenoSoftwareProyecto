@@ -4,6 +4,7 @@
  */
 package itson.persistenciarutapp;
 
+import itson.persistenciarutapp.implementaciones.Asiento;
 import itson.persistenciarutapp.implementaciones.Camion;
 import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.CamionDTO;
@@ -22,4 +23,7 @@ public interface ICamionesDAO {
     void actualizarCamion(Camion camion);
     
     void ocuparAsientos(String idCamion, List<AsientoBoletoDTO> asientos);
+    
+    public List<Asiento> obtenerAsientosDisponibles(String numeroDeCamion);
+
 }

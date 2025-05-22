@@ -4,6 +4,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Projections.include;
 import itson.persistenciarutapp.IViajesDAO;
 import itson.rutappdto.ViajeDTO;
 import java.time.LocalDate;
@@ -20,69 +21,52 @@ public class ViajesDAO implements IViajesDAO {
     private final String COLECCION = "viajes";
 
     @Override
-    public List<ViajeDTO> consultarViajesPorOrigenDestinoYFecha(ViajeDTO viaje) {
+    public List<Viaje> consultarViajesPorOrigenDestinoYFecha(String origen, String destino, Date fecha) {
         MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
         MongoCollection<Viaje> coleccion = baseDatos.getCollection(COLECCION, Viaje.class);
 
-        Date fecha = viaje.getFecha();
         LocalDate localDate = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
         Date desde = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         Date hasta = Date.from(localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        List<Viaje> resultados = coleccion.find(and(
-                eq("origen", viaje.getOrigen()),
-                eq("destino", viaje.getDestino()),
+        return coleccion.find(and(
+                eq("origen", origen),
+                eq("destino", destino),
                 gte("fechaHora", desde),
                 lt("fechaHora", hasta)
         )).into(new ArrayList<>());
-
-        List<ViajeDTO> listaDTO = new ArrayList<>();
-        for (Viaje v : resultados) {
-            listaDTO.add(parsearViajeDTO(v)); // ✅ con ID incluido
-        }
-
-        return listaDTO;
     }
 
     @Override
-    public ViajeDTO consultarViajePorId(String idViaje) {
+    public Viaje consultarViajePorId(String idViaje) {
         MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
         MongoCollection<Viaje> coleccion = baseDatos.getCollection(COLECCION, Viaje.class);
         Document filtro = new Document("_id", new ObjectId(idViaje));
-        Viaje viaje = coleccion.find(filtro).first();
-
-        return viaje != null ? parsearViajeDTO(viaje) : null;
+        return coleccion.find(filtro).first();
     }
 
     @Override
-    public List<ViajeDTO> obtenerTodosLosViajes() {
+    public List<Viaje> obtenerTodosLosViajes() {
         MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
         MongoCollection<Viaje> coleccion = baseDatos.getCollection(COLECCION, Viaje.class);
-
-        List<Viaje> listaResultados = coleccion.find().into(new ArrayList<>());
-        return parsearListaViajeDTO(listaResultados);
+        return coleccion.find().into(new ArrayList<>());
     }
 
-    public ViajeDTO parsearViajeDTO(Viaje viaje) {
-        ViajeDTO dto = new ViajeDTO(
-                viaje.getPrecio(),
-                viaje.getOrigen(),
-                viaje.getDestino(),
-                viaje.getCamion(),
-                viaje.getFecha()
-        );
-        if (viaje.getId() != null) {
-            dto.setIdViaje(viaje.getId().toHexString()); // ✅ importante
+    @Override
+    public List<String> obtenerDestinosPorOrigen(String origen) {
+        List<String> destinos = new ArrayList<>();
+
+        MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
+        MongoCollection<Document> coleccion = baseDatos.getCollection(COLECCION);
+
+        for (Document doc : coleccion.find(eq("origen", origen)).projection(include("destino"))) {
+            String destino = doc.getString("destino");
+            if (destino != null && !destinos.contains(destino)) {
+                destinos.add(destino);
+            }
         }
-        return dto;
+
+        return destinos;
     }
 
-    public List<ViajeDTO> parsearListaViajeDTO(List<Viaje> listaViajes) {
-        List<ViajeDTO> listaDTO = new LinkedList<>();
-        for (Viaje v : listaViajes) {
-            listaDTO.add(parsearViajeDTO(v));
-        }
-        return listaDTO;
-    }
 }

@@ -1010,7 +1010,7 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
 
         btnCompraViaje.setBackground(new java.awt.Color(47, 40, 34));
         btnCompraViaje.setFont(new java.awt.Font("Roboto Condensed Black", 1, 13)); // NOI18N
-        btnCompraViaje.setForeground(new java.awt.Color(255, 255, 255));
+        btnCompraViaje.setForeground(new java.awt.Color(204, 255, 255));
         btnCompraViaje.setText("COMPRAR");
         btnCompraViaje.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1021,8 +1021,6 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
 
         lblLeyenda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/leyendaAsientos.png"))); // NOI18N
         BackGround.add(lblLeyenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 280, 370, 40));
-
-        lblTemporizador.setForeground(new java.awt.Color(0, 0, 0));
         BackGround.add(lblTemporizador, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 460, 230, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

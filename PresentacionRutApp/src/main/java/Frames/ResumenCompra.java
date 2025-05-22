@@ -260,6 +260,7 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
         BackGround.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 160, -1));
 
         botonAceptar.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        botonAceptar.setForeground(new java.awt.Color(255, 255, 255));
         botonAceptar.setText("Pagar");
         botonAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

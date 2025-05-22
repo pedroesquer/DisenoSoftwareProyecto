@@ -15,17 +15,12 @@ public class PagosDAO implements IPagosDAO {
     private final String COLECCION = "pagos";
 
     @Override
-    public Pago agregarPago(PagoDTO pagoDTO) {
+    public Pago agregarPago(Pago pago) {
         MongoDatabase db = ManejadorConexiones.obtenerBaseDatos();
         MongoCollection<Pago> coleccion = db.getCollection(COLECCION, Pago.class);
-        Pago pago = new Pago();
-        Date fecha = new Date();
-        pago.setMetodoPago(pagoDTO.getMetodoPago());
-        pago.setCantidad(pagoDTO.getMonto());
-        pago.setFechaHora(fecha);
+
         coleccion.insertOne(pago);
         return pago;
     }
-
 
 }

@@ -20,4 +20,7 @@ public interface IViajesBO {
     List<ViajeDTO> consultarTodos();
 
     void insertarViaje(Viaje viaje);
+    
+    List<String> obtenerDestinos(String origen);
+
 }

@@ -146,8 +146,9 @@ public class BuscarViaje extends javax.swing.JFrame {
         BackGround.add(BoxOrigen, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, 190, 40));
         BackGround.add(Calendario, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 170, 320, 190));
 
-        btnBuscar.setBackground(new java.awt.Color(47, 40, 34));
+        btnBuscar.setBackground(new java.awt.Color(51, 51, 51));
         btnBuscar.setFont(new java.awt.Font("Roboto Condensed Black", 1, 13)); // NOI18N
+        btnBuscar.setForeground(new java.awt.Color(255, 255, 255));
         btnBuscar.setText("BUSCAR");
         btnBuscar.setPreferredSize(new java.awt.Dimension(128, 28));
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
