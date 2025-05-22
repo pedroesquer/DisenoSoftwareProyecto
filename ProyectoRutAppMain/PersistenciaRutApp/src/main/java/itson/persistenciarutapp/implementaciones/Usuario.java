@@ -1,9 +1,12 @@
 package itson.persistenciarutapp.implementaciones;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.bson.types.ObjectId;
 
 public class Usuario {
-
+    
+    private ObjectId id;
+    
     @BsonProperty("numeroTelefonico")
     private String numeroTelefonico;
     
@@ -18,6 +21,14 @@ public class Usuario {
 
     // Constructor por defecto
     public Usuario() {
+    }
+
+    public Usuario(ObjectId id, String numeroTelefonico, String nombre, String contrasenia, Double saldoMonedero) {
+        this.id = id;
+        this.numeroTelefonico = numeroTelefonico;
+        this.nombre = nombre;
+        this.contrasenia = contrasenia;
+        this.saldoMonedero = saldoMonedero;
     }
 
     // Constructor con parámetros
@@ -49,6 +60,16 @@ public class Usuario {
         this.saldoMonedero = saldoMonedero;
       
     }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
+    
+    
     
     public String getNombre() {
         return nombre;

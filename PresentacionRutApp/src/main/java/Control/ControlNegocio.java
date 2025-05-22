@@ -19,6 +19,7 @@ import itson.consultardisponibilidad.Interfaz.IConsultarDisponibilidad;
 import itson.consultardisponibilidad.fachada.FachadaConsultarDisponibilidad;
 import itson.persistenciarutapp.implementaciones.Viaje;
 import itson.rutappbo.implementaciones.BoletoBO;
+import itson.rutappbo.implementaciones.ComprasBO;
 import itson.rutappbo.implementaciones.UsuariosBO;
 import itson.rutappdto.AsientoAsignadoDTO;
 import itson.rutappdto.AsientoBoletoDTO;
@@ -273,7 +274,7 @@ public class ControlNegocio {
                         viajeDTO.getFecha(), 
                         viajeDTO.getIdViaje()
                 );
-
+                new ComprasBO().agregarCompra(usuarioDTO, viajeEntidad, BoletoContext.getBoleto().getListaAsiento());
                 new BoletoBO().guardarBoletoDesdeContexto(
                         usuarioDTO,
                         viajeEntidad,

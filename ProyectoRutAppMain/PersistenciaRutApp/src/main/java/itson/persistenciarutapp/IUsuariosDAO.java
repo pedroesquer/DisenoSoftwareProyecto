@@ -1,27 +1,27 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package itson.persistenciarutapp;
 
 import itson.persistenciarutapp.implementaciones.Usuario;
-import itson.rutappdto.AccesoUsuarioDTO;
-import itson.rutappdto.UsuarioDTO;
 
-/**
- *
- * @author pedro
- */
 public interface IUsuariosDAO {
 
-    UsuarioDTO agregarUsuario(UsuarioDTO nuevoUsuario);
+    /**
+     * Agrega un nuevo usuario a la base de datos.
+     * @param usuario Usuario a agregar
+     * @return Usuario agregado
+     */
+    Usuario agregarUsuario(Usuario usuario);
 
-    UsuarioDTO consultarUsuarioPorNumeroTelefonico(String numeroTel);
+    /**
+     * Consulta un usuario por su número telefónico.
+     * @param numeroTel Número telefónico a buscar
+     * @return Usuario encontrado, o null si no existe
+     */
+    Usuario consultarUsuarioPorNumeroTelefonico(String numeroTel);
 
-    UsuarioDTO validarLogin(UsuarioDTO usuario);
-    
-    boolean actualizarSaldo(UsuarioDTO usuario);
-    
-    boolean agregarSaldo(UsuarioDTO usuario);
-
+    /**
+     * Actualiza el saldo del usuario en base al número telefónico.
+     * @param usuario Usuario con nuevo saldo
+     * @return true si la actualización fue exitosa
+     */
+    boolean actualizarSaldo(Usuario usuario);
 }
