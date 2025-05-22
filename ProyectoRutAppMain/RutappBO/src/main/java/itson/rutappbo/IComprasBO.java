@@ -7,6 +7,7 @@ package itson.rutappbo;
 import itson.persistenciarutapp.implementaciones.Viaje;
 import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.UsuarioDTO;
+import itson.rutappdto.ViajeDTO;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
  * @author pedro
  */
 public interface IComprasBO {
-    void agregarCompra(UsuarioDTO usuarioDTO, Viaje viaje, List<AsientoBoletoDTO> asientosDTO);
+    void agregarCompra(UsuarioDTO usuarioDTO, ViajeDTO viajeDTO, List<AsientoBoletoDTO> asientosDTO);
         
     
 }

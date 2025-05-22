@@ -18,9 +18,7 @@ import interfaz.IUsuarioActivo;
 import itson.consultardisponibilidad.Interfaz.IConsultarDisponibilidad;
 import itson.consultardisponibilidad.fachada.FachadaConsultarDisponibilidad;
 import itson.persistenciarutapp.implementaciones.Viaje;
-import itson.rutappbo.implementaciones.BoletoBO;
 import itson.rutappbo.implementaciones.ComprasBO;
-import itson.rutappbo.implementaciones.UsuariosBO;
 import itson.rutappdto.AsientoAsignadoDTO;
 import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.AsientoDTO;
@@ -29,7 +27,6 @@ import itson.rutappdto.CamionDTO;
 import itson.rutappdto.DetallesPagoDTO;
 import itson.rutappdto.UsuarioDTO;
 import itson.rutappdto.ViajeDTO;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +34,6 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import usuarioActivoManager.UsuarioActivoManager;
 
 /**
  *
@@ -266,20 +262,9 @@ public class ControlNegocio {
             try {
                 seleccionAsiento.ocuparAsientos(BoletoContext.getBoleto());
                 ViajeDTO viajeDTO = BoletoContext.getBoleto().getViaje();
-                Viaje viajeEntidad = new Viaje(
-                        viajeDTO.getPrecio(),
-                        viajeDTO.getOrigen(),
-                        viajeDTO.getDestino(),
-                        viajeDTO.getCamion(),
-                        viajeDTO.getFecha(), 
-                        viajeDTO.getIdViaje()
-                );
-                new ComprasBO().agregarCompra(usuarioDTO, viajeEntidad, BoletoContext.getBoleto().getListaAsiento());
-                new BoletoBO().guardarBoletoDesdeContexto(
-                        usuarioDTO,
-                        viajeEntidad,
-                        BoletoContext.getBoleto().getListaAsiento()
-                );
+
+                new ComprasBO().agregarCompra(usuarioDTO, viajeDTO, BoletoContext.getBoleto().getListaAsiento());
+
             } catch (NegocioException ex) {
                 Logger.getLogger(ControlNegocio.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null, "Error al apartar los asientos, revisar código");

@@ -20,19 +20,20 @@ public class Viaje {
     @BsonProperty("fechaHora")
     private Date fecha;
     
-    private String idViaje;
 
     public Viaje() {
     }
 
-    public Viaje(Double precio, String origen, String destino, CamionDTO camion, Date fecha, String idViaje) {
+    public Viaje(ObjectId id, Double precio, String origen, String destino, CamionDTO camion, Date fecha) {
+        this.id = id;
         this.precio = precio;
         this.origen = origen;
         this.destino = destino;
         this.camion = camion;
         this.fecha = fecha;
-        this.idViaje = idViaje;
     }
+
+    
 
     public ObjectId getId() {
         return id;
@@ -83,18 +84,13 @@ public class Viaje {
         this.fecha = fecha;
     }
 
-    public String getIdViaje() {
-        return idViaje;
-    }
-
-    public void setIdViaje(String idViaje) {
-        this.idViaje = idViaje;
-    }
-
     @Override
     public String toString() {
-        return "Viaje{" + "precio=" + precio + ", origen=" + origen + ", destino=" + destino + ", camion=" + camion + ", fecha=" + fecha + ", idViaje=" + idViaje + '}';
+        return "Viaje{" + "id=" + id + ", precio=" + precio + ", origen=" + origen + ", destino=" + destino + ", camion=" + camion + ", fecha=" + fecha + '}';
     }
+
+
+
     
     
 }

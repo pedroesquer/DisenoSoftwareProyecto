@@ -241,14 +241,14 @@ public class BuscarViaje extends javax.swing.JFrame {
 // Y así sí puedes usarla como antes:
         BoletoContext.getBoleto().setFecha(fecha);
 
-        ViajeDTO viaje = new ViajeDTO();
-        viaje.setOrigen(origen);
-        viaje.setDestino(destino);
-        viaje.setFecha(BoletoContext.getBoleto().getFecha());
-        
-        BoletoContext.getBoleto().setViaje(viaje);
-        ControlNegocio.getInstancia().obtenerListaViajes(viaje);
-        CordinadorPresentacion.getInstancia().mostrarViajesDisponibles(viaje);
+        ViajeDTO filtroBusqueda = new ViajeDTO();
+        filtroBusqueda.setOrigen(origen);
+        filtroBusqueda.setDestino(destino);
+        filtroBusqueda.setFecha(BoletoContext.getBoleto().getFecha());
+
+        ControlNegocio.getInstancia().obtenerListaViajes(filtroBusqueda);
+        CordinadorPresentacion.getInstancia().mostrarViajesDisponibles(filtroBusqueda); // ✅ solo paso el filtro
+
         dispose(); // Cerrar la ventana actual
     }//GEN-LAST:event_btnBuscarActionPerformed
 

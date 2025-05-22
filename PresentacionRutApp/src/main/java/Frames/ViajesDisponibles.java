@@ -82,7 +82,7 @@ public class ViajesDisponibles extends javax.swing.JFrame {
         ));
         panel.setPreferredSize(new Dimension(2, 100)); // Tamaño de la tarjeta
         System.out.println("Fecha de textos dsipo: " + viaje.getFecha());
-        
+
         String fechaTexto = "Fecha no disponible";
         if (viaje.getFecha() != null) {
             LocalDateTime fechaLocal = viaje.getFecha().toInstant()
@@ -108,15 +108,15 @@ public class ViajesDisponibles extends javax.swing.JFrame {
                     BoletoContext.getBoleto().setFecha(viaje.getFecha());
 
                 }
+                BoletoContext.getBoleto().setViaje(viaje); // ✅ ESTO ARREGLA TODO
 
                 CamionDTO camion = viaje.getCamion();
                 camion.setListaAsiento(
                         CordinadorPresentacion.getInstancia().consultarAsientosPorCamion(camion)
                 );
-                
                 BoletoContext.getBoleto().getViaje().setCamion(camion);
                 BoletoContext.getBoleto().setPrecio(viaje.getPrecio());
-                
+
                 CordinadorPresentacion.getInstancia().abrirAsientosDisponibles(camion);
 
                 Component comp = SwingUtilities.getWindowAncestor(panel);
