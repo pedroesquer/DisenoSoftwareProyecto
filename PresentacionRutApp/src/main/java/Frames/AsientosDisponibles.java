@@ -1,5 +1,6 @@
 package Frames;
 
+import Clases.TemporizadorVisual;
 import Control.ControlNegocio;
 import Control.ControlTimer;
 import Control.CordinadorPresentacion;
@@ -11,10 +12,12 @@ import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.BoletoContext;
 import itson.rutappdto.CamionDTO;
 import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -31,6 +34,8 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
 
     // Mapear los números de asiento a los paneles correspondientes
     private Map<String, JPanel> mapaAsientos = new HashMap<>();
+
+    //private JLabel lblTemporizador = new JLabel("Tiempo restante: 05:00");
 
     CamionDTO camion;
 
@@ -56,9 +61,16 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
         System.out.println("Observador agregado desde constructor CON CamionDTO: " + this.hashCode());
 
         initComponents();
+
         this.setLocationRelativeTo(null);
         setTitle("Asientos disponibles");
         btnCompraViaje.setEnabled(false);
+        // Mostrar el temporizador en pantalla
+        lblTemporizador.setFont(new java.awt.Font("Roboto", Font.BOLD, 12));
+//        lblTemporizador.setForeground(Color.BLACK);
+//        BackGround.add(lblTemporizador, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 280, 150, 30));
+
+        TemporizadorVisual.getInstancia().registrarEtiqueta(lblTemporizador);
         this.camion = camion;
         // Lista de paneles
         JPanel[] paneles = {
@@ -264,6 +276,7 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
         resumenTextArea = new javax.swing.JTextArea();
         btnCompraViaje = new javax.swing.JButton();
         lblLeyenda = new javax.swing.JLabel();
+        lblTemporizador = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -282,7 +295,7 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
         HeaderLayout.setHorizontalGroup(
             HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HeaderLayout.createSequentialGroup()
-                .addContainerGap(166, Short.MAX_VALUE)
+                .addContainerGap(141, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(164, 164, 164))
         );
@@ -1005,10 +1018,14 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
                 btnCompraViajeActionPerformed(evt);
             }
         });
-        BackGround.add(btnCompraViaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 480, 110, 40));
+        BackGround.add(btnCompraViaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 490, 110, 40));
 
         lblLeyenda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/leyendaAsientos.png"))); // NOI18N
         BackGround.add(lblLeyenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 280, 370, 40));
+
+        lblTemporizador.setForeground(new java.awt.Color(0, 0, 0));
+        lblTemporizador.setText("jLabel3");
+        BackGround.add(lblTemporizador, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 460, 230, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1030,7 +1047,7 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
 
     private void btnCompraViajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompraViajeActionPerformed
         List<AsientoBoletoDTO> lista = obtenerAsientosYPasajeros(); // tu método original
-        BoletoContext.getBoleto().setListaAsiento(lista);   
+        BoletoContext.getBoleto().setListaAsiento(lista);
         CordinadorPresentacion.getInstancia().abrirResumenCompra();
         this.dispose();
     }//GEN-LAST:event_btnCompraViajeActionPerformed
@@ -1183,6 +1200,7 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblLeyenda;
+    private javax.swing.JLabel lblTemporizador;
     private javax.swing.JLabel numeroAsiento10;
     private javax.swing.JLabel numeroAsiento11;
     private javax.swing.JLabel numeroAsiento12;
