@@ -1118,20 +1118,28 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
                 break;
 
             case SELECCIONADO:
-                // Si está seleccionado, cambiar a libre
-                panel.setBackground(new Color(51, 204, 255)); // Azul claro (LIBRE)
-                mapaEstadosAsientos.put(panel, EstadoAsiento.LIBRE); // Actualizar el estado
-                mapaNombresPasajeros.remove(panel); // Eliminar el nombre del pasajero
-                actualizarResumenAsientos();
-                break;
-
-            case OCUPADO:
-                JOptionPane.showMessageDialog(
+                int confirmacion = JOptionPane.showConfirmDialog(
                         this,
-                        "El asiento que seleccionaste ya está ocupado.",
-                        "Asiento Ocupado",
-                        JOptionPane.WARNING_MESSAGE
+                        "¿Realmente quieres deseleccionar este asiento?",
+                        "Confirmar deselección",
+                        JOptionPane.YES_NO_OPTION
                 );
+
+                if (confirmacion == JOptionPane.YES_OPTION) {
+                    panel.setBackground(new Color(51, 204, 255)); // Azul claro (LIBRE)
+                    mapaEstadosAsientos.put(panel, EstadoAsiento.LIBRE); // Actualiza estado
+                    mapaNombresPasajeros.remove(panel); // Quita el nombre del pasajero
+                    actualizarResumenAsientos();
+
+                    // Verifica si ya no hay asientos seleccionados
+                    boolean hayAsientosSeleccionados = mapaEstadosAsientos.values().stream()
+                            .anyMatch(e -> e == EstadoAsiento.SELECCIONADO);
+
+                    if (!hayAsientosSeleccionados) {
+                        ControlTimer.getInstancia().finalizarTemporizador();
+                        lblTemporizador.setText("");
+                    }
+                }
                 break;
         }
 
@@ -1139,10 +1147,7 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
         panel.revalidate();
         panel.repaint();
     }
-
-    /**
-     *
-     */
+    
     private void actualizarResumenAsientos() {
         StringBuilder resumen = new StringBuilder();
 
