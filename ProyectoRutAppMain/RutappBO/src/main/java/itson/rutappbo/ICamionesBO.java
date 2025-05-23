@@ -9,6 +9,7 @@ import itson.persistenciarutapp.implementaciones.Camion;
 import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.AsientoDTO;
 import java.util.List;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -27,4 +28,6 @@ public interface ICamionesBO {
     void ocuparAsientos(String idCamion, List<AsientoBoletoDTO> asientos) throws NegocioException;
 
     public List<AsientoDTO> obtenerAsientosDisponibles(String numeroDeCamion);
+    
+    public ObjectId obtenerIdPorNumero(String numeroDeCamion);
 }

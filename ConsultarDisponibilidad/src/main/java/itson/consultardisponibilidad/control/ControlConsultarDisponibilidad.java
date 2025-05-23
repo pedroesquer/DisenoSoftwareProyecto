@@ -1,5 +1,6 @@
 package itson.consultardisponibilidad.control;
 
+import itson.persistenciarutapp.IReseñaDAO;
 import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.CamionDTO;
 
@@ -10,9 +11,11 @@ import itson.persistenciarutapp.IViajesDAO;
 import itson.persistenciarutapp.implementaciones.ViajesDAO;
 import itson.rutappbo.ICamionesBO;
 import itson.rutappbo.IComprasBO;
+import itson.rutappbo.IReseñaBO;
 import itson.rutappbo.IViajesBO;
 import itson.rutappbo.implementaciones.CamionesBO;
 import itson.rutappbo.implementaciones.ComprasBO;
+import itson.rutappbo.implementaciones.ReseñasBO;
 import itson.rutappbo.implementaciones.ViajesBO;
 import itson.rutappdto.CompraDTO;
 import itson.rutappdto.UsuarioDTO;
@@ -24,7 +27,7 @@ import itson.rutappdto.ViajeDTO;
  */
 public class ControlConsultarDisponibilidad {
 
-    private final IViajesDAO viajesDAO = new ViajesDAO();
+//    private final IReseñaBO reseñaBO; 
 
     //private final CamionesDAO camionesDAO 
     private static ControlConsultarDisponibilidad instance;
@@ -37,6 +40,7 @@ public class ControlConsultarDisponibilidad {
         this.viajesBO = new ViajesBO(new ViajesDAO());
         this.camionesBO = new CamionesBO();
         this.compraBO = new ComprasBO();
+//        this.reseñaBO = new ReseñasBO(new IReseñaDAO reseñasDAO, ICamionesBO camionesBO);
     }
 
     /**

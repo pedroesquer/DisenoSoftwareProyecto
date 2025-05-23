@@ -15,6 +15,7 @@ import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.AsientoDTO;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -60,30 +61,35 @@ public class CamionesBO implements ICamionesBO {
         for (Asiento a : camion.getAsientos()) {
             if (a.getNumero() == numeroAsiento) {
                 a.setEstado(nuevoEstado);
-                camionesDAO.actualizarCamion(camion); 
+                camionesDAO.actualizarCamion(camion);
                 return true;
             }
         }
         return false;
-    }   
+    }
 
     @Override
     public void ocuparAsientos(String idCamion, List<AsientoBoletoDTO> asientos) throws NegocioException {
-        if (asientos.isEmpty()){
+        if (asientos.isEmpty()) {
             throw new NegocioException("No hay asientos seleccionados");
         }
         camionesDAO.ocuparAsientos(idCamion, asientos);
     }
-    
+
     @Override
     public List<AsientoDTO> obtenerAsientosDisponibles(String numeroDeCamion) {
-    List<Asiento> asientos = camionesDAO.obtenerAsientosDisponibles(numeroDeCamion);
+        List<Asiento> asientos = camionesDAO.obtenerAsientosDisponibles(numeroDeCamion);
 
-    return asientos.stream().map(a -> new AsientoDTO(
-        (long) a.getNumero(),
-        "OCUPADO".equalsIgnoreCase(a.getEstado()) ? estadoAsiento.OCUPADO : estadoAsiento.LIBRE,
-        String.valueOf(a.getNumero())
-    )).collect(Collectors.toList());
-}
-}
+        return asientos.stream().map(a -> new AsientoDTO(
+                (long) a.getNumero(),
+                "OCUPADO".equalsIgnoreCase(a.getEstado()) ? estadoAsiento.OCUPADO : estadoAsiento.LIBRE,
+                String.valueOf(a.getNumero())
+        )).collect(Collectors.toList());
+    }
 
+    @Override
+    public ObjectId obtenerIdPorNumero(String numeroDeCamion) {
+        Camion camion = camionesDAO.consultarCamionPorId(numeroDeCamion);
+        return camion != null ? camion.getId() : null;
+    }
+}

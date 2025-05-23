@@ -5,7 +5,9 @@
 package itson.persistenciarutapp.implementaciones;
 
 import java.util.List;
+import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -13,6 +15,9 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
  */
 public class Camion {
 
+    @BsonId
+    private ObjectId id;
+    
     @BsonProperty("numeroDeCamion")
     private String numeroDeCamion;
 
@@ -26,6 +31,20 @@ public class Camion {
         this.asientos = asientos;
     }
 
+    public Camion(ObjectId id, String numeroDeCamion, List<Asiento> asientos) {
+        this.id = id;
+        this.numeroDeCamion = numeroDeCamion;
+        this.asientos = asientos;
+    }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
+    
     public String getNumeroDeCamion() {
         return numeroDeCamion;
     }
@@ -44,6 +63,7 @@ public class Camion {
 
     @Override
     public String toString() {
-        return "Camion{" + "numeroDeCamion=" + numeroDeCamion + ", asientos=" + asientos + '}';
+        return "Camion{" + "id=" + id + ", numeroDeCamion=" + numeroDeCamion + ", asientos=" + asientos + '}';
     }
+
 }
