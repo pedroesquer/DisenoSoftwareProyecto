@@ -12,10 +12,12 @@ import itson.persistenciarutapp.implementaciones.ViajesDAO;
 import itson.rutappbo.ICamionesBO;
 import itson.rutappbo.IComprasBO;
 import itson.rutappbo.IReseñaBO;
+import itson.rutappbo.IUsuariosBO;
 import itson.rutappbo.IViajesBO;
 import itson.rutappbo.implementaciones.CamionesBO;
 import itson.rutappbo.implementaciones.ComprasBO;
 import itson.rutappbo.implementaciones.ReseñasBO;
+import itson.rutappbo.implementaciones.UsuariosBO;
 import itson.rutappbo.implementaciones.ViajesBO;
 import itson.rutappdto.CompraDTO;
 import itson.rutappdto.UsuarioDTO;
@@ -28,19 +30,23 @@ import itson.rutappdto.ViajeDTO;
 public class ControlConsultarDisponibilidad {
 
 //    private final IReseñaBO reseñaBO; 
-
     //private final CamionesDAO camionesDAO 
     private static ControlConsultarDisponibilidad instance;
 
     private final IViajesBO viajesBO;
     private final ICamionesBO camionesBO;
     private final IComprasBO compraBO;
+    private final IUsuariosBO usuariosBO;
+    private final IReseñaBO reseñaBO;
 
     private ControlConsultarDisponibilidad() {
         this.viajesBO = new ViajesBO(new ViajesDAO());
         this.camionesBO = new CamionesBO();
-        this.compraBO = new ComprasBO();
-//        this.reseñaBO = new ReseñasBO(new IReseñaDAO reseñasDAO, ICamionesBO camionesBO);
+// ------------------------RESEÑA----------------------------------
+        this.compraBO = new ComprasBO();//                        |
+        this.usuariosBO = new UsuariosBO();  //                   |  
+        this.reseñaBO = new ReseñasBO(usuariosBO, camionesBO); // |
+//-----------------------------------------------------------------
     }
 
     /**

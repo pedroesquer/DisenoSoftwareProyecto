@@ -6,6 +6,7 @@ package itson.rutappbo.implementaciones;
 
 import itson.persistenciarutapp.IReseñaDAO;
 import itson.persistenciarutapp.implementaciones.Reseña;
+import itson.persistenciarutapp.implementaciones.ReseñaDAO;
 import itson.rutappbo.ICamionesBO;
 import itson.rutappbo.IReseñaBO;
 import itson.rutappbo.IUsuariosBO;
@@ -23,11 +24,12 @@ import usuarioActivoManager.UsuarioActivoManager;
  */
 public class ReseñasBO implements IReseñaBO {
 
-    private final IReseñaDAO reseñasDAO;
+    private final IReseñaDAO reseñasDAO = new ReseñaDAO(); // <-- DAO instanciado aquí
     private final ICamionesBO camionesBO;
+    private final IUsuariosBO usuariosBO;
 
-    public ReseñasBO(IReseñaDAO reseñasDAO, ICamionesBO camionesBO) {
-        this.reseñasDAO = reseñasDAO;
+    public ReseñasBO(IUsuariosBO usuariosBO, ICamionesBO camionesBO) {
+        this.usuariosBO = usuariosBO;
         this.camionesBO = camionesBO;
     }
 
@@ -59,7 +61,7 @@ public class ReseñasBO implements IReseñaBO {
         List<ReseñaDTO> dtos = new ArrayList<>();
         for (Reseña r : reseñas) {
             ReseñaDTO dto = new ReseñaDTO();
-            dto.setNombreUsuario(UsuarioActivoManager.getInstancia().getUsuario().getNombre());
+            //dto.setNombreUsuario(usuariosBO.obtenerNombrePorId(r.getUsuario())); // 💥 AQUI LA CORRECCIÓN
             dto.setNumeroCamion(numeroCamion);
             dto.setComentario(r.getComentario());
             dto.setCalificacion(r.getCalificacion());
