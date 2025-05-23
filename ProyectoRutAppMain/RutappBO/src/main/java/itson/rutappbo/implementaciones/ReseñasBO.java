@@ -39,6 +39,12 @@ public class ReseñasBO implements IReseñaBO {
         ObjectId idUsuario = new ObjectId(usuarioDTO.getId());
         ObjectId idCamion = camionesBO.obtenerIdPorNumero(reseñaDTO.getNumeroCamion());
 
+        // Validación para limitar a 3 reseñas por camión por usuario
+        int conteo = reseñasDAO.contarReseñasUsuarioPorCamion(idUsuario, idCamion);
+        if (conteo >= 3) {
+            throw new Exception("Solo puedes dejar hasta 3 reseñas por camión.");
+        }
+
         Reseña reseña = new Reseña();
         reseña.setUsuario(idUsuario);
         reseña.setCamion(idCamion);

@@ -1,6 +1,5 @@
 package itson.persistenciarutapp.implementaciones;
 
-
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Aggregates;
@@ -125,9 +124,6 @@ public class ComprasDAO implements IComprasDAO {
                 Updates.set("asientosComprados.$[].estado", "LIBRE") // <- el $[] aplica a todos los elementos
         );
     }
-    
-  
-
 
     @Override
     public ObjectId obtenerIdDeCompra(ObjectId idUsuario, Date fechaCompra) {

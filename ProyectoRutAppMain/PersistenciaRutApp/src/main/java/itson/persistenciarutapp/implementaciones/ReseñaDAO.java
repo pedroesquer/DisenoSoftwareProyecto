@@ -90,4 +90,12 @@ public class ReseñaDAO implements IReseñaDAO {
         DeleteResult resultado = coleccion.deleteOne(eq("_id", idReseña));
         return resultado.getDeletedCount() > 0;
     }
+    
+    @Override
+    public int contarReseñasUsuarioPorCamion(ObjectId idUsuario, ObjectId idCamion) {
+        return (int) coleccion.countDocuments(Filters.and(
+            Filters.eq("usuario", idUsuario),
+            Filters.eq("camion", idCamion)
+        ));
+    }
 }

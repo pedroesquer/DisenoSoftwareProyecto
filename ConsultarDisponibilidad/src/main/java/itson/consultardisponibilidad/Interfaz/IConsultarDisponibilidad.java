@@ -27,11 +27,11 @@ public interface IConsultarDisponibilidad {
 
     List<CompraDTO> obtenerCompras(UsuarioDTO usuario);
 
-    void agregarReseña(ReseñaDTO reseña) throws Exception;
-
-    List<ReseñaDTO> obtenerReseñasPorCamion(String numeroCamion);
-
-    boolean eliminarReseña(String idReseña);
-
-    public void eliminarCompra(CompraDTO compra);
+//    void agregarReseña(ReseñaDTO reseña) throws Exception;
+//
+//    List<ReseñaDTO> obtenerReseñasPorCamion(String numeroCamion);
+//
+//    boolean eliminarReseña(String idReseña);
+//
+//    public void eliminarCompra(CompraDTO compra);
 }

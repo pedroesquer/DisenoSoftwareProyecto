@@ -111,42 +111,5 @@ public class ControlConsultarDisponibilidad {
         return compraBO.obtenerComprasNoVencidasPorUsuario(usuario);
     }
 
-    /**
-     * Agrega una reseña al camión actual del usuario logueado.
-     *
-     * @param reseñaDTO DTO con datos de la reseña
-     */
-    public void agregarReseña(ReseñaDTO reseñaDTO) {
-        try {
-            reseñaBO.agregarReseña(reseñaDTO);
-        } catch (Exception e) {
-            System.err.println("Error al agregar reseña: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Obtiene todas las reseñas de un camión.
-     *
-     * @param numeroCamion número de camión
-     * @return lista de reseñas
-     */
-    public List<ReseñaDTO> obtenerReseñasPorCamion(String numeroCamion) {
-        return reseñaBO.obtenerReseñasPorCamion(numeroCamion);
-    }
-
-    /**
-     * Elimina una reseña específica si cumple con los requisitos (ej. tiempo,
-     * usuario).
-     *
-     * @param idReseña el ID de la reseña en formato String.
-     * @return true si la reseña fue eliminada, false si no se eliminó.
-     */
-    public boolean eliminarReseña(String idReseña) {
-        return reseñaBO.eliminarReseña(idReseña);
-    }
-
-    public void cancelarCompra(CompraDTO compra) {
-        compraBO.cancelarCompra(compra);
-    }
-
+    
 }

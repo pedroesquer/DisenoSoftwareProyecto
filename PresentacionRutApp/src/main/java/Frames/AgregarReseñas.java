@@ -162,17 +162,86 @@ public class AgregarReseñas extends javax.swing.JFrame {
     private void enviarReseña() {
         try {
             double estrellas = calificacionSeleccionada;
-            String comentario = txtComentario.getText();
+            String comentario = txtComentario.getText().trim();
 
+            // Validación 1: Estrellas seleccionadas
             if (calificacionSeleccionada == 0) {
                 JOptionPane.showMessageDialog(this, "Por favor selecciona una calificación.");
                 return;
             }
 
+            // Validación 2: Comentario vacío
             if (comentario.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Por favor escribe un comentario.");
                 return;
             }
+
+            // Validación 3: Comentario demasiado corto
+            if (comentario.length() < 2) {
+                JOptionPane.showMessageDialog(this, "El comentario es demasiado corto. Mínimo 2 caracteres.");
+                return;
+            }
+
+            // Validación 4: Comentario demasiado largo
+            if (comentario.length() > 150) {
+                JOptionPane.showMessageDialog(this, "El comentario es demasiado largo. Máximo 150 caracteres.");
+                return;
+            }
+
+            // Validación 5: Comentario con palabras ofensivas usando regex
+            String[] patronesProhibidos = {
+                "p[e3]nd[e3]j[o0]",
+                "c[uú]l[e3]r[o0]",
+                "m[i1]e[r]d[a@]",
+                "est[uú]p[i1]d[o0@]",
+                "i[d]i[o0@]t[a@]",
+                "imb[e3]c[i1]l",
+                "h[i1]j[o0] ?d[e3] ?p[uú]t[a@]",
+                "v[e3]rg[a@]",
+                "ch[i1]ng[a@]d[a@]?",
+                "ch[i1]ng[a@]r",
+                "m[a@]m[o0]n",
+                "p[uú]t[a@o0]",
+                "j[o0]t[o0]",
+                "z[o0]rr[a@]",
+                "p[e3]rr[a@]",
+                "n[a@]c[o0]",
+                "c[o0]ñ[o0]",
+                "b[a@]st[a@]rd[o0]",
+                "g[i1]l[i1]p[o0]ll[a@]",
+                "p[i1]ch[e3]",
+                "cab[r]+[o0]n",
+                "t[a@]r[a@]d[o0]",
+                "r[e3]tr[a@]s[a@]d[o0]",
+                "m[a@]rd[i1]t[o0]",
+                "c[a4]br[a@]",
+                "c[a4]br[o0]n[a@]",
+                "s[a@]c[o0]n[a@]",
+                "v[i1]dri[o0]l[a@]",
+                "t[o0]nt[o0]l[o0]n[a@]",
+                "c[o0]l[e3]r[a@]",
+                "l[e3]pr[o0]s[o0]",
+                "t[e3]rr[a@]t[e3]",
+                "b[o0]b[o0]",
+                "idi[o0]t[a@]",
+                "b[uú]rr[o0]",
+                "c[a@]g[a@][r]+",
+                "c[a@]g[a@]d[o0]",
+                "c[a@]br[o0]n[e3]s",
+                "c[o0]j[o0]n[e3]s?",
+                "m[a@]l[nn][a@]c[hhe3]t[o0]s?",
+                "m[a@]l[pb]ar[i1]d[o0]"
+            };
+
+            for (String patron : patronesProhibidos) {
+                if (comentario.toLowerCase().matches(".*" + patron + ".*")) {
+                    JOptionPane.showMessageDialog(this, "El comentario contiene lenguaje inapropiado.");
+                    return;
+                }
+            }
+
+            // Desactivar botón mientras se envía (Validación 3)
+            btnEnviarComentario.setEnabled(false);
 
             ReseñaDTO reseña = new ReseñaDTO();
             reseña.setNumeroCamion(numeroCamion);
@@ -181,12 +250,19 @@ public class AgregarReseñas extends javax.swing.JFrame {
 
             ControlNegocio.getInstancia().agregarReseña(reseña);
             JOptionPane.showMessageDialog(this, "¡Gracias por tu reseña!");
+
             txtComentario.setText("");
-            calificacionSeleccionada = 0;          
+            calificacionSeleccionada = 0;
             actualizarEstrellas();
             cargarReseñasExistentes();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al enviar reseña: " + e.getMessage());
+            if (e.getMessage().contains("El usuario ya ha enviado 3 reseñas")) {
+                JOptionPane.showMessageDialog(this, "Solo puedes dejar hasta 3 reseñas por camión.", "Límite alcanzado", JOptionPane.WARNING_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al enviar reseña: " + e.getMessage());
+            }
+        } finally {
+            btnEnviarComentario.setEnabled(true);
         }
     }
 

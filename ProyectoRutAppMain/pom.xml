@@ -18,6 +18,7 @@
         <module>UsuarioActivo</module>
         <module>PersistenciaRutApp</module>
         <module>RutappBO</module>
+        <module>Resenias</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
