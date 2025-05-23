@@ -5,6 +5,7 @@
 package Frames;
 
 import Control.ControlNegocio;
+import Control.CordinadorPresentacion;
 import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.CompraDTO;
 import java.awt.BorderLayout;
@@ -47,7 +48,7 @@ public class MisBoletos extends javax.swing.JFrame {
 
         JScrollPane scrollPane = new JScrollPane(panelContenido);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-        add(scrollPane);
+        add(scrollPane, BorderLayout.CENTER);
 
         cargarBoletos();
     }
@@ -74,9 +75,26 @@ public class MisBoletos extends javax.swing.JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
-        panel.setBackground(new Color(230, 240, 255));
+        Color colorNormal = new Color(230, 240, 255);
+        Color colorHover = new Color(200, 220, 255); 
+        panel.setBackground(colorNormal);
         panel.setPreferredSize(new Dimension(550, 160));
         panel.setMaximumSize(new Dimension(550, 160));
+
+        // Mouse listener para efecto hover
+        panel.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                panel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                panel.setBackground(colorHover);
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                panel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                panel.setBackground(colorNormal);
+            }
+        });
 
         // Título centrado
         JLabel titulo = new JLabel(compra.getOrigen() + " ➡ " + compra.getDestino(), SwingConstants.CENTER);
@@ -99,7 +117,7 @@ public class MisBoletos extends javax.swing.JFrame {
         abajo.setOpaque(false);
         abajo.setMaximumSize(new Dimension(500, 30));
 
-        StringBuilder asientosTexto = new StringBuilder("Asientos: ");
+        StringBuilder asientosTexto = new StringBuilder("Asiento(s): ");
         for (AsientoBoletoDTO ab : compra.getListaAsiento()) {
             asientosTexto.append(ab.getAsiento().getNumero()).append(" ");
         }
@@ -132,6 +150,7 @@ public class MisBoletos extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         listaBoletos = new javax.swing.JList<>();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -142,13 +161,25 @@ public class MisBoletos extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(listaBoletos);
 
+        jButton1.setText("Regresar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(69, 69, 69)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(69, 69, 69)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(60, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -156,7 +187,9 @@ public class MisBoletos extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(78, 78, 78)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -173,7 +206,12 @@ public class MisBoletos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<String> listaBoletos;
