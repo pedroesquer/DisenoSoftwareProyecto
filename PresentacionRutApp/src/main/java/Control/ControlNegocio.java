@@ -13,6 +13,8 @@ import excepciones.PagoBoletoException;
 import excepciones.SeleccionAsientoException;
 import fachada.FUsuarioActivo;
 import fachada.SeleccionAsiento;
+import fachada.fachadaResenias;
+import interfaz.IResenias;
 import interfaz.ISeleccionAsiento;
 import interfaz.IUsuarioActivo;
 import itson.consultardisponibilidad.Interfaz.IConsultarDisponibilidad;
@@ -48,6 +50,7 @@ public class ControlNegocio {
     IConsultarDisponibilidad consultarDisponibilidad = new FachadaConsultarDisponibilidad();
     IComprarBoleto comprarBoleto = new ComprarBoleto();
     ISeleccionAsiento seleccionAsiento = new SeleccionAsiento();
+    IResenias reseñaa = new fachadaResenias();
 
     //VARIABLES PARA GUARDAR LOS DATOS DEL BOLETO 
     private String origenSeleccionado;
@@ -334,22 +337,22 @@ public class ControlNegocio {
 
     public void agregarReseña(ReseñaDTO reseña) {
         try {
-            consultarDisponibilidad.agregarReseña(reseña);
+            reseñaa.agregarReseña(reseña);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al agregar reseña: " + e.getMessage());
         }
     }
 
     public List<ReseñaDTO> obtenerReseñasPorCamion(String numeroCamion) {
-        return consultarDisponibilidad.obtenerReseñasPorCamion(numeroCamion);
+        return reseñaa.obtenerReseñasPorCamion(numeroCamion);
     }
 
     public boolean eliminarReseña(String idReseña) {
-        return consultarDisponibilidad.eliminarReseña(idReseña);
+        return reseñaa.eliminarReseña(idReseña);
     }
-    
-    public void cancelarCompra(CompraDTO comra){
-        consultarDisponibilidad.eliminarCompra(comra);
+
+    public void cancelarCompra(CompraDTO comra) {
+        reseñaa.eliminarCompra(comra);
     }
 
 }
