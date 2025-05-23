@@ -20,5 +20,8 @@ public interface IComprasBO {
     void agregarCompra(UsuarioDTO usuarioDTO, ViajeDTO viajeDTO, List<AsientoBoletoDTO> asientosDTO);
 
     List<CompraDTO> obtenerComprasNoVencidasPorUsuario(UsuarioDTO usuarioDTO);
+    
+    void cancelarCompra(CompraDTO compraDTO);
+;
 
 }

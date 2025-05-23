@@ -6,6 +6,7 @@ package itson.persistenciarutapp;
 
 import itson.persistenciarutapp.implementaciones.Compra;
 import itson.rutappdto.UsuarioDTO;
+import java.util.Date;
 import java.util.List;
 import org.bson.types.ObjectId;
 
@@ -20,5 +21,10 @@ public interface IComprasDAO {
     List<Compra> consultarCompraPorUsuario(UsuarioDTO usuario);
 
     List<Compra> consultarComprasNoVencidasPorUsuario(ObjectId idUsuario);
+
+    void cancelarCompra(ObjectId idCompra);
+    
+   public ObjectId obtenerIdDeCompra(ObjectId idUsuario, Date fechaCompra);
+   
 
 }

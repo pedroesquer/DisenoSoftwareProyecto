@@ -145,4 +145,8 @@ public class ControlConsultarDisponibilidad {
         return reseñaBO.eliminarReseña(idReseña);
     }
 
+    public void cancelarCompra(CompraDTO compra) {
+        compraBO.cancelarCompra(compra);
+    }
+
 }

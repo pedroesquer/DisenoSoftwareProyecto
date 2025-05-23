@@ -347,5 +347,9 @@ public class ControlNegocio {
     public boolean eliminarReseña(String idReseña) {
         return consultarDisponibilidad.eliminarReseña(idReseña);
     }
+    
+    public void cancelarCompra(CompraDTO comra){
+        consultarDisponibilidad.eliminarCompra(comra);
+    }
 
 }

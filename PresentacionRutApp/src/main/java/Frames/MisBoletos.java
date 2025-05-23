@@ -69,6 +69,23 @@ public class MisBoletos extends javax.swing.JFrame {
             panelContenido.add(panel);
             panelContenido.add(Box.createVerticalStrut(15));
         }
+
+        JButton btnRegresar = new JButton("Regresar a Inicio");
+        btnRegresar.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnRegresar.setBackground(new Color(100, 149, 237));
+        btnRegresar.setForeground(Color.WHITE);
+        btnRegresar.setFocusPainted(false);
+        btnRegresar.setFont(new Font("SansSerif", Font.BOLD, 14));
+        btnRegresar.setMaximumSize(new Dimension(200, 40));
+        btnRegresar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnRegresar.addActionListener(e -> {
+            CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
+            this.dispose(); // cerrar esta ventana
+        });
+
+        panelContenido.add(Box.createVerticalStrut(10));
+        panelContenido.add(btnRegresar);
+
     }
 
     private JPanel crearPanelCompra(CompraDTO compra) {
@@ -76,7 +93,7 @@ public class MisBoletos extends javax.swing.JFrame {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
         Color colorNormal = new Color(230, 240, 255);
-        Color colorHover = new Color(200, 220, 255); 
+        Color colorHover = new Color(200, 220, 255);
         panel.setBackground(colorNormal);
         panel.setPreferredSize(new Dimension(550, 160));
         panel.setMaximumSize(new Dimension(550, 160));
@@ -130,12 +147,38 @@ public class MisBoletos extends javax.swing.JFrame {
         btnCancelar.setForeground(Color.WHITE);
         btnCancelar.setFocusPainted(false);
         btnCancelar.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        // Aún sin lógica de cancelación, pero aquí quedaría
+
+        btnCancelar.addActionListener(e -> {
+            int confirm = javax.swing.JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Seguro que deseas cancelar esta compra?\nSe liberarán todos los asientos.",
+                    "Confirmar cancelación",
+                    javax.swing.JOptionPane.YES_NO_OPTION
+            );
+
+            if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+                try {
+                    ControlNegocio.getInstancia().cancelarCompra(compra);
+                    javax.swing.JOptionPane.showMessageDialog(this, "Compra cancelada con éxito.");
+                    recargarGUI(); // método que puedes agregar para refrescar la pantalla
+                } catch (Exception ex) {
+                    javax.swing.JOptionPane.showMessageDialog(this, "Error al cancelar la compra:\n" + ex.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
         abajo.add(btnCancelar, BorderLayout.EAST);
 
         panel.add(abajo);
 
         return panel;
+    }
+
+    private void recargarGUI() {
+        panelContenido.removeAll();
+        cargarBoletos();
+        panelContenido.revalidate();
+        panelContenido.repaint();
     }
 
     /**

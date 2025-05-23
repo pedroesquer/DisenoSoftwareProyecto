@@ -1,10 +1,11 @@
 package itson.persistenciarutapp.implementaciones;
 
-import com.mongodb.client.AggregateIterable;
+
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 import enumm.estadoAsiento;
 import itson.persistenciarutapp.IComprasDAO;
 import itson.rutappdto.UsuarioDTO;
@@ -19,13 +20,15 @@ import org.bson.types.ObjectId;
 /**
  * Implementación de la interfaz {@link IComprasDAO} que proporciona operaciones
  * para manejar compras de boletos en la base de datos MongoDB.
- * 
+ *
  * Gestiona la inserción de compras, así como la consulta de compras por usuario
  * y la obtención de compras que no han vencido.
  */
 public class ComprasDAO implements IComprasDAO {
 
-    /** Nombre de la colección en MongoDB utilizada para almacenar las compras. */
+    /**
+     * Nombre de la colección en MongoDB utilizada para almacenar las compras.
+     */
     private final String COLECCION = "compras";
 
     /**
@@ -38,7 +41,6 @@ public class ComprasDAO implements IComprasDAO {
     public Compra agregarCompras(Compra nuevaCompra) {
         MongoDatabase db = ManejadorConexiones.obtenerBaseDatos();
         MongoCollection<Compra> coleccion = db.getCollection(COLECCION, Compra.class);
-        System.out.println("HOOOOOHAYOOO");
         coleccion.insertOne(nuevaCompra);
         return nuevaCompra;
     }
@@ -61,9 +63,10 @@ public class ComprasDAO implements IComprasDAO {
     }
 
     /**
-     * Consulta las compras de un usuario que no han vencido.
-     * Se consideran no vencidas aquellas cuyo viaje aún no ha ocurrido (basado en `viaje.fechaHora`).
-     * 
+     * Consulta las compras de un usuario que no han vencido. Se consideran no
+     * vencidas aquellas cuyo viaje aún no ha ocurrido (basado en
+     * `viaje.fechaHora`).
+     *
      * Nota: El filtrado por fecha del viaje puede agregarse con:
      * {@code Aggregates.match(Filters.gt("viajeInfo.fechaHora", new Date()))}
      *
@@ -80,7 +83,7 @@ public class ComprasDAO implements IComprasDAO {
                 Aggregates.match(Filters.eq("usuario", idUsuario)),
                 Aggregates.lookup("viajes", "viaje", "_id", "viajeInfo"),
                 Aggregates.unwind("$viajeInfo")
-                // Puedes agregar filtro de fecha aquí si es necesario
+        // Puedes agregar filtro de fecha aquí si es necesario
         );
 
         List<Compra> compras = new ArrayList<>();
@@ -110,4 +113,33 @@ public class ComprasDAO implements IComprasDAO {
 
         return compras;
     }
+
+    @Override
+    public void cancelarCompra(ObjectId idCompra) {
+        MongoDatabase db = ManejadorConexiones.obtenerBaseDatos();
+        MongoCollection<Document> coleccion = db.getCollection("compras");
+
+        // ¡LIBERA todos los asientos de la compra!
+        coleccion.updateOne(
+                Filters.eq("_id", idCompra),
+                Updates.set("asientosComprados.$[].estado", "LIBRE") // <- el $[] aplica a todos los elementos
+        );
+    }
+    
+  
+
+
+    @Override
+    public ObjectId obtenerIdDeCompra(ObjectId idUsuario, Date fechaCompra) {
+        MongoDatabase db = ManejadorConexiones.obtenerBaseDatos();
+        MongoCollection<Document> coleccion = db.getCollection("compras");
+
+        Document doc = coleccion.find(Filters.and(
+                Filters.eq("usuario", idUsuario),
+                Filters.eq("fechaCompra", fechaCompra)
+        )).first();
+
+        return doc != null ? doc.getObjectId("_id") : null;
+    }
+
 }

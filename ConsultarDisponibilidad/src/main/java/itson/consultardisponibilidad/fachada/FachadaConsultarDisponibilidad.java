@@ -59,4 +59,8 @@ public class FachadaConsultarDisponibilidad implements IConsultarDisponibilidad 
     public boolean eliminarReseña(String idReseña) {
         return ControlConsultarDisponibilidad.getInstancia().eliminarReseña(idReseña);
     }
+    
+    public void eliminarCompra(CompraDTO compra){
+        ControlConsultarDisponibilidad.getInstancia().cancelarCompra(compra);
+    }
 }

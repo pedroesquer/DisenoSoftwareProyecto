@@ -25,5 +25,7 @@ public interface ICamionesDAO {
     void ocuparAsientos(String idCamion, List<AsientoBoletoDTO> asientos);
     
     public List<Asiento> obtenerAsientosDisponibles(String numeroDeCamion);
+    
+    void liberarAsientos(String numeroCamion, List<AsientoBoletoDTO> asientos);
 
 }

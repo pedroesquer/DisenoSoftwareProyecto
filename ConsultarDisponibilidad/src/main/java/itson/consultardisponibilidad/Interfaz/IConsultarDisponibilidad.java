@@ -30,6 +30,8 @@ public interface IConsultarDisponibilidad {
     void agregarReseña(ReseñaDTO reseña) throws Exception;
 
     List<ReseñaDTO> obtenerReseñasPorCamion(String numeroCamion);
-    
+
     boolean eliminarReseña(String idReseña);
+
+    public void eliminarCompra(CompraDTO compra);
 }

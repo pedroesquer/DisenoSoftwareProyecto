@@ -1,8 +1,10 @@
 package itson.rutappbo.implementaciones;
 
 import enumm.estadoAsiento;
+import itson.persistenciarutapp.ICamionesDAO;
 import itson.persistenciarutapp.IViajesDAO;
 import itson.persistenciarutapp.implementaciones.AsientoBoleto;
+import itson.persistenciarutapp.implementaciones.CamionesDAO;
 import itson.persistenciarutapp.implementaciones.Compra;
 import itson.persistenciarutapp.implementaciones.ComprasDAO;
 import itson.persistenciarutapp.implementaciones.Viaje;
@@ -20,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.bson.types.ObjectId;
+import java.util.stream.Collectors;
 
 /**
  * Implementación de la lógica de negocio para registrar compras de boletos.
@@ -28,6 +31,7 @@ public class ComprasBO implements IComprasBO {
 
     private final ComprasDAO comprasDAO = new ComprasDAO();
     private final IViajesDAO viajesDAO = new ViajesDAO();
+    private final ICamionesDAO camionesDAO = new CamionesDAO();
 
     public ComprasBO() {
 
@@ -89,6 +93,10 @@ public class ComprasBO implements IComprasBO {
         ObjectId idUsuario = new ObjectId(usuarioDTO.getId());
 
         List<Compra> compras = comprasDAO.consultarComprasNoVencidasPorUsuario(idUsuario);
+        compras = compras.stream()
+                .filter(compra -> compra.getAsientosComprados().stream()
+                .anyMatch(a -> a.getEstado() == estadoAsiento.OCUPADO))
+                .collect(Collectors.toList());
         List<CompraDTO> resultado = new ArrayList<>();
 
         for (Compra compra : compras) {
@@ -142,6 +150,24 @@ public class ComprasBO implements IComprasBO {
         }
 
         return resultado;
+    }
+
+    @Override
+    public void cancelarCompra(CompraDTO compraDTO) {
+        ObjectId idUsuario = new ObjectId(compraDTO.getUsuario().getId());
+        Date fechaCompra = compraDTO.getFecha();
+
+        ObjectId idCompra = comprasDAO.obtenerIdDeCompra(idUsuario, fechaCompra);
+        if (idCompra == null) {
+            throw new RuntimeException("No se pudo encontrar la compra para cancelación.");
+        }
+
+        comprasDAO.cancelarCompra(idCompra);
+        Viaje viaje = viajesDAO.consultarViajePorId(compraDTO.getViaje().getIdViaje());
+        String numeroCamion = viaje.getCamion().getNumeroCamion();
+
+        camionesDAO.liberarAsientos(numeroCamion, compraDTO.getListaAsiento());
+
     }
 
 }
