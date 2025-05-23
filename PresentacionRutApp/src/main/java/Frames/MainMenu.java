@@ -244,7 +244,8 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnFacturaActionPerformed
 
     private void btnMisViajesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMisViajesActionPerformed
-        // TODO add your handling code here:
+        CordinadorPresentacion.getInstancia().abrirReseñas();
+        this.dispose();
     }//GEN-LAST:event_btnMisViajesActionPerformed
 
     private void btnMisBoletosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMisBoletosActionPerformed

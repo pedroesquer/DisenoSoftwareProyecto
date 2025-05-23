@@ -4,6 +4,7 @@
  */
 package Control;
 
+import Frames.AgregarReseñas;
 import itson.rutappdto.CamionDTO;
 import itson.rutappdto.ViajeDTO;
 import Frames.AsientosDisponibles;
@@ -12,6 +13,7 @@ import Frames.ComprarBoleto;
 import Frames.InicioSesion;
 import Frames.MainMenu;
 import Frames.MisBoletos;
+import Frames.Reseñas;
 import Frames.ResumenCompra;
 import Frames.ViajesDisponibles;
 import Interfaces.TemporizadorObserver;
@@ -131,5 +133,15 @@ public class CordinadorPresentacion {
     public void abrirMisBoletos() {
         MisBoletos misboletos = new MisBoletos();
         misboletos.setVisible(true);
+    }
+    
+    public void abrirReseñas() {
+        Reseñas reseñas = new Reseñas();
+        reseñas.setVisible(true);
+    }
+    
+    public void abrirAgregarReseñas(String numeroCamion) {
+        AgregarReseñas ar = new AgregarReseñas(numeroCamion);
+        ar.setVisible(true);
     }
 }

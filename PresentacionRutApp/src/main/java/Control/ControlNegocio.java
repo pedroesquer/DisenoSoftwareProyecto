@@ -26,6 +26,7 @@ import itson.rutappdto.BoletoContext;
 import itson.rutappdto.CamionDTO;
 import itson.rutappdto.CompraDTO;
 import itson.rutappdto.DetallesPagoDTO;
+import itson.rutappdto.ReseñaDTO;
 import itson.rutappdto.UsuarioDTO;
 import itson.rutappdto.ViajeDTO;
 import java.time.LocalDateTime;
@@ -330,4 +331,17 @@ public class ControlNegocio {
     public List<CompraDTO> obtenerComprasUsuario(UsuarioDTO usuario) {
         return consultarDisponibilidad.obtenerCompras(usuario);
     }
+
+    public void agregarReseña(ReseñaDTO reseña) {
+        try {
+            consultarDisponibilidad.agregarReseña(reseña);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al agregar reseña: " + e.getMessage());
+        }
+    }
+
+    public List<ReseñaDTO> obtenerReseñasPorCamion(String numeroCamion) {
+        return consultarDisponibilidad.obtenerReseñasPorCamion(numeroCamion);
+    }
+
 }

@@ -1,6 +1,7 @@
 package itson.persistenciarutapp;
 
 import itson.persistenciarutapp.implementaciones.Usuario;
+import org.bson.types.ObjectId;
 
 public interface IUsuariosDAO {
 
@@ -24,4 +25,6 @@ public interface IUsuariosDAO {
      * @return true si la actualización fue exitosa
      */
     boolean actualizarSaldo(Usuario usuario);
+    
+    public Usuario consultarUsuarioPorId(ObjectId id);
 }

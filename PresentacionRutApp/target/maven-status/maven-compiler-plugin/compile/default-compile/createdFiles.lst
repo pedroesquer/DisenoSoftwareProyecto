@@ -8,6 +8,7 @@ Clases\TemporizadorVisual.class
 Control\ControlTimer.class
 Frames\ViajesDisponibles.class
 Frames\SistemaRutaApp.class
+Frames\AgregarReseñas.class
 Frames\AsientosDisponibles.class
 Frames\MainMenu$5.class
 Frames\MainMenu.class
@@ -48,6 +49,7 @@ Frames\MainMenu$1.class
 Frames\MainMenu$4.class
 Frames\ResumenCompra$2.class
 Frames\asientos.class
+Frames\Reseñas.class
 Frames\AsientosDisponibles$2.class
 Frames\MainMenu$8.class
 Frames\ComprarBoleto$6.class

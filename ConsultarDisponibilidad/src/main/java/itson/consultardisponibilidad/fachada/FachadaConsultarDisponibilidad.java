@@ -9,6 +9,7 @@ import itson.consultardisponibilidad.control.ControlConsultarDisponibilidad;
 import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.CamionDTO;
 import itson.rutappdto.CompraDTO;
+import itson.rutappdto.ReseñaDTO;
 import itson.rutappdto.UsuarioDTO;
 import itson.rutappdto.ViajeDTO;
 import java.util.List;
@@ -44,4 +45,13 @@ public class FachadaConsultarDisponibilidad implements IConsultarDisponibilidad 
         return ControlConsultarDisponibilidad.getInstancia().obtenerCompras(usuario);
     }
 
+    @Override
+    public void agregarReseña(ReseñaDTO reseña) throws Exception {
+        ControlConsultarDisponibilidad.getInstancia().agregarReseña(reseña);
+    }
+
+    @Override
+    public List<ReseñaDTO> obtenerReseñasPorCamion(String numeroCamion) {
+        return ControlConsultarDisponibilidad.getInstancia().obtenerReseñasPorCamion(numeroCamion);
+    }
 }

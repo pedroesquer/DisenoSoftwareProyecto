@@ -1,6 +1,7 @@
 package itson.rutappbo;
 
 import itson.rutappdto.UsuarioDTO;
+import org.bson.types.ObjectId;
 
 public interface IUsuariosBO {
 
@@ -37,4 +38,6 @@ public interface IUsuariosBO {
      * @return true si fue exitoso
      */
     boolean agregarSaldo(UsuarioDTO usuario);
+    
+    String obtenerNombrePorId(ObjectId id);
 }

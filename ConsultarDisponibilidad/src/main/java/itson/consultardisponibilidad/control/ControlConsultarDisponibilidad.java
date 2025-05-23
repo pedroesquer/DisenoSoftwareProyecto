@@ -20,6 +20,7 @@ import itson.rutappbo.implementaciones.ReseñasBO;
 import itson.rutappbo.implementaciones.UsuariosBO;
 import itson.rutappbo.implementaciones.ViajesBO;
 import itson.rutappdto.CompraDTO;
+import itson.rutappdto.ReseñaDTO;
 import itson.rutappdto.UsuarioDTO;
 import itson.rutappdto.ViajeDTO;
 
@@ -44,7 +45,7 @@ public class ControlConsultarDisponibilidad {
         this.camionesBO = new CamionesBO();
 // ------------------------RESEÑA----------------------------------
         this.compraBO = new ComprasBO();//                        |
-        this.usuariosBO = new UsuariosBO();  //                   |  
+        this.usuariosBO = new UsuariosBO();  //                   |  // esta mamada q
         this.reseñaBO = new ReseñasBO(usuariosBO, camionesBO); // |
 //-----------------------------------------------------------------
     }
@@ -109,4 +110,28 @@ public class ControlConsultarDisponibilidad {
     public List<CompraDTO> obtenerCompras(UsuarioDTO usuario) {
         return compraBO.obtenerComprasNoVencidasPorUsuario(usuario);
     }
+
+    /**
+     * Agrega una reseña al camión actual del usuario logueado.
+     *
+     * @param reseñaDTO DTO con datos de la reseña
+     */
+    public void agregarReseña(ReseñaDTO reseñaDTO) {
+        try {
+            reseñaBO.agregarReseña(reseñaDTO);
+        } catch (Exception e) {
+            System.err.println("Error al agregar reseña: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Obtiene todas las reseñas de un camión.
+     *
+     * @param numeroCamion número de camión
+     * @return lista de reseñas
+     */
+    public List<ReseñaDTO> obtenerReseñasPorCamion(String numeroCamion) {
+        return reseñaBO.obtenerReseñasPorCamion(numeroCamion);
+    }
+
 }

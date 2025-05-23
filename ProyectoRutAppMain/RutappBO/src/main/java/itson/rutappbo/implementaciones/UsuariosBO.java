@@ -29,10 +29,10 @@ public class UsuariosBO implements IUsuariosBO {
         }
 
         Usuario nuevoUsuario = new Usuario(
-            dto.getNumeroTelefonico(),
-            dto.getNombre(),
-            dto.getContrasena(),
-            dto.getSaldoMonedero()
+                dto.getNumeroTelefonico(),
+                dto.getNombre(),
+                dto.getContrasena(),
+                dto.getSaldoMonedero()
         );
 
         usuariosDAO.agregarUsuario(nuevoUsuario);
@@ -60,11 +60,11 @@ public class UsuariosBO implements IUsuariosBO {
         }
 
         UsuarioDTO dto = new UsuarioDTO(
-            usuario.getId().toHexString(),
-            usuario.getNombre(),
-            usuario.getNumeroTelefonico(),
-            usuario.getContrasenia(),
-            usuario.getSaldoMonedero()
+                usuario.getId().toHexString(),
+                usuario.getNombre(),
+                usuario.getNumeroTelefonico(),
+                usuario.getContrasenia(),
+                usuario.getSaldoMonedero()
         );
 
         UsuarioActivoManager.getInstancia().iniciarSesion(dto);
@@ -78,14 +78,16 @@ public class UsuariosBO implements IUsuariosBO {
 
     @Override
     public boolean descontarSaldo(UsuarioDTO dto) {
-        if (dto == null || dto.getId() == null) return false;
+        if (dto == null || dto.getId() == null) {
+            return false;
+        }
 
         Usuario usuario = new Usuario(
-            new ObjectId(dto.getId()),
-            dto.getNumeroTelefonico(),
-            dto.getNombre(),
-            dto.getContrasena(),
-            dto.getSaldoMonedero()
+                new ObjectId(dto.getId()),
+                dto.getNumeroTelefonico(),
+                dto.getNombre(),
+                dto.getContrasena(),
+                dto.getSaldoMonedero()
         );
 
         return usuariosDAO.actualizarSaldo(usuario);
@@ -100,16 +102,31 @@ public class UsuariosBO implements IUsuariosBO {
      * Valida los campos del DTO.
      */
     private String validarDatos(UsuarioDTO dto) {
-        if (dto == null) return "Datos de usuario no proporcionados.";
+        if (dto == null) {
+            return "Datos de usuario no proporcionados.";
+        }
 
         String numero = dto.getNumeroTelefonico();
         String pass = dto.getContrasena();
 
-        if (numero == null || numero.trim().isEmpty()) return "Número telefónico requerido.";
-        if (!numero.matches("\\d{10}")) return "El número telefónico debe contener 10 dígitos.";
-        if (pass == null || pass.trim().isEmpty()) return "Contraseña requerida.";
-        if (pass.length() < 6) return "La contraseña debe tener al menos 6 caracteres.";
+        if (numero == null || numero.trim().isEmpty()) {
+            return "Número telefónico requerido.";
+        }
+        if (!numero.matches("\\d{10}")) {
+            return "El número telefónico debe contener 10 dígitos.";
+        }
+        if (pass == null || pass.trim().isEmpty()) {
+            return "Contraseña requerida.";
+        }
+        if (pass.length() < 6) {
+            return "La contraseña debe tener al menos 6 caracteres.";
+        }
 
         return "OK";
+    }
+
+    public String obtenerNombrePorId(ObjectId id) {
+        Usuario usuario = usuariosDAO.consultarUsuarioPorId(id);
+        return usuario != null ? usuario.getNombre() : "Usuario desconocido";
     }
 }

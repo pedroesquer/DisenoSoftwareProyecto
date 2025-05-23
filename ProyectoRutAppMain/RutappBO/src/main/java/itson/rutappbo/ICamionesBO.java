@@ -30,4 +30,5 @@ public interface ICamionesBO {
     public List<AsientoDTO> obtenerAsientosDisponibles(String numeroDeCamion);
     
     public ObjectId obtenerIdPorNumero(String numeroDeCamion);
+    
 }

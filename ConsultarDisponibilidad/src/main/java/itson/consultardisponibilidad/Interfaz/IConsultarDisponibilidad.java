@@ -4,6 +4,7 @@ import itson.persistenciarutapp.implementaciones.Viaje;
 import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.CamionDTO;
 import itson.rutappdto.CompraDTO;
+import itson.rutappdto.ReseñaDTO;
 import itson.rutappdto.UsuarioDTO;
 import itson.rutappdto.ViajeDTO;
 import java.time.LocalDate;
@@ -26,4 +27,7 @@ public interface IConsultarDisponibilidad {
 
     List<CompraDTO> obtenerCompras(UsuarioDTO usuario);
 
+    void agregarReseña(ReseñaDTO reseña) throws Exception;
+
+    List<ReseñaDTO> obtenerReseñasPorCamion(String numeroCamion);
 }

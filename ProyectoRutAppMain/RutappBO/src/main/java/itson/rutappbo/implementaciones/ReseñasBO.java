@@ -36,10 +36,6 @@ public class ReseñasBO implements IReseñaBO {
     @Override
     public void agregarReseña(ReseñaDTO reseñaDTO) throws Exception {
         UsuarioDTO usuarioDTO = UsuarioActivoManager.getInstancia().getUsuario();
-        if (usuarioDTO == null || usuarioDTO.getId() == null) {
-            throw new IllegalStateException("No hay sesión activa o el usuario no tiene ID");
-        }
-
         ObjectId idUsuario = new ObjectId(usuarioDTO.getId());
         ObjectId idCamion = camionesBO.obtenerIdPorNumero(reseñaDTO.getNumeroCamion());
 
@@ -61,7 +57,7 @@ public class ReseñasBO implements IReseñaBO {
         List<ReseñaDTO> dtos = new ArrayList<>();
         for (Reseña r : reseñas) {
             ReseñaDTO dto = new ReseñaDTO();
-            //dto.setNombreUsuario(usuariosBO.obtenerNombrePorId(r.getUsuario())); // 💥 AQUI LA CORRECCIÓN
+            dto.setNombreUsuario(usuariosBO.obtenerNombrePorId(r.getUsuario()));
             dto.setNumeroCamion(numeroCamion);
             dto.setComentario(r.getComentario());
             dto.setCalificacion(r.getCalificacion());
