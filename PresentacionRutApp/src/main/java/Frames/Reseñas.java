@@ -5,21 +5,27 @@
 package Frames;
 
 import Control.ControlNegocio;
+import Control.CordinadorPresentacion;
 import itson.rutappdto.CompraDTO;
 import itson.rutappdto.UsuarioDTO;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -33,9 +39,10 @@ public class Reseñas extends javax.swing.JFrame {
      * Creates new form Reseñas
      */
     public Reseñas() {
-        initComponents(); // se mantiene
+        initComponents();
         personalizarComponentes();
         cargarCamionesConCompras();
+        setTitle("Reseñas");
     }
 
     private void cargarCamionesConCompras() {
@@ -54,20 +61,9 @@ public class Reseñas extends javax.swing.JFrame {
             panelCamiones.add(lbl);
         } else {
             for (String camion : camionesUnicos) {
-                JPanel panelItem = new JPanel(new FlowLayout(FlowLayout.LEFT));
-                panelItem.setBackground(Color.WHITE);
-
-                JLabel lblCamion = new JLabel("Autobús " + camion);
-                JButton btn = new JButton("Reseñar");
-
-                btn.addActionListener(e -> {
-                    new AgregarReseñas(camion).setVisible(true);
-                    dispose(); // opcional, cerrar esta ventana
-                });
-
-                panelItem.add(lblCamion);
-                panelItem.add(btn);
-                panelCamiones.add(panelItem);
+                JPanel panel = crearPanelCamion(camion);
+                panelCamiones.add(panel);
+                panelCamiones.add(Box.createVerticalStrut(10));
             }
         }
 
@@ -76,18 +72,93 @@ public class Reseñas extends javax.swing.JFrame {
     }
 
     private void personalizarComponentes() {
+        this.setLayout(new BorderLayout());
+
+        // Panel encabezado
+        JPanel panelHeader = new JPanel();
+        panelHeader.setBackground(new Color(255, 201, 98));
+        panelHeader.setPreferredSize(new Dimension(getWidth(), 60));
+        JLabel lblHeader = new JLabel("RUTAPP", SwingConstants.CENTER);
+        lblHeader.setFont(new Font("SansSerif", Font.BOLD, 32));
+        lblHeader.setForeground(Color.BLACK);
+        panelHeader.setLayout(new BorderLayout());
+        panelHeader.add(lblHeader, BorderLayout.CENTER);
+
+        // Panel de camiones con scroll
         panelCamiones = new JPanel();
         panelCamiones.setLayout(new BoxLayout(panelCamiones, BoxLayout.Y_AXIS));
         panelCamiones.setBackground(Color.WHITE);
-        panelCamiones.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        panelCamiones.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 
         JScrollPane scroll = new JScrollPane(panelCamiones);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scroll.getVerticalScrollBar().setUnitIncrement(16);
+        scroll.setBorder(BorderFactory.createEmptyBorder());
 
-        // Asegúrate de que tu JFrame tenga BorderLayout
-        this.getContentPane().setLayout(new BorderLayout());
-        this.getContentPane().add(scroll, BorderLayout.CENTER);
+        // Botón regresar
+        JButton btnRegresar = new JButton("Regresar");
+        btnRegresar.setBackground(new Color(255, 201, 98));
+        btnRegresar.setFont(new Font("SansSerif", Font.BOLD, 14));
+        btnRegresar.setFocusPainted(false);
+        btnRegresar.setPreferredSize(new Dimension(100, 35));
+
+        btnRegresar.addActionListener(e -> {
+            CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
+            this.dispose();
+        });
+
+        JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panelInferior.setBackground(Color.WHITE);
+        panelInferior.add(btnRegresar);
+
+        // Añadir a frame
+        this.add(panelHeader, BorderLayout.NORTH);
+        this.add(scroll, BorderLayout.CENTER);
+        this.add(panelInferior, BorderLayout.SOUTH);
+
+        this.setSize(700, 500);
+        this.setLocationRelativeTo(null);
+    }
+
+    private JPanel crearPanelCamion(String camion) {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
+        panel.setBackground(new Color(230, 240, 255));
+        panel.setPreferredSize(new Dimension(500, 80));
+
+        Color baseColor = panel.getBackground();
+        Color hoverColor = new Color(200, 220, 255);
+
+        panel.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                panel.setBackground(hoverColor);
+                panel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                panel.setBackground(baseColor);
+                panel.setCursor(Cursor.getDefaultCursor());
+            }
+        });
+
+        JLabel titulo = new JLabel("Autobús " + camion, SwingConstants.CENTER);
+        titulo.setFont(new Font("SansSerif", Font.BOLD, 16));
+        panel.add(titulo, BorderLayout.NORTH);
+
+        JButton boton = new JButton("Reseñar");
+        boton.addActionListener(e -> {
+            new AgregarReseñas(camion).setVisible(true);
+            dispose();
+        });
+        JPanel wrapper = new JPanel();
+        wrapper.setOpaque(false);
+        wrapper.add(boton);
+
+        panel.add(wrapper, BorderLayout.SOUTH);
+
+        return panel;
     }
 
     /**

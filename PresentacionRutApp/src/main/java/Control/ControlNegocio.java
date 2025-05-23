@@ -344,4 +344,8 @@ public class ControlNegocio {
         return consultarDisponibilidad.obtenerReseñasPorCamion(numeroCamion);
     }
 
+    public boolean eliminarReseña(String idReseña) {
+        return consultarDisponibilidad.eliminarReseña(idReseña);
+    }
+
 }

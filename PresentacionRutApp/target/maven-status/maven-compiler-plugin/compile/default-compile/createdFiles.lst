@@ -39,10 +39,13 @@ Interfaces\TemporizadorObserver.class
 Frames\AsientosDisponibles$4.class
 Frames\ResumenCompra.class
 Control\ControlTimer$1.class
+Frames\Reseñas$1.class
 Frames\ResumenCompra$3.class
 Frames\MainMenu$7.class
+Frames\MisBoletos$2.class
 Frames\AsientosDisponibles$1.class
 Frames\ComprarBoleto$3.class
+Frames\AgregarReseñas$1.class
 Frames\BuscarViaje$3.class
 Frames\AsientosDisponibles$EstadoAsiento.class
 Frames\MainMenu$1.class
@@ -51,6 +54,7 @@ Frames\ResumenCompra$2.class
 Frames\asientos.class
 Frames\Reseñas.class
 Frames\AsientosDisponibles$2.class
+Frames\MisBoletos$3.class
 Frames\MainMenu$8.class
 Frames\ComprarBoleto$6.class
 Control\ControlNegocio.class

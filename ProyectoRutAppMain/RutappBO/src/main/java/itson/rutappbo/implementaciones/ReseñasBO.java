@@ -24,7 +24,7 @@ import usuarioActivoManager.UsuarioActivoManager;
  */
 public class ReseñasBO implements IReseñaBO {
 
-    private final IReseñaDAO reseñasDAO = new ReseñaDAO(); // <-- DAO instanciado aquí
+    private final IReseñaDAO reseñasDAO = new ReseñaDAO();
     private final ICamionesBO camionesBO;
     private final IUsuariosBO usuariosBO;
 
@@ -57,6 +57,7 @@ public class ReseñasBO implements IReseñaBO {
         List<ReseñaDTO> dtos = new ArrayList<>();
         for (Reseña r : reseñas) {
             ReseñaDTO dto = new ReseñaDTO();
+            dto.setId(r.getId().toString());
             dto.setNombreUsuario(usuariosBO.obtenerNombrePorId(r.getUsuario()));
             dto.setNumeroCamion(numeroCamion);
             dto.setComentario(r.getComentario());
@@ -65,5 +66,11 @@ public class ReseñasBO implements IReseñaBO {
             dtos.add(dto);
         }
         return dtos;
+    }
+
+    @Override
+    public boolean eliminarReseña(String idReseña) {
+        ObjectId id = new ObjectId(idReseña);
+        return reseñasDAO.eliminarReseñaPorId(id);
     }
 }

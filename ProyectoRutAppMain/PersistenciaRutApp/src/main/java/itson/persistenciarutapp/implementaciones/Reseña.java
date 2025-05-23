@@ -2,6 +2,7 @@ package itson.persistenciarutapp.implementaciones;
 
 import java.util.Date;
 import org.bson.types.ObjectId;
+import org.bson.codecs.pojo.annotations.BsonId;
 
 /**
  * Representa una reseña realizada por un usuario hacia un camión específico.
@@ -10,7 +11,8 @@ import org.bson.types.ObjectId;
  */
 public class Reseña {
 
-    /** Identificador único de la reseña. */
+    /** Identificador único de la reseña (mapeado a _id de MongoDB). */
+    @BsonId
     private ObjectId id;
 
     /** Identificador del usuario que realizó la reseña. */
@@ -28,22 +30,9 @@ public class Reseña {
     /** Comentario descriptivo del usuario sobre el camión. */
     private String comentario;
 
-    /**
-     * Constructor vacío necesario para frameworks de persistencia y serialización.
-     */
     public Reseña() {
     }
 
-    /**
-     * Constructor que inicializa todos los campos, incluyendo el ID de la reseña.
-     *
-     * @param id identificador de la reseña.
-     * @param usuario ID del usuario que hizo la reseña.
-     * @param camion ID del camión reseñado.
-     * @param fecha fecha en que se realizó la reseña.
-     * @param calificacion calificación dada al camión.
-     * @param comentario comentario del usuario.
-     */
     public Reseña(ObjectId id, ObjectId usuario, ObjectId camion, Date fecha, double calificacion, String comentario) {
         this.id = id;
         this.usuario = usuario;
@@ -53,15 +42,6 @@ public class Reseña {
         this.comentario = comentario;
     }
 
-    /**
-     * Constructor sin ID, utilizado normalmente antes de persistir la reseña.
-     *
-     * @param usuario ID del usuario.
-     * @param camion ID del camión.
-     * @param fecha fecha de la reseña.
-     * @param calificacion calificación asignada.
-     * @param comentario comentario textual.
-     */
     public Reseña(ObjectId usuario, ObjectId camion, Date fecha, double calificacion, String comentario) {
         this.usuario = usuario;
         this.camion = camion;
@@ -118,11 +98,6 @@ public class Reseña {
         this.comentario = comentario;
     }
 
-    /**
-     * Devuelve una representación en cadena del objeto Reseña.
-     *
-     * @return representación textual con todos los campos de la reseña.
-     */
     @Override
     public String toString() {
         return "Reseña{" +
@@ -131,7 +106,7 @@ public class Reseña {
                ", camion=" + camion +
                ", fecha=" + fecha +
                ", calificacion=" + calificacion +
-               ", comentario=" + comentario +
+               ", comentario='" + comentario + '\'' +
                '}';
     }
 }

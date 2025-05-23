@@ -16,4 +16,6 @@ public interface IReseñaBO {
     void agregarReseña(ReseñaDTO reseñaDTO) throws Exception;
 
     List<ReseñaDTO> obtenerReseñasPorCamion(String numeroCamion);
+    
+    boolean eliminarReseña(String idReseña);
 }

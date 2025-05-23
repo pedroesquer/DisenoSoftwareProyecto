@@ -25,4 +25,6 @@ public interface IReseñaDAO {
     List<Reseña> obtenerReseñasRecientes(Date desde);
 
     void eliminarReseñasPorUsuario(ObjectId idUsuario);
+    
+    boolean eliminarReseñaPorId(ObjectId idReseña);
 }

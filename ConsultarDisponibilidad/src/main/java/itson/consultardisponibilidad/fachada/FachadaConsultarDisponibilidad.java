@@ -54,4 +54,9 @@ public class FachadaConsultarDisponibilidad implements IConsultarDisponibilidad 
     public List<ReseñaDTO> obtenerReseñasPorCamion(String numeroCamion) {
         return ControlConsultarDisponibilidad.getInstancia().obtenerReseñasPorCamion(numeroCamion);
     }
+
+    @Override
+    public boolean eliminarReseña(String idReseña) {
+        return ControlConsultarDisponibilidad.getInstancia().eliminarReseña(idReseña);
+    }
 }

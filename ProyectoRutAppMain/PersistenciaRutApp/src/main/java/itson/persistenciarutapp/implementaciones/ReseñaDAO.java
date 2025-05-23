@@ -5,6 +5,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
+import com.mongodb.client.result.DeleteResult;
 import itson.persistenciarutapp.IReseñaDAO;
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,5 +83,11 @@ public class ReseñaDAO implements IReseñaDAO {
     @Override
     public void eliminarReseñasPorUsuario(ObjectId idUsuario) {
         coleccion.deleteMany(eq("usuario", idUsuario));
+    }
+    
+    @Override
+    public boolean eliminarReseñaPorId(ObjectId idReseña) {
+        DeleteResult resultado = coleccion.deleteOne(eq("_id", idReseña));
+        return resultado.getDeletedCount() > 0;
     }
 }

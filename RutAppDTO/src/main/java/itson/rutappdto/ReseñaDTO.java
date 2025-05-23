@@ -11,6 +11,7 @@ import java.util.Date;
  * @author multaslokas33
  */
 public class ReseñaDTO {
+    private String id;
     private String nombreUsuario;     
     private String numeroCamion;
     private String comentario;
@@ -26,6 +27,23 @@ public class ReseñaDTO {
         this.comentario = comentario;
         this.calificacion = calificacion;
         this.fecha = fecha;
+    }
+
+    public ReseñaDTO(String id, String nombreUsuario, String numeroCamion, String comentario, double calificacion, Date fecha) {
+        this.id = id;
+        this.nombreUsuario = nombreUsuario;
+        this.numeroCamion = numeroCamion;
+        this.comentario = comentario;
+        this.calificacion = calificacion;
+        this.fecha = fecha;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getNombreUsuario() {
