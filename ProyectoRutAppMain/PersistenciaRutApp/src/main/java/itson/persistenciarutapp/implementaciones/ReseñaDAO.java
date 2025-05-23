@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package itson.persistenciarutapp.implementaciones;
 
 import com.mongodb.client.MongoCollection;
@@ -16,41 +12,73 @@ import java.util.List;
 import org.bson.types.ObjectId;
 
 /**
- *
- * @author multaslokas33
+ * Implementación de la interfaz {@link IReseñaDAO} para la gestión de reseñas
+ * en la base de datos MongoDB. Permite agregar, consultar y eliminar reseñas.
  */
 public class ReseñaDAO implements IReseñaDAO {
 
+    /** Nombre de la colección que almacena las reseñas. */
     private final String COLECCION = "reseñas";
+
+    /** Referencia a la colección Mongo de reseñas. */
     private final MongoCollection<Reseña> coleccion;
 
+    /**
+     * Constructor que inicializa la conexión a la colección de reseñas.
+     */
     public ReseñaDAO() {
         MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
         this.coleccion = baseDatos.getCollection(COLECCION, Reseña.class);
     }
 
+    /**
+     * Inserta una nueva reseña en la colección.
+     *
+     * @param reseña la reseña a agregar.
+     */
     @Override
     public void agregarReseña(Reseña reseña) {
         coleccion.insertOne(reseña);
     }
 
+    /**
+     * Consulta todas las reseñas asociadas a un camión específico.
+     *
+     * @param idCamion ID del camión a consultar.
+     * @return lista de reseñas realizadas al camión.
+     */
     @Override
     public List<Reseña> obtenerReseñasPorCamion(ObjectId idCamion) {
         return coleccion.find(eq("camion", idCamion)).into(new ArrayList<>());
     }
 
+    /**
+     * Verifica si un usuario ya ha dejado una reseña (por ejemplo, para evitar duplicidad).
+     *
+     * @param idUsuario ID del usuario.
+     * @return true si ya existe una reseña por ese usuario, false en caso contrario.
+     */
     @Override
     public boolean existeReseñaDeUsuarioPorViaje(ObjectId idUsuario) {
-        return coleccion.find(and(
-                eq("usuario", idUsuario)
-        )).first() != null;
+        return coleccion.find(eq("usuario", idUsuario)).first() != null;
     }
 
+    /**
+     * Obtiene todas las reseñas realizadas desde una fecha específica en adelante.
+     *
+     * @param desde fecha mínima para filtrar reseñas.
+     * @return lista de reseñas recientes.
+     */
     @Override
     public List<Reseña> obtenerReseñasRecientes(Date desde) {
         return coleccion.find(Filters.gte("fecha", desde)).into(new ArrayList<>());
     }
 
+    /**
+     * Elimina todas las reseñas realizadas por un usuario específico.
+     *
+     * @param idUsuario ID del usuario del cual se eliminarán las reseñas.
+     */
     @Override
     public void eliminarReseñasPorUsuario(ObjectId idUsuario) {
         coleccion.deleteMany(eq("usuario", idUsuario));

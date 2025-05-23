@@ -1,42 +1,46 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package itson.persistenciarutapp.implementaciones;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import static com.mongodb.client.model.Filters.eq;
-import com.mongodb.client.model.IndexOptions;
-import com.mongodb.client.model.Indexes;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
-import enumm.estadoAsiento;
-import itson.rutappdto.CamionDTO;
 import java.util.ArrayList;
 import java.util.List;
 import itson.persistenciarutapp.ICamionesDAO;
 import itson.rutappdto.AsientoBoletoDTO;
-import itson.rutappdto.AsientoDTO;
 import org.bson.Document;
-import org.bson.types.ObjectId;
 
 /**
- *
- * @author chris
+ * Implementación de la interfaz {@link ICamionesDAO} que gestiona las operaciones
+ * CRUD sobre la colección de camiones en la base de datos MongoDB.
+ * 
+ * Esta clase permite consultar camiones, obtener asientos disponibles y actualizar estados de asientos.
  */
 public class CamionesDAO implements ICamionesDAO {
 
+    /** Nombre de la colección en MongoDB. */
     private final String COLECCION = "camiones";
+
+    /** Nombre del campo utilizado para buscar camiones por número. */
     private final String CAMPO_NUMERO = "numeroDeCamion";
 
+    /**
+     * Constructor por defecto. Inicializa la conexión a la colección,
+     * aunque la conexión efectiva se realiza dentro de cada método.
+     */
     public CamionesDAO() {
         MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
         MongoCollection<Camion> coleccion = baseDatos.getCollection(COLECCION, Camion.class);
-
     }
 
+    /**
+     * Consulta un camión por su número.
+     *
+     * @param numeroDeCamion número identificador del camión.
+     * @return el camión correspondiente, o null si no se encuentra.
+     */
     @Override
     public Camion consultarCamionPorId(String numeroDeCamion) {
         MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
@@ -44,6 +48,11 @@ public class CamionesDAO implements ICamionesDAO {
         return coleccion.find(Filters.eq(CAMPO_NUMERO, numeroDeCamion)).first();
     }
 
+    /**
+     * Consulta todos los camiones existentes en la base de datos.
+     *
+     * @return una lista con todos los camiones.
+     */
     @Override
     public List<Camion> consultarTodosLosCamiones() {
         MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
@@ -51,17 +60,27 @@ public class CamionesDAO implements ICamionesDAO {
         return coleccion.find().into(new ArrayList<>());
     }
 
+    /**
+     * Actualiza los datos de un camión en la base de datos.
+     *
+     * @param camion el camión actualizado que se desea persistir.
+     */
     @Override
     public void actualizarCamion(Camion camion) {
         MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
         MongoCollection<Camion> coleccion = baseDatos.getCollection(COLECCION, Camion.class);
-
         coleccion.replaceOne(
                 Filters.eq("numeroDeCamion", camion.getNumeroDeCamion()),
                 camion
         );
     }
 
+    /**
+     * Obtiene la lista de asientos disponibles de un camión específico.
+     *
+     * @param numeroDeCamion número del camión a consultar.
+     * @return una lista de objetos {@link Asiento} con los datos actuales del camión.
+     */
     @Override
     public List<Asiento> obtenerAsientosDisponibles(String numeroDeCamion) {
         MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
@@ -82,16 +101,22 @@ public class CamionesDAO implements ICamionesDAO {
         return listaAsientos;
     }
 
+    /**
+     * Actualiza el estado de los asientos a "OCUPADO" para un camión dado.
+     * 
+     * Utiliza un filtro sobre elementos del array para actualizar solo los asientos indicados.
+     *
+     * @param numeroCamion número del camión.
+     * @param asientos lista de asientos a marcar como ocupados.
+     */
     @Override
     public void ocuparAsientos(String numeroCamion, List<AsientoBoletoDTO> asientos) {
-
         MongoDatabase db = ManejadorConexiones.obtenerBaseDatos();
         MongoCollection<Document> camiones = db.getCollection("camiones");
 
         for (AsientoBoletoDTO asientoBoleto : asientos) {
             int numeroAsiento = Integer.parseInt(asientoBoleto.getAsiento().getNumero());
 
-            // Actualiza el estado del asiento específico usando arrayFilters
             camiones.updateOne(
                     Filters.eq("numeroDeCamion", numeroCamion),
                     Updates.set("asientos.$[elem].estado", "OCUPADO"),
@@ -101,5 +126,4 @@ public class CamionesDAO implements ICamionesDAO {
             );
         }
     }
-
 }

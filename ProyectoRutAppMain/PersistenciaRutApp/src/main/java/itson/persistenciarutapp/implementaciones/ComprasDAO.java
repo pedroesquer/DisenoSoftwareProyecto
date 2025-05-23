@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package itson.persistenciarutapp.implementaciones;
 
 import com.mongodb.client.AggregateIterable;
@@ -14,7 +10,6 @@ import itson.persistenciarutapp.IComprasDAO;
 import itson.rutappdto.UsuarioDTO;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.bson.Document;
@@ -22,29 +17,37 @@ import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 /**
- *
- * @author pedro
+ * Implementación de la interfaz {@link IComprasDAO} que proporciona operaciones
+ * para manejar compras de boletos en la base de datos MongoDB.
+ * 
+ * Gestiona la inserción de compras, así como la consulta de compras por usuario
+ * y la obtención de compras que no han vencido.
  */
 public class ComprasDAO implements IComprasDAO {
-    
 
+    /** Nombre de la colección en MongoDB utilizada para almacenar las compras. */
     private final String COLECCION = "compras";
 
+    /**
+     * Inserta una nueva compra en la base de datos.
+     *
+     * @param nuevaCompra el objeto Compra a insertar.
+     * @return la compra insertada.
+     */
     @Override
     public Compra agregarCompras(Compra nuevaCompra) {
         MongoDatabase db = ManejadorConexiones.obtenerBaseDatos();
         MongoCollection<Compra> coleccion = db.getCollection(COLECCION, Compra.class);
         System.out.println("HOOOOOHAYOOO");
-
         coleccion.insertOne(nuevaCompra);
         return nuevaCompra;
     }
 
     /**
-     * Método para consultar las compras de un usuario.
+     * Consulta todas las compras realizadas por un usuario específico.
      *
-     * @param usuario usuario el cual se le va a consultar sus compra.
-     * @return la lista de compras hechas por el usuario.
+     * @param usuario objeto UsuarioDTO que contiene el ID del usuario.
+     * @return lista de compras realizadas por el usuario.
      */
     @Override
     public List<Compra> consultarCompraPorUsuario(UsuarioDTO usuario) {
@@ -52,31 +55,32 @@ public class ComprasDAO implements IComprasDAO {
         MongoCollection<Compra> coleccion = db.getCollection(COLECCION, Compra.class);
 
         List<Compra> compras = new ArrayList<>();
-
         coleccion.find(Filters.eq("usuario", new ObjectId(usuario.getId()))).into(compras);
 
         return compras;
-
     }
 
     /**
-     * Método para consultar las compras que aun no hayan vencido de un usuario.
+     * Consulta las compras de un usuario que no han vencido.
+     * Se consideran no vencidas aquellas cuyo viaje aún no ha ocurrido (basado en `viaje.fechaHora`).
+     * 
+     * Nota: El filtrado por fecha del viaje puede agregarse con:
+     * {@code Aggregates.match(Filters.gt("viajeInfo.fechaHora", new Date()))}
      *
-     * @param usuario usuario el cual se le va a consultar sus compras.
-     * @return la lista de compras del usuario que aun no hayan vencido.
+     * @param idUsuario ID del usuario como {@link ObjectId}.
+     * @return lista de compras no vencidas.
      */
     @Override
     public List<Compra> consultarComprasNoVencidasPorUsuario(ObjectId idUsuario) {
         MongoDatabase db = ManejadorConexiones.obtenerBaseDatos();
         MongoCollection<Document> coleccion = db.getCollection("compras");
 
-        Date ahora = new Date();
-
+        // Pipeline de agregación con $lookup para unir compras con viajes
         List<Bson> pipeline = Arrays.asList(
                 Aggregates.match(Filters.eq("usuario", idUsuario)),
                 Aggregates.lookup("viajes", "viaje", "_id", "viajeInfo"),
                 Aggregates.unwind("$viajeInfo")
-//                Aggregates.match(Filters.gt("viajeInfo.fechaHora", new Date())) // ← filtra con la fecha del viaje
+                // Puedes agregar filtro de fecha aquí si es necesario
         );
 
         List<Compra> compras = new ArrayList<>();
@@ -87,9 +91,9 @@ public class ComprasDAO implements IComprasDAO {
             compra.setId(doc.getObjectId("_id"));
             compra.setUsuario(doc.getObjectId("usuario"));
             compra.setFechaCompra(doc.getDate("fechaCompra"));
-            compra.setViaje(doc.getObjectId("viaje")); // Sigue siendo solo el ID (como en tu clase)
+            compra.setViaje(doc.getObjectId("viaje"));
 
-            // Mapeo de asientos
+            // Mapeo de los asientos comprados
             List<Document> asientosDocs = (List<Document>) doc.get("asientosComprados");
             List<AsientoBoleto> asientos = new ArrayList<>();
             for (Document asientoDoc : asientosDocs) {
@@ -101,11 +105,9 @@ public class ComprasDAO implements IComprasDAO {
             }
 
             compra.setAsientosComprados(asientos);
-
             compras.add(compra);
         }
 
         return compras;
     }
-
 }

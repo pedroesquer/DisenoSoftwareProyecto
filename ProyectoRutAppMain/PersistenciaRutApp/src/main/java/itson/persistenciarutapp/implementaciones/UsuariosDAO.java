@@ -12,18 +12,29 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 /**
- * Implementación de IUsuariosDAO que se encarga de la persistencia de usuarios.
+ * Implementación de la interfaz {@link IUsuariosDAO} que maneja las operaciones
+ * CRUD para usuarios en la base de datos MongoDB.
+ * 
+ * Esta clase permite agregar nuevos usuarios, buscar usuarios por número telefónico
+ * o ID, y actualizar su saldo en el monedero.
  */
 public class UsuariosDAO implements IUsuariosDAO {
 
+    /** Nombre de la colección que almacena los usuarios. */
     private final String COLECCION = "usuarios";
+
+    /** Campo utilizado para indexar el número telefónico. */
     private final String CAMPO_TELEFONICO = "numeroTelefonico";
 
+    /**
+     * Constructor que inicializa la colección de usuarios y crea un índice único
+     * sobre el campo número telefónico para evitar duplicados.
+     */
     public UsuariosDAO() {
         MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
         MongoCollection<Usuario> coleccion = baseDatos.getCollection(COLECCION, Usuario.class);
 
-        // Crear índice único para número telefónico (evita duplicados)
+        // Crear índice único para el campo número telefónico
         coleccion.createIndex(
                 Indexes.ascending(CAMPO_TELEFONICO),
                 new IndexOptions().unique(true)
@@ -31,10 +42,10 @@ public class UsuariosDAO implements IUsuariosDAO {
     }
 
     /**
-     * Agrega un nuevo usuario a la colección.
+     * Inserta un nuevo usuario en la colección.
      *
-     * @param usuario el usuario a insertar
-     * @return el usuario insertado
+     * @param usuario el objeto {@link Usuario} a insertar.
+     * @return el usuario insertado.
      */
     @Override
     public Usuario agregarUsuario(Usuario usuario) {
@@ -45,10 +56,10 @@ public class UsuariosDAO implements IUsuariosDAO {
     }
 
     /**
-     * Consulta un usuario por número telefónico.
+     * Busca un usuario por su número telefónico.
      *
-     * @param numeroTel el número telefónico
-     * @return el usuario encontrado o null si no existe
+     * @param numeroTel número telefónico del usuario.
+     * @return el objeto {@link Usuario} si se encuentra, o {@code null} si no.
      */
     @Override
     public Usuario consultarUsuarioPorNumeroTelefonico(String numeroTel) {
@@ -70,10 +81,10 @@ public class UsuariosDAO implements IUsuariosDAO {
     }
 
     /**
-     * Actualiza el saldo del usuario con el número dado.
+     * Actualiza el saldo del monedero de un usuario.
      *
-     * @param usuario el usuario con saldo actualizado
-     * @return true si la operación modificó el documento
+     * @param usuario el usuario con el nuevo saldo.
+     * @return {@code true} si el documento fue modificado, {@code false} en caso contrario.
      */
     @Override
     public boolean actualizarSaldo(Usuario usuario) {
@@ -91,10 +102,16 @@ public class UsuariosDAO implements IUsuariosDAO {
         return coleccion.updateOne(filtro, actualizacion).getModifiedCount() > 0;
     }
 
+    /**
+     * Consulta un usuario por su identificador único.
+     *
+     * @param id el ID del usuario como {@link ObjectId}.
+     * @return el objeto {@link Usuario} encontrado o {@code null} si no existe.
+     */
     @Override
     public Usuario consultarUsuarioPorId(ObjectId id) {
         MongoCollection<Usuario> coleccion = ManejadorConexiones.obtenerBaseDatos()
-                .getCollection("usuarios", Usuario.class);
+                .getCollection(COLECCION, Usuario.class);
         return coleccion.find(Filters.eq("_id", id)).first();
     }
 }
