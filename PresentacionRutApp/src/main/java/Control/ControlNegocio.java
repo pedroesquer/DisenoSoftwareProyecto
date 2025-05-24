@@ -332,7 +332,7 @@ public class ControlNegocio {
     }
 
     public void agregarReseña(ReseñaDTO reseña) throws Exception {
-        util.ValidadorReseñas.validar(reseña);
+        //
         reseñaa.agregarReseña(reseña);
     }
 

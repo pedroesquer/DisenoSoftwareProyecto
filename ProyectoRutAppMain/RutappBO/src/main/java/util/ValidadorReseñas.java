@@ -41,7 +41,7 @@ public class ValidadorReseñas {
             "s[a@]c[o0]n[a@]", "v[i1]dri[o0]l[a@]", "t[o0]nt[o0]l[o0]n[a@]", "c[o0]l[e3]r[a@]",
             "l[e3]pr[o0]s[o0]", "t[e3]rr[a@]t[e3]", "b[o0]b[o0]", "idi[o0]t[a@]", "b[uú]rr[o0]",
             "c[a@]g[a@][r]+", "c[a@]g[a@]d[o0]", "c[a@]br[o0]n[e3]s", "c[o0]j[o0]n[e3]s?",
-            "m[a@]l[nn][a@]c[hhe3]t[o0]s?", "m[a@]l[pb]ar[i1]d[o0]"
+            "m[a@]l[nn][a@]c[hhe3]t[o0]s?", "m[a@]l[pb]ar[i1]d[o0]" , "PUTO pepe pollo" 
         };
 
         for (String patron : patronesProhibidos) {

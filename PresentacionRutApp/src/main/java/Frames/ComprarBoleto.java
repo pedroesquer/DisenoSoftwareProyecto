@@ -28,8 +28,8 @@ import utilerias.FechaDocumentFilter;
  */
 public class ComprarBoleto extends javax.swing.JFrame implements TemporizadorObserver {
 
-    
     IUsuarioActivo usuarioActivo = new FUsuarioActivo();
+
     /**
      * Creates new form ComprarViaje
      */
@@ -259,69 +259,69 @@ public class ComprarBoleto extends javax.swing.JFrame implements TemporizadorObs
     }//GEN-LAST:event_botonPagarMonederoActionPerformed
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void btnCompraViajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompraViajeActionPerformed
-    DetallesPagoDTO detallesPago;
+        DetallesPagoDTO detallesPago;
 
-    if (botonPagarTarjeta.isSelected()) {
-        System.out.println("Pago con tarjeta seleccionado.");
-        String numeroTarjeta = campoNumeroTarjeta.getText().trim();
-        String nombreTitular = campoNombreTitular.getText().trim();
-        String vencimiento = campoVencimiento.getText().trim(); 
-        String cvv = campoCVV.getText().trim(); 
+        if (botonPagarTarjeta.isSelected()) {
+            System.out.println("Pago con tarjeta seleccionado.");
+            String numeroTarjeta = campoNumeroTarjeta.getText().trim();
+            String nombreTitular = campoNombreTitular.getText().trim();
+            String vencimiento = campoVencimiento.getText().trim();
+            String cvv = campoCVV.getText().trim();
 
-        if (numeroTarjeta.isEmpty() || nombreTitular.isEmpty() || vencimiento.isEmpty() || cvv.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos de la tarjeta.", "Campos vacíos", javax.swing.JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+            if (numeroTarjeta.isEmpty() || nombreTitular.isEmpty() || vencimiento.isEmpty() || cvv.isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos de la tarjeta.", "Campos vacíos", javax.swing.JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
-        if (!numeroTarjeta.matches("\\d{16}")) {
-            javax.swing.JOptionPane.showMessageDialog(this, "El número de tarjeta debe tener 16 dígitos numéricos.", "Número de tarjeta inválido", javax.swing.JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+            if (!numeroTarjeta.matches("\\d{16}")) {
+                javax.swing.JOptionPane.showMessageDialog(this, "El número de tarjeta debe tener 16 dígitos numéricos.", "Número de tarjeta inválido", javax.swing.JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-        if (!cvv.matches("\\d{3}")) {
-            javax.swing.JOptionPane.showMessageDialog(this, "El CVV debe tener 3 dígitos numéricos.", "CVV inválido", javax.swing.JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+            if (!cvv.matches("\\d{3}")) {
+                javax.swing.JOptionPane.showMessageDialog(this, "El CVV debe tener 3 dígitos numéricos.", "CVV inválido", javax.swing.JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-        // Crear el objeto de tarjeta
-        TarjetaCreditoDTO tarjeta = new TarjetaCreditoDTO(numeroTarjeta, nombreTitular, vencimiento, cvv);
+            // Crear el objeto de tarjeta
+            TarjetaCreditoDTO tarjeta = new TarjetaCreditoDTO(numeroTarjeta, nombreTitular, vencimiento, cvv);
 
-        // Crear el DetallesPagoDTO para tarjeta
-        detallesPago = new DetallesPagoDTO("Tarjeta", (BoletoContext.getBoleto().getPrecio() * BoletoContext.getBoleto().getListaAsiento().size()), BoletoContext.getBoleto(), tarjeta);  // Asignar detallesTarjeta
-        
-        
-    } else if (botonPagarMonedero.isSelected()) {
-        // Crear DetallesPagoDTO para pago con monedero sin detalles de tarjeta
-        detallesPago = new DetallesPagoDTO("Monedero", (BoletoContext.getBoleto().getPrecio() * BoletoContext.getBoleto().getListaAsiento().size()),
-                BoletoContext.getBoleto());  // No pasa detallesTarjeta
+            // Crear el DetallesPagoDTO para tarjeta
+            detallesPago = new DetallesPagoDTO("Tarjeta", (BoletoContext.getBoleto().getPrecio() * BoletoContext.getBoleto().getListaAsiento().size()), BoletoContext.getBoleto(), tarjeta);  // Asignar detallesTarjeta
+
+        } else if (botonPagarMonedero.isSelected()) {
+            // Crear DetallesPagoDTO para pago con monedero sin detalles de tarjeta
+            detallesPago = new DetallesPagoDTO("Monedero", (BoletoContext.getBoleto().getPrecio() * BoletoContext.getBoleto().getListaAsiento().size()),
+                    BoletoContext.getBoleto());  // No pasa detallesTarjeta
 //        CordinadorPresentacion.getInstancia().abrirResumenCompra(); // Navegar al resumen
 //        this.dispose(); // Cerrar la ventana después de la selección del pago
-    } else {
-        javax.swing.JOptionPane.showMessageDialog(this, "Por favor, selecciona un método de pago.", "Método de pago no seleccionado", javax.swing.JOptionPane.WARNING_MESSAGE);
-        return; // Salir si no se seleccionó un método de pago
-    }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Por favor, selecciona un método de pago.", "Método de pago no seleccionado", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return; // Salir si no se seleccionó un método de pago
+        }
 
-    // Ahora llamamos al método de negocio para procesar la compra
-    boolean compraExitosa = false;
-    try {
-        compraExitosa = ControlNegocio.getInstancia().comprarBoleto(detallesPago, usuarioActivo.obtenerUsuarioActual());
-    } catch (PagoBoletoException ex) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Error en el procesamiento del pago. Por favor, intente nuevamente.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-    } catch (CompraBoletoException ex) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Error en la compra del boleto. Por favor, intente nuevamente.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-    }
+        // Ahora llamamos al método de negocio para procesar la compra
+        boolean compraExitosa = false;
+        try {
+            compraExitosa = ControlNegocio.getInstancia().comprarBoleto(detallesPago, usuarioActivo.obtenerUsuarioActual());
+        } catch (PagoBoletoException ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error en el procesamiento del pago. Por favor, intente nuevamente.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        } catch (CompraBoletoException ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error en la compra del boleto. Por favor, intente nuevamente.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
 
-    // Lógica adicional si la compra fue exitosa
-    if (compraExitosa) {
-        javax.swing.JOptionPane.showMessageDialog(this, "¡Compra realizada con éxito!");
-        CordinadorPresentacion.getInstancia().abrirPantallaPrincipal(); // Regresar a la pantalla principal
-        
-        this.dispose(); // Cerrar la ventana después de pasar los datos
-    }
+        // Lógica adicional si la compra fue exitosa
+        if (compraExitosa) {
+            javax.swing.JOptionPane.showMessageDialog(this, "¡Compra realizada con éxito!");
+            ControlTimer.getInstancia().finalizarTemporizador();
+            CordinadorPresentacion.getInstancia().abrirPantallaPrincipal(); // Regresar a la pantalla principal
+
+            this.dispose(); // Cerrar la ventana después de pasar los datos
+        }
     }//GEN-LAST:event_btnCompraViajeActionPerformed
 
     private void campoNumeroTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoNumeroTarjetaActionPerformed
@@ -338,6 +338,7 @@ public class ComprarBoleto extends javax.swing.JFrame implements TemporizadorObs
 
         if (confirmacion == JOptionPane.YES_OPTION) {
             BoletoContext.limpiarBoleto();
+             ControlTimer.getInstancia().finalizarTemporizador(); 
             JOptionPane.showMessageDialog(null, "Has cancelado el proceso.\n Regresaras a la pantalla principal");
             CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
             this.dispose();

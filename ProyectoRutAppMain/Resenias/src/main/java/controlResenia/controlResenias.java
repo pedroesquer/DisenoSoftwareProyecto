@@ -46,6 +46,7 @@ public class controlResenias {
      * @throws java.lang.Exception
      */
     public void agregarReseña(ReseñaDTO reseñaDTO) throws Exception {
+        util.ValidadorReseñas.validar(reseñaDTO);
         reseñaBO.agregarReseña(reseñaDTO);
     }
 

@@ -22,7 +22,7 @@ public class ControlTimer {
 
     private Timer temporizador;
     private boolean contadorIniciado = false;
-    private final int DURACION_CONTADOR = 5 * 1000 * 60; // 5 minutos
+    private final int DURACION_CONTADOR = 1 * 1000 * 60; // 5 minutos
 
     private List<TemporizadorObserver> observadores = new ArrayList<>();
 
