@@ -82,6 +82,7 @@ public class ComprasDAO implements IComprasDAO {
                 Aggregates.match(Filters.eq("usuario", idUsuario)),
                 Aggregates.lookup("viajes", "viaje", "_id", "viajeInfo"),
                 Aggregates.unwind("$viajeInfo")
+                //Aggregates.match(Filters.gt("viajeInfo.fecha", new Date()))
         // Puedes agregar filtro de fecha aquí si es necesario
         );
 

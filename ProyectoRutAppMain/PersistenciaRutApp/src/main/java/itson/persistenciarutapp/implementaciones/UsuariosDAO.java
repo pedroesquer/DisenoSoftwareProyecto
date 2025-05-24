@@ -14,21 +14,25 @@ import org.bson.types.ObjectId;
 /**
  * Implementación de la interfaz {@link IUsuariosDAO} que maneja las operaciones
  * CRUD para usuarios en la base de datos MongoDB.
- * 
- * Esta clase permite agregar nuevos usuarios, buscar usuarios por número telefónico
- * o ID, y actualizar su saldo en el monedero.
+ *
+ * Esta clase permite agregar nuevos usuarios, buscar usuarios por número
+ * telefónico o ID, y actualizar su saldo en el monedero.
  */
 public class UsuariosDAO implements IUsuariosDAO {
 
-    /** Nombre de la colección que almacena los usuarios. */
+    /**
+     * Nombre de la colección que almacena los usuarios.
+     */
     private final String COLECCION = "usuarios";
 
-    /** Campo utilizado para indexar el número telefónico. */
+    /**
+     * Campo utilizado para indexar el número telefónico.
+     */
     private final String CAMPO_TELEFONICO = "numeroTelefonico";
 
     /**
-     * Constructor que inicializa la colección de usuarios y crea un índice único
-     * sobre el campo número telefónico para evitar duplicados.
+     * Constructor que inicializa la colección de usuarios y crea un índice
+     * único sobre el campo número telefónico para evitar duplicados.
      */
     public UsuariosDAO() {
         MongoDatabase baseDatos = ManejadorConexiones.obtenerBaseDatos();
@@ -84,7 +88,8 @@ public class UsuariosDAO implements IUsuariosDAO {
      * Actualiza el saldo del monedero de un usuario.
      *
      * @param usuario el usuario con el nuevo saldo.
-     * @return {@code true} si el documento fue modificado, {@code false} en caso contrario.
+     * @return {@code true} si el documento fue modificado, {@code false} en
+     * caso contrario.
      */
     @Override
     public boolean actualizarSaldo(Usuario usuario) {
