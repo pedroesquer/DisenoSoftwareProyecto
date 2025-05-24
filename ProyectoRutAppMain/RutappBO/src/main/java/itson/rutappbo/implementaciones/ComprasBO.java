@@ -7,6 +7,8 @@ import itson.persistenciarutapp.implementaciones.AsientoBoleto;
 import itson.persistenciarutapp.implementaciones.CamionesDAO;
 import itson.persistenciarutapp.implementaciones.Compra;
 import itson.persistenciarutapp.implementaciones.ComprasDAO;
+import itson.persistenciarutapp.implementaciones.Usuario;
+import itson.persistenciarutapp.implementaciones.UsuariosDAO;
 import itson.persistenciarutapp.implementaciones.Viaje;
 import itson.persistenciarutapp.implementaciones.ViajesDAO;
 import itson.rutappbo.IComprasBO;
@@ -32,6 +34,7 @@ public class ComprasBO implements IComprasBO {
     private final ComprasDAO comprasDAO = new ComprasDAO();
     private final IViajesDAO viajesDAO = new ViajesDAO();
     private final ICamionesDAO camionesDAO = new CamionesDAO();
+    private final UsuariosDAO usuariosDAO = new UsuariosDAO();
 
     public ComprasBO() {
 
@@ -161,13 +164,31 @@ public class ComprasBO implements IComprasBO {
         if (idCompra == null) {
             throw new RuntimeException("No se pudo encontrar la compra para cancelación.");
         }
-
+        // Cancelar la compra (libera los asientos en la colección "compras")
         comprasDAO.cancelarCompra(idCompra);
+
+        // Liberar los asientos en el camión
         Viaje viaje = viajesDAO.consultarViajePorId(compraDTO.getViaje().getIdViaje());
         String numeroCamion = viaje.getCamion().getNumeroCamion();
-
         camionesDAO.liberarAsientos(numeroCamion, compraDTO.getListaAsiento());
 
+        // Reembolso al monedero
+        double montoReembolsado = compraDTO.getPrecio();
+        UsuarioDTO usuario = compraDTO.getUsuario();
+
+        // Sumar el monto al saldo actual
+        double saldoActual = usuario.getSaldoMonedero();
+        usuario.setSaldoMonedero(saldoActual + montoReembolsado);
+
+        Usuario usuarioEntidad = new Usuario();
+        usuarioEntidad.setId(new ObjectId(usuario.getId()));
+        usuarioEntidad.setNumeroTelefonico(usuario.getNumeroTelefonico());
+        usuarioEntidad.setNombre(usuario.getNombre());
+        usuarioEntidad.setContrasenia(usuario.getContrasena());
+        usuarioEntidad.setSaldoMonedero(usuario.getSaldoMonedero());
+
+        // Actualizar saldo en la base de datos
+        usuariosDAO.actualizarSaldo(usuarioEntidad);
     }
 
 }
