@@ -83,6 +83,26 @@ public class ReseñasBO implements IReseñaBO {
 
     @Override
     public boolean eliminarReseña(String idReseña) {
+        Reseña reseña = reseñasDAO.obtenerReseñaPorId(idReseña);
+
+        if (reseña == null) {
+            return false;
+        }
+
+        // Validar que el usuario sea el autor
+        String idUsuarioActivo = UsuarioActivoManager.getInstancia().getUsuario().getId();
+        if (!reseña.getUsuario().toHexString().equals(idUsuarioActivo)) {
+            return false;
+        }
+
+        // Validar tiempo límite (10 minutos)
+        long ahora = System.currentTimeMillis();
+        long tiempoReseña = reseña.getFecha().getTime();
+        long diferencia = ahora - tiempoReseña;
+        if (diferencia > 10 * 60 * 1000) {
+            return false;
+        }
+
         return reseñasDAO.eliminarReseñaPorId(idReseña);
     }
 

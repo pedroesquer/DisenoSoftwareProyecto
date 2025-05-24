@@ -22,6 +22,5 @@ public interface IComprasBO {
     List<CompraDTO> obtenerComprasNoVencidasPorUsuario(UsuarioDTO usuarioDTO);
     
     void cancelarCompra(CompraDTO compraDTO);
-;
 
 }

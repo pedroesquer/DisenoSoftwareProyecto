@@ -105,4 +105,9 @@ public class ReseñaDAO implements IReseñaDAO {
                 Filters.eq("camion", new ObjectId(idCamion))
         ));
     }
+
+    @Override
+    public Reseña obtenerReseñaPorId(String idReseña) {
+        return coleccion.find(eq("_id", new ObjectId(idReseña))).first();
+    }
 }

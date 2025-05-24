@@ -29,4 +29,6 @@ public interface IReseñaDAO {
     boolean eliminarReseñaPorId(String idReseña);
 
     int contarReseñasUsuarioPorCamion(String idUsuario, String idCamion);
+    
+    Reseña obtenerReseñaPorId(String idReseña);
 }

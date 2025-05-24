@@ -332,7 +332,6 @@ public class ControlNegocio {
     }
 
     public void agregarReseña(ReseñaDTO reseña) throws Exception {
-        //
         reseñaa.agregarReseña(reseña);
     }
 
