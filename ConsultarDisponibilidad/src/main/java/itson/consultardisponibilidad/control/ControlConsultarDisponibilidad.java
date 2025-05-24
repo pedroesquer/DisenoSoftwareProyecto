@@ -37,17 +37,12 @@ public class ControlConsultarDisponibilidad {
     private final IViajesBO viajesBO;
     private final ICamionesBO camionesBO;
     private final IComprasBO compraBO;
-    private final IUsuariosBO usuariosBO;
-    private final IReseñaBO reseñaBO;
 
     private ControlConsultarDisponibilidad() {
         this.viajesBO = new ViajesBO(new ViajesDAO());
         this.camionesBO = new CamionesBO();
-// ------------------------RESEÑA----------------------------------
-        this.compraBO = new ComprasBO();//                        |
-        this.usuariosBO = new UsuariosBO();  //                   |  // esta mamada q
-        this.reseñaBO = new ReseñasBO(usuariosBO, camionesBO); // |
-//-----------------------------------------------------------------
+        this.compraBO = new ComprasBO();                       
+
     }
 
     /**

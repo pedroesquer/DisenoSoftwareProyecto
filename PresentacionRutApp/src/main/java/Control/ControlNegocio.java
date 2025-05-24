@@ -331,12 +331,9 @@ public class ControlNegocio {
         return consultarDisponibilidad.obtenerCompras(usuario);
     }
 
-    public void agregarReseña(ReseñaDTO reseña) {
-        try {
-            reseñaa.agregarReseña(reseña);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al agregar reseña: " + e.getMessage());
-        }
+    public void agregarReseña(ReseñaDTO reseña) throws Exception {
+        util.ValidadorReseñas.validar(reseña);
+        reseñaa.agregarReseña(reseña);
     }
 
     public List<ReseñaDTO> obtenerReseñasPorCamion(String numeroCamion) {

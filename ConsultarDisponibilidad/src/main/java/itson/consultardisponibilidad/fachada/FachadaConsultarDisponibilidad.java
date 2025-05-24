@@ -60,6 +60,7 @@ public class FachadaConsultarDisponibilidad implements IConsultarDisponibilidad 
 //        return ControlConsultarDisponibilidad.getInstancia().eliminarReseña(idReseña);
 //    }
 //    
+    @Override
     public void eliminarCompra(CompraDTO compra){
         ControlConsultarDisponibilidad.getInstancia().cancelarCompra(compra);
     }

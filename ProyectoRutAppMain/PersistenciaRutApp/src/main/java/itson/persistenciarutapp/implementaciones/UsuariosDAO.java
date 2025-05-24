@@ -119,4 +119,12 @@ public class UsuariosDAO implements IUsuariosDAO {
                 .getCollection(COLECCION, Usuario.class);
         return coleccion.find(Filters.eq("_id", id)).first();
     }
+
+    @Override
+    public String obtenerNombrePorId(String idUsuario) {
+        MongoDatabase db = ManejadorConexiones.obtenerBaseDatos();
+        MongoCollection<Document> coleccion = db.getCollection("usuarios");
+        Document doc = coleccion.find(eq("_id", new ObjectId(idUsuario))).first();
+        return doc != null ? doc.getString("nombre") : null;
+    }
 }

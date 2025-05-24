@@ -24,20 +24,14 @@ public class controlResenias {
 
     private static controlResenias instance;
 
-    private final ICamionesBO camionesBO;
-    private final IComprasBO compraBO;
-    private final IUsuariosBO usuariosBO;
     private final IReseñaBO reseñaBO;
 
     private controlResenias() {
-// ------------------------RESEÑA----------------------------------
-        this.compraBO = new ComprasBO();//                        |
-        this.camionesBO = new CamionesBO();//                     |
-        this.usuariosBO = new UsuariosBO();  //                   |  // esta mamada q
-        this.reseñaBO = new ReseñasBO(usuariosBO, camionesBO); // |
+// ------------------------RESEÑA----------------------------------                  
+        this.reseñaBO = new ReseñasBO(); // |
 //-----------------------------------------------------------------
     }
-    
+
     public static controlResenias getInstancia() {
         if (instance == null) {
             instance = new controlResenias();
@@ -49,13 +43,10 @@ public class controlResenias {
      * Agrega una reseña al camión actual del usuario logueado.
      *
      * @param reseñaDTO DTO con datos de la reseña
+     * @throws java.lang.Exception
      */
-    public void agregarReseña(ReseñaDTO reseñaDTO) {
-        try {
-            reseñaBO.agregarReseña(reseñaDTO);
-        } catch (Exception e) {
-            System.err.println("Error al agregar reseña: " + e.getMessage());
-        }
+    public void agregarReseña(ReseñaDTO reseñaDTO) throws Exception {
+        reseñaBO.agregarReseña(reseñaDTO);
     }
 
     /**

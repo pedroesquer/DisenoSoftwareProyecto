@@ -152,4 +152,12 @@ public class CamionesDAO implements ICamionesDAO {
         }
     }
 
+    @Override
+    public String obtenerIdCamionPorNumero(String numeroCamion) {
+        MongoDatabase db = ManejadorConexiones.obtenerBaseDatos();
+        MongoCollection<Document> coleccion = db.getCollection("camiones");
+        Document doc = coleccion.find(eq("numeroDeCamion", numeroCamion)).first();
+        return doc != null ? doc.getObjectId("_id").toHexString() : null;
+    }
+
 }

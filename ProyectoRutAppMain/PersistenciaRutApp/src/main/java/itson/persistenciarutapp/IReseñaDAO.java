@@ -18,7 +18,7 @@ public interface IReseñaDAO {
 
     void agregarReseña(Reseña reseña);
 
-    List<Reseña> obtenerReseñasPorCamion(ObjectId idCamion);
+    List<Reseña> obtenerReseñasPorCamion(String idCamion);
 
     boolean existeReseñaDeUsuarioPorViaje(ObjectId idUsuario);
 
@@ -26,7 +26,7 @@ public interface IReseñaDAO {
 
     void eliminarReseñasPorUsuario(ObjectId idUsuario);
 
-    boolean eliminarReseñaPorId(ObjectId idReseña);
+    boolean eliminarReseñaPorId(String idReseña);
 
-    int contarReseñasUsuarioPorCamion(ObjectId idUsuario, ObjectId idCamion);
+    int contarReseñasUsuarioPorCamion(String idUsuario, String idCamion);
 }

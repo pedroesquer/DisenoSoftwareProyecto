@@ -18,10 +18,14 @@ import org.bson.types.ObjectId;
  */
 public class ReseñaDAO implements IReseñaDAO {
 
-    /** Nombre de la colección que almacena las reseñas. */
+    /**
+     * Nombre de la colección que almacena las reseñas.
+     */
     private final String COLECCION = "reseñas";
 
-    /** Referencia a la colección Mongo de reseñas. */
+    /**
+     * Referencia a la colección Mongo de reseñas.
+     */
     private final MongoCollection<Reseña> coleccion;
 
     /**
@@ -49,15 +53,17 @@ public class ReseñaDAO implements IReseñaDAO {
      * @return lista de reseñas realizadas al camión.
      */
     @Override
-    public List<Reseña> obtenerReseñasPorCamion(ObjectId idCamion) {
-        return coleccion.find(eq("camion", idCamion)).into(new ArrayList<>());
+    public List<Reseña> obtenerReseñasPorCamion(String idCamion) {
+        return coleccion.find(eq("camion", new ObjectId(idCamion))).into(new ArrayList<>());
     }
 
     /**
-     * Verifica si un usuario ya ha dejado una reseña (por ejemplo, para evitar duplicidad).
+     * Verifica si un usuario ya ha dejado una reseña (por ejemplo, para evitar
+     * duplicidad).
      *
      * @param idUsuario ID del usuario.
-     * @return true si ya existe una reseña por ese usuario, false en caso contrario.
+     * @return true si ya existe una reseña por ese usuario, false en caso
+     * contrario.
      */
     @Override
     public boolean existeReseñaDeUsuarioPorViaje(ObjectId idUsuario) {
@@ -65,7 +71,8 @@ public class ReseñaDAO implements IReseñaDAO {
     }
 
     /**
-     * Obtiene todas las reseñas realizadas desde una fecha específica en adelante.
+     * Obtiene todas las reseñas realizadas desde una fecha específica en
+     * adelante.
      *
      * @param desde fecha mínima para filtrar reseñas.
      * @return lista de reseñas recientes.
@@ -84,18 +91,18 @@ public class ReseñaDAO implements IReseñaDAO {
     public void eliminarReseñasPorUsuario(ObjectId idUsuario) {
         coleccion.deleteMany(eq("usuario", idUsuario));
     }
-    
+
     @Override
-    public boolean eliminarReseñaPorId(ObjectId idReseña) {
-        DeleteResult resultado = coleccion.deleteOne(eq("_id", idReseña));
+    public boolean eliminarReseñaPorId(String idReseña) {
+        DeleteResult resultado = coleccion.deleteOne(eq("_id", new ObjectId(idReseña)));
         return resultado.getDeletedCount() > 0;
     }
-    
+
     @Override
-    public int contarReseñasUsuarioPorCamion(ObjectId idUsuario, ObjectId idCamion) {
+    public int contarReseñasUsuarioPorCamion(String idUsuario, String idCamion) {
         return (int) coleccion.countDocuments(Filters.and(
-            Filters.eq("usuario", idUsuario),
-            Filters.eq("camion", idCamion)
+                Filters.eq("usuario", new ObjectId(idUsuario)),
+                Filters.eq("camion", new ObjectId(idCamion))
         ));
     }
 }
