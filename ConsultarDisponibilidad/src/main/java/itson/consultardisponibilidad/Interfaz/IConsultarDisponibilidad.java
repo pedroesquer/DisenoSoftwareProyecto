@@ -33,5 +33,5 @@ public interface IConsultarDisponibilidad {
 //
 //    boolean eliminarReseña(String idReseña);
 //
-//    public void eliminarCompra(CompraDTO compra);
+    public void eliminarCompra(CompraDTO compra);
 }

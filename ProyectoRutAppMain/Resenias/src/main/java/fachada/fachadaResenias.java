@@ -30,8 +30,4 @@ public class fachadaResenias implements IResenias {
         return controlResenias.getInstancia().eliminarReseña(idReseña);
     }
     
-    @Override
-    public void eliminarCompra(CompraDTO compra){
-        controlResenias.getInstancia().cancelarCompra(compra);
-    }
 }

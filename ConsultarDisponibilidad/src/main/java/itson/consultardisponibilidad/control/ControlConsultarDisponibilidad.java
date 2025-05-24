@@ -111,5 +111,7 @@ public class ControlConsultarDisponibilidad {
         return compraBO.obtenerComprasNoVencidasPorUsuario(usuario);
     }
 
-    
+     public void cancelarCompra(CompraDTO compra) {
+        compraBO.cancelarCompra(compra);
+    }
 }

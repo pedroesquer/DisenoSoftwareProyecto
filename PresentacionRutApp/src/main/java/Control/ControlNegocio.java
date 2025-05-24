@@ -131,10 +131,6 @@ public class ControlNegocio {
         }
     }
 
-    public List<Viaje> obtenerViajesDisponibles(String origen, String Destino, LocalDateTime fecha) {
-        return null;
-    }
-
     /**
      * Método que cambia el estado del asiento momentaneamente a ocupado.
      *
@@ -352,7 +348,7 @@ public class ControlNegocio {
     }
 
     public void cancelarCompra(CompraDTO comra) {
-        reseñaa.eliminarCompra(comra);
+        consultarDisponibilidad.eliminarCompra(comra);
     }
 
 }

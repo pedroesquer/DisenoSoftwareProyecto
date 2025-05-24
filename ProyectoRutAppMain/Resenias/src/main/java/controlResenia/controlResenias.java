@@ -79,8 +79,4 @@ public class controlResenias {
         return reseñaBO.eliminarReseña(idReseña);
     }
 
-    public void cancelarCompra(CompraDTO compra) {
-        compraBO.cancelarCompra(compra);
-    }
-
 }

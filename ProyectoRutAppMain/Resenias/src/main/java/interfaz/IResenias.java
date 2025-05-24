@@ -19,5 +19,4 @@ public interface IResenias {
 
     boolean eliminarReseña(String idReseña);
 
-    public void eliminarCompra(CompraDTO compra);
 }
