@@ -1,13 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package Frames;
 
-import Control.ControlNegocio;
 import Control.CordinadorPresentacion;
-import enumm.estadoAsiento;
-import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.BoletoContext;
 import itson.rutappdto.CamionDTO;
 import itson.rutappdto.ViajeDTO;
@@ -17,42 +10,29 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.HeadlessException;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.AbstractList;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author mmax2
- */
 public class ViajesDisponibles extends javax.swing.JFrame {
 
     List<ViajeDTO> viajesDTO;
 
     /**
-     * Creates new form ComprarViaje
+     * Crea la ventana que muestra los viajes disponibles en tarjetas
+     * interactivas.
      *
-     * @param viajesDTO
+     * @param viajesDTO Lista de viajes disponibles a mostrar.
      */
     public ViajesDisponibles(List<ViajeDTO> viajesDTO) {
         initComponents();
@@ -62,6 +42,11 @@ public class ViajesDisponibles extends javax.swing.JFrame {
         setTitle("Viajes disponibles");
     }
 
+    /**
+     * Genera y carga paneles con la información de cada viaje en la interfaz.
+     *
+     * @param viajes Lista de viajes a mostrar.
+     */
     public void cargarViajesEnTarjetas(List<ViajeDTO> viajes) {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         for (ViajeDTO viaje : viajes) {
@@ -72,16 +57,21 @@ public class ViajesDisponibles extends javax.swing.JFrame {
         }
     }
 
-    // Crear la tarjeta para un viaje
+    /**
+     * Crea una tarjeta visual para un viaje, con eventos de clic y hover.
+     *
+     * @param viaje Viaje a mostrar en la tarjeta.
+     * @return Panel visual interactivo del viaje.
+     */
     private JPanel crearTarjetaViaje(ViajeDTO viaje) {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
-        panel.setBackground(new Color(173, 216, 230)); // Azul pastel
+        panel.setBackground(new Color(173, 216, 230));
         panel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(100, 149, 237), 1),
                 BorderFactory.createEmptyBorder(10, 15, 10, 15)
         ));
-        panel.setPreferredSize(new Dimension(2, 100)); // Tamaño de la tarjeta
+        panel.setPreferredSize(new Dimension(2, 100));
         System.out.println("Fecha de textos dsipo: " + viaje.getFecha());
 
         String fechaTexto = "Fecha no disponible";
@@ -109,7 +99,7 @@ public class ViajesDisponibles extends javax.swing.JFrame {
                     BoletoContext.getBoleto().setFecha(viaje.getFecha());
 
                 }
-                BoletoContext.getBoleto().setViaje(viaje); // ✅ ESTO ARREGLA TODO
+                BoletoContext.getBoleto().setViaje(viaje);
 
                 CamionDTO camion = viaje.getCamion();
                 camion.setListaAsiento(
@@ -249,7 +239,11 @@ public class ViajesDisponibles extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+/**
+     * Acción del botón "Volver". Regresa a la pantalla de búsqueda de viajes.
+     *
+     * @param evt Evento del botón.
+     */
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         BuscarViaje srcT = new BuscarViaje();
         srcT.setVisible(true);

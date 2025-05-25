@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package Frames;
 
 import Control.ControlNegocio;
@@ -29,15 +25,16 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 /**
- *
- * @author multaslokas33
+ * Pantalla que muestra al usuario los camiones en los que ha viajado,
+ * permitiéndole dejar una reseña por cada uno.
  */
 public class Reseñas extends javax.swing.JFrame {
 
     private JPanel panelCamiones;
 
     /**
-     * Creates new form Reseñas
+     * Constructor. Inicializa la ventana, configura los componentes y carga los
+     * camiones disponibles para reseñar.
      */
     public Reseñas() {
         initComponents();
@@ -46,6 +43,10 @@ public class Reseñas extends javax.swing.JFrame {
         setTitle("Reseñas");
     }
 
+    /**
+     * Obtiene las compras del usuario actual, filtra los camiones únicos y
+     * muestra un panel con opción a reseñar cada uno.
+     */
     private void cargarCamionesConCompras() {
         UsuarioDTO usuario = ControlNegocio.getInstancia().obtenerUsuarioActivo();
         List<CompraDTO> compras = ControlNegocio.getInstancia().obtenerComprasUsuario(usuario);
@@ -75,10 +76,13 @@ public class Reseñas extends javax.swing.JFrame {
         panelCamiones.repaint();
     }
 
+    /**
+     * Configura visualmente los paneles: encabezado, scroll central y botón de
+     * regresar.
+     */
     private void personalizarComponentes() {
         this.setLayout(new BorderLayout());
 
-        // Panel encabezado
         JPanel panelHeader = new JPanel();
         panelHeader.setBackground(new Color(255, 201, 98));
         panelHeader.setPreferredSize(new Dimension(getWidth(), 60));
@@ -88,7 +92,6 @@ public class Reseñas extends javax.swing.JFrame {
         panelHeader.setLayout(new BorderLayout());
         panelHeader.add(lblHeader, BorderLayout.CENTER);
 
-        // Panel de camiones con scroll
         panelCamiones = new JPanel();
         panelCamiones.setLayout(new BoxLayout(panelCamiones, BoxLayout.Y_AXIS));
         panelCamiones.setBackground(Color.WHITE);
@@ -99,7 +102,6 @@ public class Reseñas extends javax.swing.JFrame {
         scroll.getVerticalScrollBar().setUnitIncrement(16);
         scroll.setBorder(BorderFactory.createEmptyBorder());
 
-        // Botón regresar
         JButton btnRegresar = new JButton("Regresar");
         btnRegresar.setBackground(new Color(255, 201, 98));
         btnRegresar.setFont(new Font("SansSerif", Font.BOLD, 14));
@@ -115,7 +117,6 @@ public class Reseñas extends javax.swing.JFrame {
         panelInferior.setBackground(Color.WHITE);
         panelInferior.add(btnRegresar);
 
-        // Añadir a frame
         this.add(panelHeader, BorderLayout.NORTH);
         this.add(scroll, BorderLayout.CENTER);
         this.add(panelInferior, BorderLayout.SOUTH);
@@ -124,6 +125,13 @@ public class Reseñas extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
     }
 
+    /**
+     * Crea un panel representando un camión con un botón "Reseñar". Permite
+     * abrir la ventana de reseña para ese camión.
+     *
+     * @param camion Número del camión a reseñar
+     * @return Panel visual interactivo para ese camión
+     */
     private JPanel crearPanelCamion(String camion) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));

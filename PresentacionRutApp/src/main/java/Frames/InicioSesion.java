@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package Frames;
 
 import Control.ControlNegocio;
@@ -12,8 +8,9 @@ import itson.rutappdto.UsuarioDTO;
 import java.awt.Color;
 
 /**
- *
- * @author mmax2
+ * Pantalla principal de inicio de sesión del sistema RUTAPP. Permite al usuario
+ * ingresar su número de teléfono y contraseña, valida las credenciales usando
+ * la capa de negocio y redirige al menú principal si son correctas.
  */
 public class InicioSesion extends javax.swing.JFrame {
 
@@ -22,13 +19,13 @@ public class InicioSesion extends javax.swing.JFrame {
     private javax.swing.JLabel lblMensaje;
 
     /**
-     * Creates new form ComprarViaje
+     * Constructor. Inicializa la interfaz gráfica y configura el mensaje de
+     * error.
      */
     public InicioSesion() {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setTitle("Rutapp");
-        //LABEL
         lblMensaje = new javax.swing.JLabel();
         lblMensaje.setForeground(java.awt.Color.RED);
         lblMensaje.setText("");
@@ -148,33 +145,31 @@ public class InicioSesion extends javax.swing.JFrame {
     private void usuarioTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuarioTxtActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_usuarioTxtActionPerformed
-
+    /**
+     * Evento del botón "Iniciar Sesión". Valida las credenciales ingresadas, y
+     * si son correctas, redirige al menú principal. Si no, muestra mensaje de
+     * error.
+     */
     private void IniciarSesionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IniciarSesionBtnActionPerformed
         String numero = usuarioTxt.getText().trim();
         String pass = new String(contraseniaPsw.getPassword()).trim();
         UsuarioDTO usuarioPresentacion = new UsuarioDTO(numero, pass);
-        // Usamos la fachada para acceder a la interfaz de usuario activo
         IUsuariosBO usuariosBO = new UsuariosBO(); // Para validar las credenciales en la base de datos
 
-        // Verificamos si las credenciales son correctas
         String resultado = usuariosBO.login(usuarioPresentacion);
         lblMensaje.setText(resultado);
 
         if (resultado.equals("Inicio de sesión exitoso.")) {
             lblMensaje.setForeground(new Color(0, 128, 0)); // Verde
 
-            // Ahora, a través de la fachada, obtenemos el usuario autenticado
             UsuarioDTO usuario = usuarioActivoManager.UsuarioActivoManager.getInstancia().getUsuario();
 
-            // Llamamos al controlador de negocio para iniciar la sesión
-            // Llama a la capa de negocio para gestionar la sesión
             ControlNegocio.getInstancia().iniciarSesion(usuario);
 
-            // Redirigimos a la pantalla principal
             CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
-            this.dispose();  // Cierra la ventana de inicio de sesión
+            this.dispose();
         } else {
-            lblMensaje.setForeground(Color.RED);  // Rojo si es error
+            lblMensaje.setForeground(Color.RED);
         }
 
     }//GEN-LAST:event_IniciarSesionBtnActionPerformed

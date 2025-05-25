@@ -12,22 +12,14 @@ import itson.rutappdto.UsuarioDTO;
 import java.util.List;
 import usuarioActivoManager.UsuarioActivoManager;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-/**
- *
- * @author mmax2
- */
+
 public class MainMenu extends javax.swing.JFrame {
 
     private ImageIcon imagen;
     private Icon icono;
 
-    /**
-     * Creates new form MainMenu
-     */
+
+
     public MainMenu() {
         initComponents();
         this.setLocationRelativeTo(this);

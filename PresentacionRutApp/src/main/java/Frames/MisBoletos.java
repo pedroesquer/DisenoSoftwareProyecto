@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package Frames;
 
 import Control.ControlNegocio;
@@ -30,13 +26,18 @@ import javax.swing.SwingConstants;
 import usuarioActivoManager.UsuarioActivoManager;
 
 /**
- *
- * @author multaslokas33
+ * Ventana que muestra todos los boletos comprados por el usuario actual.
+ * Permite visualizar los detalles del viaje y cancelar boletos que aún no han
+ * ocurrido.
  */
 public class MisBoletos extends javax.swing.JFrame {
 
     private JPanel panelContenido;
 
+    /**
+     * Constructor. Inicializa la interfaz gráfica y carga los boletos del
+     * usuario.
+     */
     public MisBoletos() {
         setTitle("Mis Boletos");
         setSize(600, 500);
@@ -54,8 +55,13 @@ public class MisBoletos extends javax.swing.JFrame {
         cargarBoletos();
     }
 
+    /**
+     * Carga los boletos del usuario desde la capa de negocio. Si no hay
+     * boletos, muestra un mensaje. Si hay, los representa en tarjetas con
+     * opción a cancelar.
+     */
     private void cargarBoletos() {
-        panelContenido.removeAll(); // Limpia todo antes de cargar
+        panelContenido.removeAll();
 
         List<CompraDTO> compras = ControlNegocio.getInstancia()
                 .obtenerComprasUsuario(UsuarioActivoManager.getInstancia().getUsuario());
@@ -74,7 +80,6 @@ public class MisBoletos extends javax.swing.JFrame {
             }
         }
 
-        // Botón "Regresar a Inicio"
         JButton btnRegresar = new JButton("Regresar a Inicio");
         btnRegresar.setAlignmentX(Component.CENTER_ALIGNMENT);
         btnRegresar.setBackground(new Color(100, 149, 237));
@@ -95,6 +100,14 @@ public class MisBoletos extends javax.swing.JFrame {
         panelContenido.repaint();
     }
 
+    /**
+     * Crea un panel visual con la información de una compra. Muestra origen,
+     * destino, fecha, hora, camión, precio y asientos. Si el viaje aún no ha
+     * ocurrido, permite cancelarlo.
+     *
+     * @param compra Objeto CompraDTO con los datos del boleto
+     * @return JPanel visual con la información del boleto
+     */
     private JPanel crearPanelCompra(CompraDTO compra) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -165,7 +178,6 @@ public class MisBoletos extends javax.swing.JFrame {
         Date fechaViaje = compra.getViaje().getFecha(); // esta incluye hora
         Date ahora = new Date();
 
-        
         if (fechaViaje.before(ahora)) {
             btnCancelar.setEnabled(false);
             btnCancelar.setToolTipText("Este viaje ya ocurrió. No se puede cancelar.");
@@ -278,6 +290,10 @@ public class MisBoletos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Acción del botón "Regresar". Abre la pantalla principal y cierra esta
+     * ventana.
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
     }//GEN-LAST:event_jButton1ActionPerformed

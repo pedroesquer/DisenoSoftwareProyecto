@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package Frames;
 
 import Control.ControlNegocio;
@@ -25,8 +21,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 /**
- *
- * @author mmax2
+ * Pantalla que muestra un resumen detallado de la compra antes de confirmarla.
+ * Implementa TemporizadorObserver para manejar la expiración automática del
+ * tiempo de reserva.
  */
 public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObserver {
 
@@ -38,12 +35,11 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
     List<AsientoDTO> asientosCamion = new ArrayList<>();
     List<AsientoBoletoDTO> asientosBoleto = new ArrayList<>();
 
-//    private List<AsientosDisponibles.AsientoAsignado> asientosAsignados;
     /**
-     * Creates new form ComprarViaje
+     * Constructor. Configura la ventana, registra el observador del
+     * temporizador, y muestra el resumen de la compra actual desde el contexto.
      */
     public ResumenCompra() {
-        //--------------OBSERVADOR----------
         ControlTimer.getInstancia().limpiarObservadores();
         ControlTimer.getInstancia().agregarObservador(this);
         System.out.println("Observador agregado: " + this.hashCode());
@@ -311,24 +307,29 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
     private void BackGroundInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_BackGroundInputMethodTextChanged
         // TODO add your handling code here:
     }//GEN-LAST:event_BackGroundInputMethodTextChanged
-
+    /**
+     * Acción del botón Aceptar. Cierra la ventana actual y abre la pantalla de
+     * método de pago.
+     *
+     * @param evt Evento de acción del botón.
+     */
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
         this.dispose();
         CordinadorPresentacion.getInstancia().abrirMetodoPago();
 
         ControlUsuarioActivo controlUsuarioActivo = new ControlUsuarioActivo();
-        UsuarioDTO usuarioActivo = controlUsuarioActivo.obtenerUsuario();  // Obtienes el usuario autenticado
+        UsuarioDTO usuarioActivo = controlUsuarioActivo.obtenerUsuario();
 
-// Asegúrate de que hay una sesión activa
-        if (usuarioActivo != null) {
-            System.out.println("Usuario actual: " + usuarioActivo.getNombre());
-            // Aquí puedes acceder a otros datos del usuario
-        } else {
-            System.out.println("No hay sesión activa.");
-        }
 
     }//GEN-LAST:event_botonAceptarActionPerformed
 
+    /**
+     * Acción del botón Cancelar. Confirma con el usuario y, si acepta, limpia
+     * el contexto del boleto, finaliza el temporizador y vuelve a la pantalla
+     * principal.
+     *
+     * @param evt Evento de acción del botón.
+     */
     private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
         int confirmacion = JOptionPane.showConfirmDialog(null, "Confirmar cancelación", "¿Estas seguro de cancelar"
                 + "la operacion? Se borrará tu progreso", JOptionPane.YES_NO_OPTION);
@@ -339,14 +340,9 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
             CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
             ControlTimer.getInstancia().finalizarTemporizador();
             this.dispose();
-            //AQUI DEBERIA DE IR ALGO PARA REGRESAR LOS ASIENTOS A DISPONIBLES
         }
 
     }//GEN-LAST:event_botonCancelarActionPerformed
-
-    private void datosResumen(BoletoDTO boleto) {
-
-    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -383,16 +379,18 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
     private javax.swing.JLabel lblTotal;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Muestra el resumen del boleto en pantalla: origen, destino, camión,
+     * asientos, nombres, precio total y monedero generado.
+     *
+     * @param boleto Boleto a mostrar en el resumen.
+     */
     public void mostrarResumen(BoletoDTO boleto) {
         ViajeDTO viaje = boleto.getViaje();
-        // Origen y destino
         lblOrigen.setText(viaje.getOrigen());
         lblDestino.setText(viaje.getDestino());
         lbCamion.setText(boleto.getViaje().getCamion().getNumeroCamion());
 
-        // Duración (puedes ajustarlo según tus datos)
-//        lblDuracion.setText(boleto.getDuracion());
-        // Asientos y nombres
         StringBuilder asientos = new StringBuilder();
         StringBuilder nombres = new StringBuilder();
 
@@ -404,7 +402,6 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
         lblAsientos.setText(asientos.toString().trim());
         lblNombres.setText(nombres.toString().trim());
 
-        // Precio por asiento
         double precio = boleto.getPrecio();
         double total = precio * BoletoContext.getBoleto().getListaAsiento().size();
         double monederoGenerado = total * 0.05;
@@ -414,10 +411,14 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
         lblMonedero.setText("$" + String.format("%.2f", monederoGenerado));
     }
 
+    /**
+     * Se ejecuta cuando el tiempo del temporizador se agota. Cierra la ventana
+     * y redirige al menú principal.
+     */
     @Override
     public void tiempoAgotado() {
         JOptionPane.showMessageDialog(this, "El tiempo se agotó. Serás redirigido al menú principal.");
-        this.dispose(); // Cierra esta pantalla
-        new MainMenu().setVisible(true); // Abre la pantalla principal
+        this.dispose();
+        new MainMenu().setVisible(true);
     }
 }

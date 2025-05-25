@@ -22,22 +22,20 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
- *
- * @author BusSoft
+ * Ventana que permite al usuario seleccionar asientos disponibles para un
+ * camión. Implementa TemporizadorObserver para actuar cuando el tiempo se
+ * agota.
  */
 public class AsientosDisponibles extends javax.swing.JFrame implements TemporizadorObserver {
-//
-    // Crear un HashMap que relacione cada panel con su estado
 
     private Map<JPanel, EstadoAsiento> mapaEstadosAsientos = new HashMap<>();
     private Map<JPanel, String> mapaNombresPasajeros = new HashMap<>();
-
-    // Mapear los números de asiento a los paneles correspondientes
     private Map<String, JPanel> mapaAsientos = new HashMap<>();
-
-    //private JLabel lblTemporizador = new JLabel("Tiempo restante: 05:00");
     CamionDTO camion;
 
+    /**
+     * Constructor por defecto. Inicializa la ventana sin cargar un camión.
+     */
     public AsientosDisponibles() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -49,12 +47,11 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
     }
 
     /**
-     * Creates new form ComprarViaje
+     * Constructor que recibe un camión y carga sus asientos disponibles.
      *
-     * @param camion
+     * @param camion CamionDTO con la lista de asientos.
      */
     public AsientosDisponibles(CamionDTO camion) {
-        //--------------OBSERVADOR----------
         ControlTimer.getInstancia().limpiarObservadores();
         ControlTimer.getInstancia().agregarObservador(this);
         System.out.println("Observador agregado desde constructor CON CamionDTO: " + this.hashCode());
@@ -64,14 +61,10 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
         this.setLocationRelativeTo(null);
         setTitle("Asientos disponibles");
         btnCompraViaje.setEnabled(false);
-        // Mostrar el temporizador en pantalla
         lblTemporizador.setFont(new java.awt.Font("Roboto", Font.BOLD, 12));
-//        lblTemporizador.setForeground(Color.BLACK);
-//        BackGround.add(lblTemporizador, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 280, 150, 30));
 
         TemporizadorVisual.getInstancia().registrarEtiqueta(lblTemporizador);
         this.camion = camion;
-        // Lista de paneles
         JPanel[] paneles = {
             botonAsientoNueve, botonAsientoDiez, botonAsientoDiesciseis, botonAsientoQuince, botonAsientoCatorce,
             botonAsientoTrece, botonAsientoDiescinueve, botonAsientoVeinte, botonAsientoDiesciocho, botonAsientoDiescisiete,
@@ -96,14 +89,20 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
         mapaEstadosAsientos.put(botonAsientoUno, EstadoAsiento.OCUPADO);
     }
 
+    /**
+     * Se ejecuta cuando el temporizador se agota. Muestra un mensaje y regresa
+     * al menú.
+     */
     @Override
     public void tiempoAgotado() {
         JOptionPane.showMessageDialog(this, "El tiempo se agotó. Serás redirigido al menú principal.");
-        this.dispose(); // Cierra esta pantalla
-        new MainMenu().setVisible(true); // Abre la pantalla principal
+        this.dispose();
+        new MainMenu().setVisible(true);
     }
 
-    // Definir el Enum para los estados de los asientos
+    /**
+     * Estados posibles de un asiento en la interfaz.
+     */
     public enum EstadoAsiento {
         LIBRE, SELECCIONADO, OCUPADO
     }
@@ -121,7 +120,6 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
             String nombrePasajero = entry.getValue();
             JPanel panel = entry.getKey();
 
-            // Buscar número de asiento correspondiente al panel
             String numeroAsiento = mapaAsientos.entrySet().stream()
                     .filter(e -> e.getValue().equals(panel))
                     .map(Map.Entry::getKey)
@@ -129,10 +127,8 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
                     .orElse(null);
 
             if (numeroAsiento != null) {
-                // Crear AsientoDTO
                 AsientoDTO asiento = new AsientoDTO(null, estadoAsiento.OCUPADO, numeroAsiento);
 
-                // Crear AsientoBoletoDTO
                 AsientoBoletoDTO asientoBoleto = new AsientoBoletoDTO(asiento, nombrePasajero);
                 asientoBoleto.setBoleto(BoletoContext.getBoleto());
 
@@ -143,10 +139,19 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
         return lista;
     }
 
+    /**
+     * Carga y marca los asientos ocupados de un camión.
+     *
+     * @param camionDTO CamionDTO con la lista de asientos a marcar.
+     */
     public void cargarCamion(CamionDTO camionDTO) {
         marcarAsientosOcupados(camionDTO.getListaAsiento());
     }
 
+    /**
+     * Reinicia los asientos seleccionados a estado LIBRE y limpia los nombres
+     * ingresados.
+     */
     private void reiniciarAsientosSeleccionados() {
         for (Map.Entry<JPanel, EstadoAsiento> entry : mapaEstadosAsientos.entrySet()) {
             if (entry.getValue() == EstadoAsiento.SELECCIONADO) {
@@ -159,7 +164,9 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
         resumenTextArea.setText("");
     }
 
-// Inicializar el HashMap de asientos con sus números y paneles
+    /**
+     * Asocia cada número de asiento a su panel correspondiente.
+     */
     private void inicializarMapaAsientos() {
         mapaAsientos.put("9", botonAsientoNueve);
         mapaAsientos.put("10", botonAsientoDiez);
@@ -195,23 +202,17 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
      */
     private void marcarAsientosOcupados(List<AsientoDTO> listaAsientos) {
         for (AsientoDTO asiento : listaAsientos) {
-            // Verificamos si el estado es "OCUPADO"
             if (asiento.getEstado() == estadoAsiento.OCUPADO) {
-                String numeroAsiento = asiento.getNumero();  // Número de asiento (String)
-                JPanel panelAsiento = mapaAsientos.get(numeroAsiento);  // Obtener el panel correspondiente al número
+                String numeroAsiento = asiento.getNumero();
+                JPanel panelAsiento = mapaAsientos.get(numeroAsiento);
                 if (panelAsiento != null) {
-                    panelAsiento.setBackground(Color.RED);  // Pintamos el panel de rojo si está ocupado
+                    panelAsiento.setBackground(Color.RED);
                     mapaEstadosAsientos.put(panelAsiento, EstadoAsiento.OCUPADO);
                 }
             }
         }
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -1037,44 +1038,51 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Evento al hacer clic en el asiento cinco. Llama al método para
+     * seleccionar o deseleccionar ese asiento.
+     */
     private void botonAsientoCincoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonAsientoCincoMouseClicked
         seleccionarAsiento(botonAsientoCinco);
     }//GEN-LAST:event_botonAsientoCincoMouseClicked
-
+    /**
+     * Acción del botón para confirmar la compra del viaje. Asigna los asientos
+     * seleccionados al boleto y abre el resumen.
+     */
     private void btnCompraViajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompraViajeActionPerformed
         List<AsientoBoletoDTO> lista = obtenerAsientosYPasajeros(); // tu método original
         BoletoContext.getBoleto().setListaAsiento(lista);
         CordinadorPresentacion.getInstancia().abrirResumenCompra();
         this.dispose();
     }//GEN-LAST:event_btnCompraViajeActionPerformed
-
+    /**
+     * Acción del botón para cancelar la compra. Muestra confirmación, limpia el
+     * estado y regresa al menú principal.
+     */
     private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
         int confirmacion = JOptionPane.showConfirmDialog(null, "Confirmar cancelación", "¿Estas seguro de cancelar"
                 + "la operacion? Se borrará tu progreso", JOptionPane.YES_NO_OPTION);
 
         if (confirmacion == JOptionPane.YES_OPTION) {
-            ControlTimer.getInstancia().finalizarTemporizador();   //DETENEMOS EL TIEMPO
-            BoletoContext.limpiarBoleto();                         //LIMPIAMOS EL BOLETO QUE CREAMOS CON LOS DATOS
-            reiniciarAsientosSeleccionados();                      //SE LIBERA VISUALMENTE LOS ASIENTOS SELECCIONADOS
+            ControlTimer.getInstancia().finalizarTemporizador();
+            BoletoContext.limpiarBoleto();
+            reiniciarAsientosSeleccionados();
             JOptionPane.showMessageDialog(null, "Has cancelado el proceso.\n Regresaras a la pantalla principal");
             CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
             ControlTimer.getInstancia().finalizarTemporizador();
             this.dispose();
-            //AQUI DEBERIA DE IR ALGO PARA REGRESAR LOS ASIENTOS A DISPONIBLES
         }
 
     }//GEN-LAST:event_botonCancelarActionPerformed
 
     /**
+     * Lógica para seleccionar o deseleccionar un asiento cuando se hace clic.
+     * Permite asignar nombre al asiento y gestiona el temporizador.
      *
-     * @param panel
+     * @param panel Panel del asiento que fue clickeado.
      */
     private void seleccionarAsiento(JPanel panel) {
-
-        // Obtener el estado actual del asiento desde el HashMap
         EstadoAsiento estadoActual = mapaEstadosAsientos.get(panel);
-
-        // Comprobar el estado y realizar las acciones correspondientes
         switch (estadoActual) {
             case LIBRE:
                 String nombrePasajero = null;
@@ -1088,7 +1096,6 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
                             JOptionPane.PLAIN_MESSAGE
                     );
 
-                    // Cancelar si el usuario cierra el diálogo o presiona cancelar
                     if (nombrePasajero == null) {
                         return;
                     }
@@ -1112,7 +1119,6 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
                 ControlTimer.getInstancia().agregarObservador(this);
 
                 ControlTimer.getInstancia().iniciarTemporizador(() -> reiniciarAsientosSeleccionados());
-                //CordinadorPresentacion.getInstancia().iniciarTemporizador(() -> reiniciarAsientosSeleccionados());
                 break;
 
             case SELECCIONADO:
@@ -1129,7 +1135,6 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
                     mapaNombresPasajeros.remove(panel); // Quita el nombre del pasajero
                     actualizarResumenAsientos();
 
-                    // Verifica si ya no hay asientos seleccionados
                     boolean hayAsientosSeleccionados = mapaEstadosAsientos.values().stream()
                             .anyMatch(e -> e == EstadoAsiento.SELECCIONADO);
 
@@ -1141,17 +1146,19 @@ public class AsientosDisponibles extends javax.swing.JFrame implements Temporiza
                 break;
         }
 
-        // Forzar la actualización visual
         panel.revalidate();
         panel.repaint();
     }
-    
+
+    /**
+     * Actualiza el resumen de los asientos seleccionados con los nombres asignados.
+     * También habilita o deshabilita el botón de compra.
+     */
     private void actualizarResumenAsientos() {
         StringBuilder resumen = new StringBuilder();
 
         for (Map.Entry<JPanel, String> entry : mapaNombresPasajeros.entrySet()) {
             String nombre = entry.getValue();
-            // Buscamos el número de asiento basado en el panel
             String numeroAsiento = mapaAsientos.entrySet().stream()
                     .filter(e -> e.getValue().equals(entry.getKey()))
                     .map(Map.Entry::getKey)
