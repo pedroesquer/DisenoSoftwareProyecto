@@ -11,9 +11,11 @@ import control.ControlSeleccionAsiento;
 import excepciones.NegocioException;
 import excepciones.PagoBoletoException;
 import excepciones.SeleccionAsientoException;
+import fachada.FCancelarCompra;
 import fachada.FUsuarioActivo;
 import fachada.SeleccionAsiento;
 import fachada.fachadaResenias;
+import interfaz.ICancelarCompra;
 import interfaz.IResenias;
 import interfaz.ISeleccionAsiento;
 import interfaz.IUsuarioActivo;
@@ -48,6 +50,7 @@ public class ControlNegocio {
     private List<AsientoAsignadoDTO> asientosAsignados = new ArrayList<>();
 
     IConsultarDisponibilidad consultarDisponibilidad = new FachadaConsultarDisponibilidad();
+    ICancelarCompra cancelarCompra = new FCancelarCompra();
     IComprarBoleto comprarBoleto = new ComprarBoleto();
     ISeleccionAsiento seleccionAsiento = new SeleccionAsiento();
     IResenias reseñaa = new fachadaResenias();
@@ -328,7 +331,7 @@ public class ControlNegocio {
      * @return Lista de CompraDTO.
      */
     public List<CompraDTO> obtenerComprasUsuario(UsuarioDTO usuario) {
-        return consultarDisponibilidad.obtenerCompras(usuario);
+        return cancelarCompra.obtenerCompras(usuario);
     }
 
     public void agregarReseña(ReseñaDTO reseña) throws Exception {
@@ -344,7 +347,7 @@ public class ControlNegocio {
     }
 
     public void cancelarCompra(CompraDTO comra) {
-        consultarDisponibilidad.eliminarCompra(comra);
+        cancelarCompra.eliminarCompra(comra);
     }
 
 }

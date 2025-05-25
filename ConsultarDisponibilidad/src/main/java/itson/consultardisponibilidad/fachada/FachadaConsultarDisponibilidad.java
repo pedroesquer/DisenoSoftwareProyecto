@@ -35,33 +35,7 @@ public class FachadaConsultarDisponibilidad implements IConsultarDisponibilidad 
         return ControlConsultarDisponibilidad.getInstancia().obtenerDestinos(origen);
     }
 
-    @Override
-    public List<CompraDTO> consultarComprasPorUsuario(UsuarioDTO usuario) {
-        return ControlConsultarDisponibilidad.getInstancia().obtenerCompras(usuario);
-    }
 
-    @Override
-    public List<CompraDTO> obtenerCompras(UsuarioDTO usuario) {
-        return ControlConsultarDisponibilidad.getInstancia().obtenerCompras(usuario);
-    }
 
-//    @Override
-//    public void agregarReseña(ReseñaDTO reseña) throws Exception {
-//        ControlConsultarDisponibilidad.getInstancia().agregarReseña(reseña);
-//    }
-//
-//    @Override
-//    public List<ReseñaDTO> obtenerReseñasPorCamion(String numeroCamion) {
-//        return ControlConsultarDisponibilidad.getInstancia().obtenerReseñasPorCamion(numeroCamion);
-//    }
-//
-//    @Override
-//    public boolean eliminarReseña(String idReseña) {
-//        return ControlConsultarDisponibilidad.getInstancia().eliminarReseña(idReseña);
-//    }
-//    
-    @Override
-    public void eliminarCompra(CompraDTO compra){
-        ControlConsultarDisponibilidad.getInstancia().cancelarCompra(compra);
-    }
+
 }

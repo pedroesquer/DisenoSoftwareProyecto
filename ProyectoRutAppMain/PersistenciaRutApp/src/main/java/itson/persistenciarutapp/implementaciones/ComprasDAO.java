@@ -78,13 +78,13 @@ public class ComprasDAO implements IComprasDAO {
         MongoCollection<Document> coleccion = db.getCollection("compras");
         Date fechaActual = new Date(); // Fecha y hora actual
         
-        // Pipeline de agregación con $lookup para unir compras con viajes
+     
         List<Bson> pipeline = Arrays.asList(
                 Aggregates.match(Filters.eq("usuario", idUsuario)),
                 Aggregates.lookup("viajes", "viaje", "_id", "viajeInfo"),
                 Aggregates.unwind("$viajeInfo"),
                 Aggregates.match(Filters.gt("viajeInfo.fechaHora", fechaActual))
-        // Puedes agregar filtro de fecha aquí si es necesario
+        
         );
 
         List<Compra> compras = new ArrayList<>();

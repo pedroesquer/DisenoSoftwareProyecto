@@ -23,15 +23,6 @@ public interface IConsultarDisponibilidad {
 
     public abstract List<String> consultarDestinos(String origen);
 
-    public abstract List<CompraDTO> consultarComprasPorUsuario(UsuarioDTO usuario);
+   // public abstract List<CompraDTO> consultarComprasPorUsuario(UsuarioDTO usuario);
 
-    List<CompraDTO> obtenerCompras(UsuarioDTO usuario);
-
-//    void agregarReseña(ReseñaDTO reseña) throws Exception;
-//
-//    List<ReseñaDTO> obtenerReseñasPorCamion(String numeroCamion);
-//
-//    boolean eliminarReseña(String idReseña);
-//
-    public void eliminarCompra(CompraDTO compra);
 }
