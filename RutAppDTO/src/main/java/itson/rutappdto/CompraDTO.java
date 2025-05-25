@@ -12,6 +12,7 @@ public class CompraDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private String id;
     private String origen;
     private String destino;
     private String hrSalida;
@@ -133,4 +134,11 @@ public class CompraDTO implements Serializable {
         this.viaje = viaje;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }
