@@ -16,6 +16,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -98,7 +99,7 @@ public class MisBoletos extends javax.swing.JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createEmptyBorder(10, 15, 10, 15), // margen interno
+                BorderFactory.createEmptyBorder(10, 15, 10, 15),
                 BorderFactory.createLineBorder(Color.GRAY, 2)
         ));
 
@@ -161,27 +162,35 @@ public class MisBoletos extends javax.swing.JFrame {
         btnCancelar.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         btnCancelar.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        btnCancelar.addActionListener(e -> {
-            int confirm = javax.swing.JOptionPane.showConfirmDialog(
-                    this,
-                    "¿Seguro que deseas cancelar esta compra?\nSe liberarán todos los asientos.",
-                    "Confirmar cancelación",
-                    javax.swing.JOptionPane.YES_NO_OPTION
-            );
+        Date fechaViaje = compra.getViaje().getFecha(); // esta incluye hora
+        Date ahora = new Date();
 
-            if (confirm == javax.swing.JOptionPane.YES_OPTION) {
-                try {
-                    ControlNegocio.getInstancia().cancelarCompra(compra);
-                    javax.swing.JOptionPane.showMessageDialog(this, "Compra cancelada con éxito.");
-                    recargarGUI();
-                } catch (Exception ex) {
-                    javax.swing.JOptionPane.showMessageDialog(this, "Error al cancelar la compra:\n" + ex.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        
+        if (fechaViaje.before(ahora)) {
+            btnCancelar.setEnabled(false);
+            btnCancelar.setToolTipText("Este viaje ya ocurrió. No se puede cancelar.");
+        } else {
+            btnCancelar.addActionListener(e -> {
+                int confirm = javax.swing.JOptionPane.showConfirmDialog(
+                        this,
+                        "¿Seguro que deseas cancelar esta compra?\nSe liberarán todos los asientos.",
+                        "Confirmar cancelación",
+                        javax.swing.JOptionPane.YES_NO_OPTION
+                );
+
+                if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+                    try {
+                        ControlNegocio.getInstancia().cancelarCompra(compra);
+                        javax.swing.JOptionPane.showMessageDialog(this, "Compra cancelada con éxito.");
+                        recargarGUI();
+                    } catch (Exception ex) {
+                        javax.swing.JOptionPane.showMessageDialog(this, "Error al cancelar la compra:\n" + ex.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                    }
                 }
-            }
-        });
+            });
+        }
 
         abajo.add(btnCancelar, BorderLayout.EAST);
-
         panel.add(abajo);
         panel.add(Box.createVerticalStrut(10));
 
@@ -212,9 +221,15 @@ public class MisBoletos extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         listaBoletos.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+            String[] strings = {"Item 1", "Item 2", "Item 3", "Item 4", "Item 5"};
+
+            public int getSize() {
+                return strings.length;
+            }
+
+            public String getElementAt(int i) {
+                return strings[i];
+            }
         });
         jScrollPane1.setViewportView(listaBoletos);
 
@@ -228,36 +243,36 @@ public class MisBoletos extends javax.swing.JFrame {
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(69, 69, 69)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(60, Short.MAX_VALUE))
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(69, 69, 69)
+                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap(60, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(78, 78, 78)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addContainerGap(19, Short.MAX_VALUE))
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(78, 78, 78)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton1)
+                                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();

@@ -76,48 +76,46 @@ public class ComprasDAO implements IComprasDAO {
      * @param idUsuario ID del usuario como {@link ObjectId}.
      * @return lista de compras no vencidas.
      */
-    @Override
-    public List<Compra> consultarComprasNoVencidasPorUsuario(String idUsuario) {
-        MongoDatabase db = ManejadorConexiones.obtenerBaseDatos();
-        MongoCollection<Document> coleccion = db.getCollection("compras");
-        Date fechaActual = new Date(); // Fecha y hora actual
+@Override
+public List<Compra> consultarComprasNoVencidasPorUsuario(String idUsuario) {
+    MongoDatabase db = ManejadorConexiones.obtenerBaseDatos();
+    MongoCollection<Document> coleccion = db.getCollection("compras");
+    Date fechaActual = new Date();
 
-        ObjectId objectIdUsuario = new ObjectId(idUsuario); // Conversión interna
+    ObjectId objectIdUsuario = new ObjectId(idUsuario);
 
-        List<Bson> pipeline = Arrays.asList(
-                Aggregates.match(Filters.eq("usuario", objectIdUsuario)),
-                Aggregates.lookup("viajes", "viaje", "_id", "viajeInfo"),
-                Aggregates.unwind("$viajeInfo"),
-                Aggregates.match(Filters.gt("viajeInfo.fechaHora", fechaActual))
-        );
+    List<Bson> pipeline = Arrays.asList(
+        Aggregates.match(Filters.eq("usuario", objectIdUsuario)),
+        Aggregates.lookup("viajes", "viaje", "_id", "viajeInfo"),
+        Aggregates.unwind("$viajeInfo"),
+        Aggregates.match(Filters.gt("viajeInfo.fechaHora", fechaActual))  // ESTA es la fecha del viaje
+    );
 
-        List<Compra> compras = new ArrayList<>();
+    List<Compra> compras = new ArrayList<>();
+    for (Document doc : coleccion.aggregate(pipeline)) {
+        Compra compra = new Compra();
+        compra.setId(doc.getObjectId("_id"));
+        compra.setUsuario(doc.getObjectId("usuario"));
+        compra.setFechaCompra(doc.getDate("fechaCompra"));
+        compra.setViaje(doc.getObjectId("viaje"));
 
-        for (Document doc : coleccion.aggregate(pipeline)) {
-            Compra compra = new Compra();
-
-            compra.setId(doc.getObjectId("_id"));
-            compra.setUsuario(doc.getObjectId("usuario")); // esto sigue siendo ObjectId, está bien para la entidad
-            compra.setFechaCompra(doc.getDate("fechaCompra"));
-            compra.setViaje(doc.getObjectId("viaje"));
-
-            // Mapeo de los asientos comprados
-            List<Document> asientosDocs = (List<Document>) doc.get("asientosComprados");
-            List<AsientoBoleto> asientos = new ArrayList<>();
-            for (Document asientoDoc : asientosDocs) {
-                AsientoBoleto asiento = new AsientoBoleto();
-                asiento.setNumero(asientoDoc.getInteger("numero"));
-                asiento.setNombrePasajero(asientoDoc.getString("nombrePasajero"));
-                asiento.setEstado(estadoAsiento.valueOf(asientoDoc.getString("estado")));
-                asientos.add(asiento);
-            }
-
-            compra.setAsientosComprados(asientos);
-            compras.add(compra);
+        List<Document> asientosDocs = (List<Document>) doc.get("asientosComprados");
+        List<AsientoBoleto> asientos = new ArrayList<>();
+        for (Document asientoDoc : asientosDocs) {
+            AsientoBoleto asiento = new AsientoBoleto();
+            asiento.setNumero(asientoDoc.getInteger("numero"));
+            asiento.setNombrePasajero(asientoDoc.getString("nombrePasajero"));
+            asiento.setEstado(estadoAsiento.valueOf(asientoDoc.getString("estado")));
+            asientos.add(asiento);
         }
 
-        return compras;
+        compra.setAsientosComprados(asientos);
+        compras.add(compra);
     }
+
+    return compras;
+}
+
 
     @Override
     public void cancelarCompra(String idCompraStr) {
