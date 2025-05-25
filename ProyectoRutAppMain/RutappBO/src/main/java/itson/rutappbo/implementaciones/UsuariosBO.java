@@ -5,6 +5,7 @@ import Entidades.Usuario;
 import itson.persistenciarutapp.implementaciones.UsuariosDAO;
 import itson.rutappbo.IUsuariosBO;
 import itson.rutappdto.UsuarioDTO;
+import mappers.UsuarioMapper;
 import org.bson.types.ObjectId;
 import usuarioActivoManager.UsuarioActivoManager;
 
@@ -28,13 +29,7 @@ public class UsuariosBO implements IUsuariosBO {
             return "El número telefónico ya está registrado.";
         }
 
-        Usuario nuevoUsuario = new Usuario(
-                dto.getNumeroTelefonico(),
-                dto.getNombre(),
-                dto.getContrasena(),
-                dto.getSaldoMonedero()
-        );
-
+        Usuario nuevoUsuario = UsuarioMapper.toEntity(dto);
         usuariosDAO.agregarUsuario(nuevoUsuario);
         return "Registro exitoso.";
     }
@@ -59,14 +54,7 @@ public class UsuariosBO implements IUsuariosBO {
             return "Número telefónico o contraseña incorrectos.";
         }
 
-        UsuarioDTO dto = new UsuarioDTO(
-                usuario.getId().toHexString(),
-                usuario.getNombre(),
-                usuario.getNumeroTelefonico(),
-                usuario.getContrasenia(),
-                usuario.getSaldoMonedero()
-        );
-
+        UsuarioDTO dto = UsuarioMapper.toDTO(usuario);
         UsuarioActivoManager.getInstancia().iniciarSesion(dto);
         return "Inicio de sesión exitoso.";
     }
@@ -82,25 +70,15 @@ public class UsuariosBO implements IUsuariosBO {
             return false;
         }
 
-        Usuario usuario = new Usuario(
-                new ObjectId(dto.getId()),
-                dto.getNumeroTelefonico(),
-                dto.getNombre(),
-                dto.getContrasena(),
-                dto.getSaldoMonedero()
-        );
-
+        Usuario usuario = UsuarioMapper.toEntity(dto);
         return usuariosDAO.actualizarSaldo(usuario);
     }
 
     @Override
     public boolean agregarSaldo(UsuarioDTO dto) {
-        return descontarSaldo(dto); // lógica idéntica
+        return descontarSaldo(dto); // misma lógica
     }
 
-    /**
-     * Valida los campos del DTO.
-     */
     private String validarDatos(UsuarioDTO dto) {
         if (dto == null) {
             return "Datos de usuario no proporcionados.";
@@ -125,8 +103,9 @@ public class UsuariosBO implements IUsuariosBO {
         return "OK";
     }
 
-    public String obtenerNombrePorId(ObjectId id) {
-        Usuario usuario = usuariosDAO.consultarUsuarioPorId(id);
+    @Override
+    public String obtenerNombrePorIdString(String id) {
+        Usuario usuario = usuariosDAO.consultarUsuarioPorIdString(id);
         return usuario != null ? usuario.getNombre() : "Usuario desconocido";
     }
 }

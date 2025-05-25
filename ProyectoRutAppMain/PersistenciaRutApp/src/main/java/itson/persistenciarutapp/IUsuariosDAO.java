@@ -26,7 +26,7 @@ public interface IUsuariosDAO {
      */
     boolean actualizarSaldo(Usuario usuario);
     
-    public Usuario consultarUsuarioPorId(ObjectId id);
+    Usuario consultarUsuarioPorIdString (String idUsuario);
     
     String obtenerNombrePorId(String idUsuario);
 }

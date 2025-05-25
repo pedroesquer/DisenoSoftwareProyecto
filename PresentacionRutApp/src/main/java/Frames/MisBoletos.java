@@ -54,22 +54,26 @@ public class MisBoletos extends javax.swing.JFrame {
     }
 
     private void cargarBoletos() {
+        panelContenido.removeAll(); // Limpia todo antes de cargar
+
         List<CompraDTO> compras = ControlNegocio.getInstancia()
                 .obtenerComprasUsuario(UsuarioActivoManager.getInstancia().getUsuario());
 
         if (compras.isEmpty()) {
             JLabel sinBoletos = new JLabel("No tienes boletos comprados.", SwingConstants.CENTER);
             sinBoletos.setFont(new Font("SansSerif", Font.PLAIN, 16));
+            sinBoletos.setAlignmentX(Component.CENTER_ALIGNMENT);
+            panelContenido.add(Box.createVerticalStrut(30));
             panelContenido.add(sinBoletos);
-            return;
+        } else {
+            for (CompraDTO compra : compras) {
+                JPanel panel = crearPanelCompra(compra);
+                panelContenido.add(panel);
+                panelContenido.add(Box.createVerticalStrut(15));
+            }
         }
 
-        for (CompraDTO compra : compras) {
-            JPanel panel = crearPanelCompra(compra);
-            panelContenido.add(panel);
-            panelContenido.add(Box.createVerticalStrut(15));
-        }
-
+        // Botón "Regresar a Inicio"
         JButton btnRegresar = new JButton("Regresar a Inicio");
         btnRegresar.setAlignmentX(Component.CENTER_ALIGNMENT);
         btnRegresar.setBackground(new Color(100, 149, 237));
@@ -80,25 +84,30 @@ public class MisBoletos extends javax.swing.JFrame {
         btnRegresar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnRegresar.addActionListener(e -> {
             CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
-            this.dispose(); // cerrar esta ventana
+            this.dispose();
         });
 
-        panelContenido.add(Box.createVerticalStrut(10));
+        panelContenido.add(Box.createVerticalStrut(30));
         panelContenido.add(btnRegresar);
 
+        panelContenido.revalidate();
+        panelContenido.repaint();
     }
 
     private JPanel crearPanelCompra(CompraDTO compra) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
+        panel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createEmptyBorder(10, 15, 10, 15), // margen interno
+                BorderFactory.createLineBorder(Color.GRAY, 2)
+        ));
+
         Color colorNormal = new Color(230, 240, 255);
         Color colorHover = new Color(200, 220, 255);
         panel.setBackground(colorNormal);
-        panel.setPreferredSize(new Dimension(550, 160));
-        panel.setMaximumSize(new Dimension(550, 160));
+        panel.setPreferredSize(new Dimension(550, 180));
+        panel.setMaximumSize(new Dimension(550, 180));
 
-        // Mouse listener para efecto hover
         panel.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -113,14 +122,16 @@ public class MisBoletos extends javax.swing.JFrame {
             }
         });
 
-        // Título centrado
+        panel.add(Box.createVerticalStrut(10));
+
         JLabel titulo = new JLabel(compra.getOrigen() + " ➡ " + compra.getDestino(), SwingConstants.CENTER);
         titulo.setFont(new Font("SansSerif", Font.BOLD, 16));
         titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(titulo);
 
-        // Detalles en dos columnas
-        JPanel detalles = new JPanel(new GridLayout(2, 2));
+        panel.add(Box.createVerticalStrut(10));
+
+        JPanel detalles = new JPanel(new GridLayout(2, 2, 10, 5));
         detalles.setOpaque(false);
         detalles.setMaximumSize(new Dimension(500, 50));
         detalles.add(new JLabel("Fecha: " + new SimpleDateFormat("yyyy-MM-dd").format(compra.getFecha())));
@@ -129,7 +140,8 @@ public class MisBoletos extends javax.swing.JFrame {
         detalles.add(new JLabel("Precio: $" + compra.getPrecio()));
         panel.add(detalles);
 
-        // Asientos + botón
+        panel.add(Box.createVerticalStrut(10));
+
         JPanel abajo = new JPanel(new BorderLayout());
         abajo.setOpaque(false);
         abajo.setMaximumSize(new Dimension(500, 30));
@@ -147,6 +159,7 @@ public class MisBoletos extends javax.swing.JFrame {
         btnCancelar.setForeground(Color.WHITE);
         btnCancelar.setFocusPainted(false);
         btnCancelar.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        btnCancelar.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         btnCancelar.addActionListener(e -> {
             int confirm = javax.swing.JOptionPane.showConfirmDialog(
@@ -160,7 +173,7 @@ public class MisBoletos extends javax.swing.JFrame {
                 try {
                     ControlNegocio.getInstancia().cancelarCompra(compra);
                     javax.swing.JOptionPane.showMessageDialog(this, "Compra cancelada con éxito.");
-                    recargarGUI(); // método que puedes agregar para refrescar la pantalla
+                    recargarGUI();
                 } catch (Exception ex) {
                     javax.swing.JOptionPane.showMessageDialog(this, "Error al cancelar la compra:\n" + ex.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
                 }
@@ -170,6 +183,7 @@ public class MisBoletos extends javax.swing.JFrame {
         abajo.add(btnCancelar, BorderLayout.EAST);
 
         panel.add(abajo);
+        panel.add(Box.createVerticalStrut(10));
 
         return panel;
     }

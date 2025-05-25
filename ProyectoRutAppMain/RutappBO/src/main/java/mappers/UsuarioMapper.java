@@ -12,28 +12,24 @@ import itson.rutappdto.UsuarioDTO;
  * @author chris
  */
 public class UsuarioMapper {
-    
-    public static Usuario toEntity(UsuarioDTO dto) {
-        Usuario usuario = new Usuario();
 
-        usuario.asignarIddDesdeString(dto.getId()); // Usa método que convierte a ObjectId
-        usuario.setNumeroTelefonico(dto.getNumeroTelefonico());
-        usuario.setNombre(dto.getNombre());
-        usuario.setContrasenia(dto.getContrasena());
-        usuario.setSaldoMonedero(dto.getSaldoMonedero());
-
-        return usuario;
+    public static UsuarioDTO toDTO(Usuario usuario) {
+        UsuarioDTO dto = new UsuarioDTO();
+        dto.setId(usuario.obtenerIddComoString());
+        dto.setNombre(usuario.getNombre());
+        dto.setNumeroTelefonico(usuario.getNumeroTelefonico());
+        dto.setContrasena(usuario.getContrasenia());
+        dto.setSaldoMonedero(usuario.getSaldoMonedero());
+        return dto;
     }
 
-    public static UsuarioDTO toDTO(Usuario entidad) {
-        UsuarioDTO dto = new UsuarioDTO();
-
-        dto.setId(entidad.obtenerIddComoString()); // Usa método que convierte de ObjectId a String
-        dto.setNumeroTelefonico(entidad.getNumeroTelefonico());
-        dto.setNombre(entidad.getNombre());
-        dto.setContrasena(entidad.getContrasenia());
-        dto.setSaldoMonedero(entidad.getSaldoMonedero());
-
-        return dto;
+    public static Usuario toEntity(UsuarioDTO dto) {
+        Usuario usuario = new Usuario();
+        usuario.asignarIddDesdeString(dto.getId());
+        usuario.setNombre(dto.getNombre());
+        usuario.setNumeroTelefonico(dto.getNumeroTelefonico());
+        usuario.setContrasenia(dto.getContrasena());
+        usuario.setSaldoMonedero(dto.getSaldoMonedero());
+        return usuario;
     }
 }

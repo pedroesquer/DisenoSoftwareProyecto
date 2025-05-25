@@ -119,7 +119,7 @@ public class ComprasBO implements IComprasBO {
             return null;
         }
 
-        Usuario usuarioEntidad = usuariosDAO.consultarUsuarioPorId(compra.getUsuario());
+        Usuario usuarioEntidad = usuariosDAO.consultarUsuarioPorIdString(idCompraOriginal);
         Viaje viajeEntidad = viajesDAO.consultarViajePorId(compra.getViaje());
 
         if (usuarioEntidad == null || viajeEntidad == null) {

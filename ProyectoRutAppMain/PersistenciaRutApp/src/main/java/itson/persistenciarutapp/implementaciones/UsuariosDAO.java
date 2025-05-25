@@ -111,14 +111,16 @@ public class UsuariosDAO implements IUsuariosDAO {
     /**
      * Consulta un usuario por su identificador único.
      *
-     * @param id el ID del usuario como {@link ObjectId}.
+     * @param idUsuario
      * @return el objeto {@link Usuario} encontrado o {@code null} si no existe.
      */
     @Override
-    public Usuario consultarUsuarioPorId(ObjectId id) {
-        MongoCollection<Usuario> coleccion = ManejadorConexiones.obtenerBaseDatos()
-                .getCollection(COLECCION, Usuario.class);
-        return coleccion.find(Filters.eq("_id", id)).first();
+    public Usuario consultarUsuarioPorIdString(String idUsuario) {
+        MongoDatabase db = ManejadorConexiones.obtenerBaseDatos();
+        MongoCollection<Usuario> coleccion = db.getCollection(COLECCION, Usuario.class);
+
+        ObjectId id = new ObjectId(idUsuario);
+        return coleccion.find(eq("_id", id)).first();
     }
 
     @Override
