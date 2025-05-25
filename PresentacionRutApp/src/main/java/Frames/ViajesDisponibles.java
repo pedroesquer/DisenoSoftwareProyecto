@@ -68,6 +68,7 @@ public class ViajesDisponibles extends javax.swing.JFrame {
             JPanel tarjeta = crearTarjetaViaje(viaje);
             mainPanel.add(tarjeta);
             mainPanel.add(Box.createVerticalStrut(8));
+            System.out.println("luis");
         }
     }
 
