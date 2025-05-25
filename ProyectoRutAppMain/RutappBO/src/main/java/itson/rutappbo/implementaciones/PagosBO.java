@@ -1,10 +1,9 @@
 package itson.rutappbo.implementaciones;
 
-import Entidades.Pago;
 import itson.persistenciarutapp.IPagosDAO;
+import itson.persistenciarutapp.entidades.Pago;
 import itson.persistenciarutapp.implementaciones.PagosDAO;
 import itson.rutappbo.IPagosBO;
-import itson.rutappdto.DetallesPagoDTO;
 import itson.rutappdto.PagoDTO;
 import java.util.Date;
 

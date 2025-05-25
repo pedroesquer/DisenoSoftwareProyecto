@@ -1,12 +1,11 @@
 package itson.rutappbo.implementaciones;
 
 import itson.persistenciarutapp.IUsuariosDAO;
-import Entidades.Usuario;
+import itson.persistenciarutapp.entidades.Usuario;
 import itson.persistenciarutapp.implementaciones.UsuariosDAO;
 import itson.rutappbo.IUsuariosBO;
 import itson.rutappdto.UsuarioDTO;
 import mappers.UsuarioMapper;
-import org.bson.types.ObjectId;
 import usuarioActivoManager.UsuarioActivoManager;
 
 public class UsuariosBO implements IUsuariosBO {

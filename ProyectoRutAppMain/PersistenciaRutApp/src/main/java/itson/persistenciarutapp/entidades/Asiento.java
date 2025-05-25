@@ -1,4 +1,4 @@
-package Entidades;
+package itson.persistenciarutapp.entidades;
 
 /**
  * Representa un asiento dentro de un camión. Cada asiento tiene un número

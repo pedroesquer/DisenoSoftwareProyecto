@@ -1,4 +1,4 @@
-package Entidades;
+package itson.persistenciarutapp.entidades;
 
 import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.codecs.pojo.annotations.BsonProperty;

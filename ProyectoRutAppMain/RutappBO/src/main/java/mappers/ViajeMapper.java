@@ -3,8 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package mappers;
-
-import Entidades.Viaje;
+import itson.persistenciarutapp.entidades.Viaje;
 import itson.rutappdto.CamionDTO;
 import itson.rutappdto.ViajeDTO;
 

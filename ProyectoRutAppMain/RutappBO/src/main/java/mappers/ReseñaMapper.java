@@ -4,7 +4,7 @@
  */
 package mappers;
 
-import Entidades.Reseña;
+import itson.persistenciarutapp.entidades.Reseña;
 import itson.rutappdto.ReseñaDTO;
 
 /**

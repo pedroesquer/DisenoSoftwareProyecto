@@ -1,6 +1,6 @@
 package itson.persistenciarutapp.implementaciones;
 
-import Entidades.Usuario;
+import itson.persistenciarutapp.entidades.Usuario;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;

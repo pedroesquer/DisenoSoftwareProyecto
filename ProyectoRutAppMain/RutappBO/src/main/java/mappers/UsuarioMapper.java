@@ -4,7 +4,7 @@
  */
 package mappers;
 
-import Entidades.Usuario;
+import itson.persistenciarutapp.entidades.Usuario;
 import itson.rutappdto.UsuarioDTO;
 
 /**

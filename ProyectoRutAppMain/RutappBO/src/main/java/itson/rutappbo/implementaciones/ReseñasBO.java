@@ -4,14 +4,13 @@ package itson.rutappbo.implementaciones;
 import itson.persistenciarutapp.IReseñaDAO;
 import itson.persistenciarutapp.ICamionesDAO;
 import itson.persistenciarutapp.IUsuariosDAO;
-import Entidades.Reseña;
+import itson.persistenciarutapp.entidades.Reseña;
 import itson.persistenciarutapp.implementaciones.ReseñaDAO;
 import itson.persistenciarutapp.implementaciones.CamionesDAO;
 import itson.persistenciarutapp.implementaciones.UsuariosDAO;
 import itson.rutappbo.IReseñaBO;
 import itson.rutappdto.ReseñaDTO;
 import itson.rutappdto.UsuarioDTO;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,33 +30,26 @@ public class ReseñasBO implements IReseñaBO {
 
     @Override
     public void agregarReseña(ReseñaDTO reseñaDTO) throws Exception {
-        // Validar los datos de la reseña
         ValidadorReseñas.validar(reseñaDTO);
 
-        // Obtener el usuario activo
         UsuarioDTO usuarioDTO = UsuarioActivoManager.getInstancia().getUsuario();
         String idUsuario = usuarioDTO.getId();
 
-        // Obtener el ID del camión por su número
         String idCamion = camionesDAO.obtenerIdCamionPorNumero(reseñaDTO.getNumeroCamion());
 
         if (idCamion == null) {
             throw new Exception("El camión especificado no existe.");
         }
 
-        // Verificar si el usuario ya hizo 3 reseñas para ese camión
         int conteo = reseñasDAO.contarReseñasUsuarioPorCamion(idUsuario, idCamion);
         if (conteo >= 3) {
             throw new Exception("Solo puedes dejar hasta 3 reseñas por camión.");
         }
 
-        // Asignar la fecha actual
         reseñaDTO.setFecha(new Date());
 
-        // Mapear a entidad
         Reseña reseña = ReseñaMapper.toEntity(reseñaDTO, idUsuario, idCamion);
 
-        // Guardar la reseña en la base de datos
         reseñasDAO.agregarReseña(reseña);
     }
 

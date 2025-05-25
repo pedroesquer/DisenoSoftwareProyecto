@@ -1,6 +1,6 @@
 package itson.persistenciarutapp;
 
-import Entidades.Usuario;
+import itson.persistenciarutapp.entidades.Usuario;
 import org.bson.types.ObjectId;
 
 public interface IUsuariosDAO {
