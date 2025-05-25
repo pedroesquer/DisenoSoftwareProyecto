@@ -73,18 +73,18 @@ public class ComprasDAO implements IComprasDAO {
      * @return lista de compras no vencidas.
      */
     @Override
-    public List<Compra> consultarComprasNoVencidasPorUsuario(ObjectId idUsuario) {
+    public List<Compra> consultarComprasNoVencidasPorUsuario(String idUsuario) {
         MongoDatabase db = ManejadorConexiones.obtenerBaseDatos();
         MongoCollection<Document> coleccion = db.getCollection("compras");
         Date fechaActual = new Date(); // Fecha y hora actual
-        
-     
+
+        ObjectId objectIdUsuario = new ObjectId(idUsuario); // Conversión interna
+
         List<Bson> pipeline = Arrays.asList(
-                Aggregates.match(Filters.eq("usuario", idUsuario)),
+                Aggregates.match(Filters.eq("usuario", objectIdUsuario)),
                 Aggregates.lookup("viajes", "viaje", "_id", "viajeInfo"),
                 Aggregates.unwind("$viajeInfo"),
                 Aggregates.match(Filters.gt("viajeInfo.fechaHora", fechaActual))
-        
         );
 
         List<Compra> compras = new ArrayList<>();
@@ -93,7 +93,7 @@ public class ComprasDAO implements IComprasDAO {
             Compra compra = new Compra();
 
             compra.setId(doc.getObjectId("_id"));
-            compra.setUsuario(doc.getObjectId("usuario"));
+            compra.setUsuario(doc.getObjectId("usuario")); // esto sigue siendo ObjectId, está bien para la entidad
             compra.setFechaCompra(doc.getDate("fechaCompra"));
             compra.setViaje(doc.getObjectId("viaje"));
 
@@ -116,28 +116,32 @@ public class ComprasDAO implements IComprasDAO {
     }
 
     @Override
-    public void cancelarCompra(ObjectId idCompra) {
+    public void cancelarCompra(String idCompraStr) {
         MongoDatabase db = ManejadorConexiones.obtenerBaseDatos();
         MongoCollection<Document> coleccion = db.getCollection("compras");
 
-        // ¡LIBERA todos los asientos de la compra!
+        ObjectId idCompra = new ObjectId(idCompraStr); // conversión aquí, no en la BO
+
         coleccion.updateOne(
                 Filters.eq("_id", idCompra),
-                Updates.set("asientosComprados.$[].estado", "LIBRE") // <- el $[] aplica a todos los elementos
+                Updates.set("asientosComprados.$[].estado", "LIBRE") // aplica a todos los asientos
         );
     }
 
     @Override
-    public ObjectId obtenerIdDeCompra(ObjectId idUsuario, Date fechaCompra) {
+    public String obtenerIdDeCompra(String idUsuarioStr, Date fechaCompra) {
         MongoDatabase db = ManejadorConexiones.obtenerBaseDatos();
         MongoCollection<Document> coleccion = db.getCollection("compras");
+
+        ObjectId idUsuario = new ObjectId(idUsuarioStr); // conversión local
 
         Document doc = coleccion.find(Filters.and(
                 Filters.eq("usuario", idUsuario),
                 Filters.eq("fechaCompra", fechaCompra)
         )).first();
 
-        return doc != null ? doc.getObjectId("_id") : null;
+        return doc != null ? doc.getObjectId("_id").toHexString() : null;
+
     }
 
 }

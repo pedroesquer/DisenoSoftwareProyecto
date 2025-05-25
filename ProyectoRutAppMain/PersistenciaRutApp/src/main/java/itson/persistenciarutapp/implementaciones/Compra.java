@@ -5,31 +5,43 @@ import java.util.List;
 import org.bson.types.ObjectId;
 
 /**
- * Representa una compra realizada por un usuario, incluyendo el viaje seleccionado,
- * los asientos comprados, la fecha de compra y la referencia al usuario.
- * 
- * Esta clase es utilizada en la capa de persistencia para mapear documentos de compras
- * en la base de datos MongoDB.
+ * Representa una compra realizada por un usuario, incluyendo el viaje
+ * seleccionado, los asientos comprados, la fecha de compra y la referencia al
+ * usuario.
+ *
+ * Esta clase es utilizada en la capa de persistencia para mapear documentos de
+ * compras en la base de datos MongoDB.
  */
 public class Compra {
 
-    /** Identificador único de la compra. */
+    /**
+     * Identificador único de la compra.
+     */
     private ObjectId id;
 
-    /** Referencia al ID del viaje comprado. */
+    /**
+     * Referencia al ID del viaje comprado.
+     */
     private ObjectId viaje;
 
-    /** Lista de asientos comprados en esta transacción. */
+    /**
+     * Lista de asientos comprados en esta transacción.
+     */
     private List<AsientoBoleto> asientosComprados;
 
-    /** Referencia al ID del usuario que realizó la compra. */
+    /**
+     * Referencia al ID del usuario que realizó la compra.
+     */
     private ObjectId usuario;
 
-    /** Fecha y hora en que se realizó la compra. */
+    /**
+     * Fecha y hora en que se realizó la compra.
+     */
     private Date fechaCompra;
 
     /**
-     * Constructor vacío requerido para serialización y frameworks de persistencia.
+     * Constructor vacío requerido para serialización y frameworks de
+     * persistencia.
      */
     public Compra() {
     }
@@ -140,6 +152,32 @@ public class Compra {
     public void setFechaCompra(Date fechaCompra) {
         this.fechaCompra = fechaCompra;
     }
+    
+    
+
+    public String getIdAsString() {
+        return id != null ? id.toHexString() : null;
+    }
+
+    public void setIdFromString(String id) {
+        this.id = (id != null && !id.isBlank()) ? new ObjectId(id) : null;
+    }
+
+    public String getUsuarioAsString() {
+        return usuario != null ? usuario.toHexString() : null;
+    }
+
+    public void setUsuarioFromString(String usuarioId) {
+        this.usuario = (usuarioId != null && !usuarioId.isBlank()) ? new ObjectId(usuarioId) : null;
+    }
+
+    public String getViajeAsString() {
+        return viaje != null ? viaje.toHexString() : null;
+    }
+
+    public void setViajeFromString(String viajeId) {
+        this.viaje = (viajeId != null && !viajeId.isBlank()) ? new ObjectId(viajeId) : null;
+    }
 
     /**
      * Devuelve una representación textual de la compra.
@@ -148,12 +186,12 @@ public class Compra {
      */
     @Override
     public String toString() {
-        return "Compra{" +
-               "id=" + id +
-               ", viaje=" + viaje +
-               ", asientosComprados=" + asientosComprados +
-               ", usuario=" + usuario +
-               ", fechaCompra=" + fechaCompra +
-               '}';
+        return "Compra{"
+                + "id=" + id
+                + ", viaje=" + viaje
+                + ", asientosComprados=" + asientosComprados
+                + ", usuario=" + usuario
+                + ", fechaCompra=" + fechaCompra
+                + '}';
     }
 }

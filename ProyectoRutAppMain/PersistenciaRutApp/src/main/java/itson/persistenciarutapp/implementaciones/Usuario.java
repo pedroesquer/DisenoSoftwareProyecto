@@ -6,27 +6,39 @@ import org.bson.types.ObjectId;
 /**
  * Representa un usuario del sistema. Incluye información básica como nombre,
  * número telefónico, contraseña y saldo en el monedero digital.
- * 
- * Esta clase es utilizada para mapear documentos de usuarios desde y hacia MongoDB.
+ *
+ * Esta clase es utilizada para mapear documentos de usuarios desde y hacia
+ * MongoDB.
  */
 public class Usuario {
 
-    /** Identificador único del usuario en la base de datos. */
+    /**
+     * Identificador único del usuario en la base de datos.
+     */
     private ObjectId id;
 
-    /** Número telefónico del usuario (actúa como identificador único al registrarse). */
+    /**
+     * Número telefónico del usuario (actúa como identificador único al
+     * registrarse).
+     */
     @BsonProperty("numeroTelefonico")
     private String numeroTelefonico;
 
-    /** Nombre completo del usuario. */
+    /**
+     * Nombre completo del usuario.
+     */
     @BsonProperty("nombre")
     private String nombre;
 
-    /** Contraseña del usuario (debe ser almacenada de forma segura). */
+    /**
+     * Contraseña del usuario (debe ser almacenada de forma segura).
+     */
     @BsonProperty("contrasenia")
     private String contrasenia;
 
-    /** Saldo disponible en el monedero del usuario. */
+    /**
+     * Saldo disponible en el monedero del usuario.
+     */
     @BsonProperty("saldoMonedero")
     private Double saldoMonedero;
 
@@ -65,7 +77,8 @@ public class Usuario {
     }
 
     /**
-     * Constructor utilizado para registro de usuario con saldo por defecto en 0.
+     * Constructor utilizado para registro de usuario con saldo por defecto en
+     * 0.
      *
      * @param numeroTelefonico número telefónico.
      * @param nombre nombre del usuario.
@@ -147,16 +160,34 @@ public class Usuario {
     }
 
     /**
+     * Obtiene el ID como cadena hexadecimal.
+     *
+     * @return ID como String, o null si no está inicializado.
+     */
+    public String getIdAsString() {
+        return id != null ? id.toHexString() : null;
+    }
+
+    /**
+     * Establece el ID a partir de una cadena.
+     *
+     * @param idStr ID en formato String.
+     */
+    public void setIdFromString(String idStr) {
+        this.id = (idStr != null && !idStr.isBlank()) ? new ObjectId(idStr) : null;
+    }
+
+    /**
      * Devuelve una representación textual del usuario, sin incluir el ID.
      *
      * @return cadena con los datos visibles del usuario.
      */
     @Override
     public String toString() {
-        return "Usuario{" +
-               "numeroTelefonico=" + numeroTelefonico +
-               ", contrasenia=" + contrasenia +
-               ", saldoMonedero=" + saldoMonedero +
-               '}';
+        return "Usuario{"
+                + "numeroTelefonico=" + numeroTelefonico
+                + ", contrasenia=" + contrasenia
+                + ", saldoMonedero=" + saldoMonedero
+                + '}';
     }
 }

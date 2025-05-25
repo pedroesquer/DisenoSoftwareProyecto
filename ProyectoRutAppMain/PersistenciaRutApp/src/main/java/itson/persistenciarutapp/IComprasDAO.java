@@ -20,11 +20,11 @@ public interface IComprasDAO {
 
     List<Compra> consultarCompraPorUsuario(UsuarioDTO usuario);
 
-    List<Compra> consultarComprasNoVencidasPorUsuario(ObjectId idUsuario);
+    List<Compra> consultarComprasNoVencidasPorUsuario(String idUsuario);
 
-    void cancelarCompra(ObjectId idCompra);
+    void cancelarCompra(String idCompraStr);
     
-   public ObjectId obtenerIdDeCompra(ObjectId idUsuario, Date fechaCompra);
+   public String  obtenerIdDeCompra(String idUsuarioStr, Date fechaCompra);
    
 
 }
