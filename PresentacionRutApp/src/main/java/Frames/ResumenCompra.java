@@ -409,9 +409,9 @@ public class ResumenCompra extends javax.swing.JFrame implements TemporizadorObs
         double total = precio * BoletoContext.getBoleto().getListaAsiento().size();
         double monederoGenerado = total * 0.05;
 
-        lblPrecio.setText("$" + precio);
-        lblTotal.setText("$" + total);
-        lblMonedero.setText("$" + monederoGenerado);
+        lblPrecio.setText("$" + String.format("%.2f", precio));
+        lblTotal.setText("$" + String.format("%.2f", total));
+        lblMonedero.setText("$" + String.format("%.2f", monederoGenerado));
     }
 
     @Override
