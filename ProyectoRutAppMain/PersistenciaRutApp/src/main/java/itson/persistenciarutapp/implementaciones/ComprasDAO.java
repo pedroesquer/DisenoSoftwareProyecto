@@ -7,6 +7,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.UpdateResult;
 import enumm.estadoAsiento;
 import itson.persistenciarutapp.IComprasDAO;
 import itson.rutappdto.UsuarioDTO;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -144,6 +146,37 @@ public class ComprasDAO implements IComprasDAO {
 
         return doc != null ? doc.getObjectId("_id").toHexString() : null;
 
+    }
+
+    @Override
+    public Compra consultarCompraPorId(ObjectId idCompra) {
+        MongoDatabase db = ManejadorConexiones.obtenerBaseDatos();
+        MongoCollection<Compra> coleccion = db.getCollection(COLECCION, Compra.class);
+        return coleccion.find(Filters.eq("_id", idCompra)).first();
+    }
+
+    @Override
+    public boolean actualizarCompraParaReagenda(ObjectId idCompra, ObjectId nuevoViajeId, List<AsientoBoleto> nuevosAsientosEntities, Date nuevaFechaCompra, Double nuevoPrecioTotal) {
+        MongoDatabase db = ManejadorConexiones.obtenerBaseDatos();
+        MongoCollection<Document> coleccion = db.getCollection(COLECCION);
+
+        List<Document> nuevosAsientosDocument = nuevosAsientosEntities.stream()
+                .map(asientoBoleto -> new Document()
+                .append("numero", asientoBoleto.getNumero())
+                .append("estado", asientoBoleto.getEstado().toString())
+                .append("nombrePasajero", asientoBoleto.getNombrePasajero()))
+                .collect(Collectors.toList());
+
+        Bson filter = Filters.eq("_id", idCompra);
+        Bson update = Updates.combine(
+                Updates.set("viaje", nuevoViajeId),
+                Updates.set("asientosComprados", nuevosAsientosDocument),
+                Updates.set("fechaCompra", nuevaFechaCompra),
+                Updates.set("precio", nuevoPrecioTotal)
+        );
+
+        UpdateResult result = coleccion.updateOne(filter, update);
+        return result.getModifiedCount() > 0;
     }
 
 }

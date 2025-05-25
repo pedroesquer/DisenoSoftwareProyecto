@@ -9,6 +9,7 @@ import itson.persistenciarutapp.implementaciones.ComprasDAO;
 import Entidades.Usuario;
 import itson.persistenciarutapp.implementaciones.UsuariosDAO;
 import Entidades.Viaje;
+import excepciones.NegocioException;
 import itson.persistenciarutapp.implementaciones.ViajesDAO;
 import itson.rutappbo.IComprasBO;
 import itson.rutappdto.AsientoBoletoDTO;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 import mappers.CompraMapper;
 import mappers.UsuarioMapper;
 import mappers.ViajeMapper;
+import org.bson.types.ObjectId;
 
 /**
  * Implementación de la lógica de negocio para registrar compras de boletos.
@@ -78,30 +80,90 @@ public class ComprasBO implements IComprasBO {
 
     @Override
     public void cancelarCompra(CompraDTO compraDTO) {
-        String idUsuario = compraDTO.getUsuario().getId();         // String
-        Date fechaCompra = compraDTO.getFecha();                   // Date
+        String idUsuario = compraDTO.getUsuario().getId();
+        Date fechaCompra = compraDTO.getFecha();
 
-        // El DAO ya se encarga de convertir String a ObjectId internamente
         String idCompra = comprasDAO.obtenerIdDeCompra(idUsuario, fechaCompra);
         if (idCompra == null) {
             throw new RuntimeException("No se pudo encontrar la compra para cancelación.");
         }
 
-        comprasDAO.cancelarCompra(idCompra); // también recibe String ahora
+        comprasDAO.cancelarCompra(idCompra);
 
-        // Obtener datos del viaje para liberar asientos
         Viaje viaje = viajesDAO.consultarViajePorId(compraDTO.getViaje().getIdViaje());
         camionesDAO.liberarAsientos(viaje.getCamion().getNumeroCamion(), compraDTO.getListaAsiento());
 
-        // Reembolso al monedero del usuario
         double montoReembolsado = compraDTO.getPrecio();
         UsuarioDTO usuario = compraDTO.getUsuario();
         usuario.setSaldoMonedero(usuario.getSaldoMonedero() + montoReembolsado);
 
-        // Convertir DTO a entidad usando setIdFromString
         Usuario usuarioEntidad = UsuarioMapper.toEntity(usuario);
 
         usuariosDAO.actualizarSaldo(usuarioEntidad);
+    }
+
+    @Override
+    public CompraDTO obtenerCompraDTOPorId(String idCompraOriginal) throws NegocioException {
+        if (idCompraOriginal == null || idCompraOriginal.trim().isEmpty()) {
+            throw new NegocioException("El ID de la compra no puede ser nulo o vacío.");
+        }
+        ObjectId objectId;
+        try {
+            objectId = new ObjectId(idCompraOriginal);
+        } catch (IllegalArgumentException e) {
+            throw new NegocioException("Formato de ID de compra inválido.", e);
+        }
+
+        Compra compra = comprasDAO.consultarCompraPorId(objectId);
+        if (compra == null) {
+            return null;
+        }
+
+        Usuario usuarioEntidad = usuariosDAO.consultarUsuarioPorId(compra.getUsuario());
+        Viaje viajeEntidad = viajesDAO.consultarViajePorId(compra.getViaje());
+
+        if (usuarioEntidad == null || viajeEntidad == null) {
+            throw new NegocioException("No se pudieron cargar los detalles completos de la compra (usuario o viaje no encontrado).");
+        }
+
+        UsuarioDTO usuarioDTO = UsuarioMapper.toDTO(usuarioEntidad);
+        ViajeDTO viajeDTO = ViajeMapper.convertirAViajeDTO(viajeEntidad);
+
+        return CompraMapper.toDTO(compra, usuarioDTO, viajeDTO, viajeDTO.getCamion());
+    }
+
+    @Override
+    public boolean actualizarCompraParaReagenda(String idCompraOriginal, String nuevoViajeId, List<AsientoBoletoDTO> nuevosAsientosDTO, Date nuevaFechaCompra, double nuevoPrecioTotal) throws NegocioException {
+        if (idCompraOriginal == null || idCompraOriginal.trim().isEmpty()
+                || nuevoViajeId == null || nuevoViajeId.trim().isEmpty()
+                || nuevosAsientosDTO == null || nuevosAsientosDTO.isEmpty()
+                || nuevaFechaCompra == null) {
+            throw new NegocioException("Parámetros inválidos para actualizar la compra.");
+        }
+
+        ObjectId objectIdCompra;
+        ObjectId objectIdNuevoViaje;
+        try {
+            objectIdCompra = new ObjectId(idCompraOriginal);
+            objectIdNuevoViaje = new ObjectId(nuevoViajeId);
+        } catch (IllegalArgumentException e) {
+            throw new NegocioException("Formato de ID inválido.", e);
+        }
+
+        List<Entidades.AsientoBoleto> nuevosAsientosEntities = nuevosAsientosDTO.stream()
+                .map(dto -> {
+                    Entidades.AsientoBoleto eb = new Entidades.AsientoBoleto();
+                    eb.setNumero(Integer.parseInt(dto.getAsiento().getNumero()));
+                    eb.setEstado(dto.getAsiento().getEstado());
+                    eb.setNombrePasajero(dto.getNombreAsiento());
+                    return eb;
+                }).collect(Collectors.toList());
+
+        boolean actualizado = comprasDAO.actualizarCompraParaReagenda(objectIdCompra, objectIdNuevoViaje, nuevosAsientosEntities, nuevaFechaCompra, nuevoPrecioTotal);
+        if (!actualizado) {
+            throw new NegocioException("No se pudo actualizar la compra en la base de datos.");
+        }
+        return true;
     }
 
 }

@@ -32,4 +32,6 @@ public interface ICamionesBO {
 
     String obtenerIdPorNumero(String numeroDeCamion);
     
+    public void liberarAsientos(String numeroCamion, List<AsientoBoletoDTO> asientos) throws NegocioException;
+    
 }

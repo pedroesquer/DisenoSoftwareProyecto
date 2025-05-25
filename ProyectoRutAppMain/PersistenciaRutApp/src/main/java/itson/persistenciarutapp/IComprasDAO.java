@@ -4,6 +4,7 @@
  */
 package itson.persistenciarutapp;
 
+import Entidades.AsientoBoleto;
 import Entidades.Compra;
 import itson.rutappdto.UsuarioDTO;
 import java.util.Date;
@@ -23,8 +24,10 @@ public interface IComprasDAO {
     List<Compra> consultarComprasNoVencidasPorUsuario(String idUsuario);
 
     void cancelarCompra(String idCompraStr);
-    
-   public String  obtenerIdDeCompra(String idUsuarioStr, Date fechaCompra);
-   
 
+    public String obtenerIdDeCompra(String idUsuarioStr, Date fechaCompra);
+
+    public Compra consultarCompraPorId(ObjectId idCompra);
+
+    public boolean actualizarCompraParaReagenda(ObjectId idCompra, ObjectId nuevoViajeId, List<AsientoBoleto> nuevosAsientosEntities, Date nuevaFechaCompra, Double nuevoPrecioTotal);
 }

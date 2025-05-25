@@ -27,6 +27,7 @@ import itson.rutappdto.AsientoAsignadoDTO;
 import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.BoletoContext;
+import itson.rutappdto.BoletoDTO;
 import itson.rutappdto.CamionDTO;
 import itson.rutappdto.CompraDTO;
 import itson.rutappdto.DetallesPagoDTO;
@@ -348,6 +349,10 @@ public class ControlNegocio {
 
     public void cancelarCompra(CompraDTO comra) {
         cancelarCompra.eliminarCompra(comra);
+    }
+    
+    public void reAgendaBoleto (BoletoDTO boleto){
+        
     }
 
 }

@@ -97,4 +97,20 @@ public class CamionesBO implements ICamionesBO {
         Camion camion = camionesDAO.consultarCamionPorId(numeroDeCamion);
         return camion != null ? camion.obtenerIdComooString() : null;
     }
+
+    @Override
+    public void liberarAsientos(String numeroCamion, List<AsientoBoletoDTO> asientos) throws NegocioException {
+        if (numeroCamion == null || numeroCamion.trim().isEmpty()) {
+            throw new NegocioException("El número de camión no puede ser nulo o vacío.");
+        }
+        if (asientos == null || asientos.isEmpty()) {
+            return;
+        }
+        try {
+
+            this.camionesDAO.liberarAsientos(numeroCamion, asientos);
+        } catch (Exception e) { // Captura genérica si el DAO lanza algo no esperado
+            throw new NegocioException("Error al intentar liberar asientos: " + e.getMessage(), e);
+        }
+    }
 }
