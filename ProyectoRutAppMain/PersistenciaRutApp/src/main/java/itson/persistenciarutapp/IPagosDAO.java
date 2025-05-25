@@ -1,6 +1,6 @@
 package itson.persistenciarutapp;
 
-import itson.persistenciarutapp.entidades.Pago;
+import Entidades.Pago;
 
 /**
  *

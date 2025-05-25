@@ -1,4 +1,4 @@
-package itson.persistenciarutapp.entidades;
+package Entidades;
 
 import java.util.Date;
 import java.util.List;

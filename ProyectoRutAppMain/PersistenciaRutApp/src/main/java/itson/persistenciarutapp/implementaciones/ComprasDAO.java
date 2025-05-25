@@ -1,7 +1,7 @@
 package itson.persistenciarutapp.implementaciones;
 
-import itson.persistenciarutapp.entidades.AsientoBoleto;
-import itson.persistenciarutapp.entidades.Compra;
+import Entidades.AsientoBoleto;
+import Entidades.Compra;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Aggregates;

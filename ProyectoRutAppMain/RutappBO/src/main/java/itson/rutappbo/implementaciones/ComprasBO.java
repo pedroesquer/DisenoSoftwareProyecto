@@ -4,13 +4,12 @@ import enumm.estadoAsiento;
 import itson.persistenciarutapp.ICamionesDAO;
 import itson.persistenciarutapp.IViajesDAO;
 import itson.persistenciarutapp.implementaciones.CamionesDAO;
+import Entidades.Compra;
 import itson.persistenciarutapp.implementaciones.ComprasDAO;
+import Entidades.Usuario;
 import itson.persistenciarutapp.implementaciones.UsuariosDAO;
+import Entidades.Viaje;
 import excepciones.NegocioException;
-import itson.persistenciarutapp.entidades.AsientoBoleto;
-import itson.persistenciarutapp.entidades.Compra;
-import itson.persistenciarutapp.entidades.Usuario;
-import itson.persistenciarutapp.entidades.Viaje;
 import itson.persistenciarutapp.implementaciones.ViajesDAO;
 import itson.rutappbo.IComprasBO;
 import itson.rutappdto.AsientoBoletoDTO;
@@ -151,9 +150,9 @@ public class ComprasBO implements IComprasBO {
             throw new NegocioException("Formato de ID inválido.", e);
         }
 
-        List<AsientoBoleto> nuevosAsientosEntities = nuevosAsientosDTO.stream()
+        List<Entidades.AsientoBoleto> nuevosAsientosEntities = nuevosAsientosDTO.stream()
                 .map(dto -> {
-                    AsientoBoleto eb = new AsientoBoleto();
+                    Entidades.AsientoBoleto eb = new Entidades.AsientoBoleto();
                     eb.setNumero(Integer.parseInt(dto.getAsiento().getNumero()));
                     eb.setEstado(dto.getAsiento().getEstado());
                     eb.setNombrePasajero(dto.getNombreAsiento());

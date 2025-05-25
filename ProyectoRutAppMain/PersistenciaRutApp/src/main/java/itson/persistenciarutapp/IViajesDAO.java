@@ -4,7 +4,7 @@
  */
 package itson.persistenciarutapp;
 
-import itson.persistenciarutapp.entidades.Viaje;
+import Entidades.Viaje;
 import itson.rutappdto.ViajeDTO;
 import java.util.Date;
 import java.util.List;

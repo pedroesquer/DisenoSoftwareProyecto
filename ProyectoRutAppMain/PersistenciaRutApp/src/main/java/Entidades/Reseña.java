@@ -1,4 +1,4 @@
-package itson.persistenciarutapp.entidades;
+package Entidades;
 
 import java.util.Date;
 import org.bson.types.ObjectId;

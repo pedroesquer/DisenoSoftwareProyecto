@@ -1,4 +1,4 @@
-package itson.persistenciarutapp.entidades;
+package Entidades;
 
 import java.util.List;
 import org.bson.codecs.pojo.annotations.BsonId;

@@ -4,8 +4,9 @@
  */
 package itson.rutappbo;
 
-import itson.persistenciarutapp.entidades.Viaje;
+import Entidades.Viaje;
 import itson.rutappdto.ViajeDTO;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -18,6 +19,8 @@ public interface IViajesBO {
 
     List<ViajeDTO> consultarTodos();
 
+    void insertarViaje(Viaje viaje);
+    
     List<String> obtenerDestinos(String origen);
 
 }

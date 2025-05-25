@@ -4,8 +4,8 @@
  */
 package itson.persistenciarutapp;
 
-import itson.persistenciarutapp.entidades.Asiento;
-import itson.persistenciarutapp.entidades.Camion;
+import Entidades.Asiento;
+import Entidades.Camion;
 import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.CamionDTO;
 import java.util.List;

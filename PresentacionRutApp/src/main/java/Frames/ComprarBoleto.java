@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
 package Frames;
 
 import Control.ControlNegocio;
@@ -11,15 +15,26 @@ import interfaz.IUsuarioActivo;
 import itson.rutappdto.BoletoContext;
 import itson.rutappdto.DetallesPagoDTO;
 import itson.rutappdto.TarjetaCreditoDTO;
+import itson.rutappdto.UsuarioDTO;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
 import utilerias.FechaDocumentFilter;
 
+/**
+ *
+ * @author mmax2
+ */
 public class ComprarBoleto extends javax.swing.JFrame implements TemporizadorObserver {
 
     IUsuarioActivo usuarioActivo = new FUsuarioActivo();
 
+    /**
+     * Creates new form ComprarViaje
+     */
     public ComprarBoleto() {
+        //--------------OBSERVADOR----------
         ControlTimer.getInstancia().limpiarObservadores();
         ControlTimer.getInstancia().agregarObservador(this);
         System.out.println("Observador agregado: " + this.hashCode());
@@ -244,12 +259,9 @@ public class ComprarBoleto extends javax.swing.JFrame implements TemporizadorObs
     }//GEN-LAST:event_botonPagarMonederoActionPerformed
 
     /**
-     * Procesa el pago del boleto según el método seleccionado (tarjeta o
-     * monedero). Valida los campos si es tarjeta y construye el DTO de pago.
-     * Llama a la lógica de negocio para completar la compra. Muestra mensajes
-     * en caso de error o éxito.
+     *
+     * @param evt
      */
-
     private void btnCompraViajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompraViajeActionPerformed
         DetallesPagoDTO detallesPago;
 
@@ -275,18 +287,24 @@ public class ComprarBoleto extends javax.swing.JFrame implements TemporizadorObs
                 return;
             }
 
+            // Crear el objeto de tarjeta
             TarjetaCreditoDTO tarjeta = new TarjetaCreditoDTO(numeroTarjeta, nombreTitular, vencimiento, cvv);
 
+            // Crear el DetallesPagoDTO para tarjeta
             detallesPago = new DetallesPagoDTO("Tarjeta", (BoletoContext.getBoleto().getPrecio() * BoletoContext.getBoleto().getListaAsiento().size()), BoletoContext.getBoleto(), tarjeta);  // Asignar detallesTarjeta
 
         } else if (botonPagarMonedero.isSelected()) {
+            // Crear DetallesPagoDTO para pago con monedero sin detalles de tarjeta
             detallesPago = new DetallesPagoDTO("Monedero", (BoletoContext.getBoleto().getPrecio() * BoletoContext.getBoleto().getListaAsiento().size()),
-                    BoletoContext.getBoleto());  
+                    BoletoContext.getBoleto());  // No pasa detallesTarjeta
+//        CordinadorPresentacion.getInstancia().abrirResumenCompra(); // Navegar al resumen
+//        this.dispose(); // Cerrar la ventana después de la selección del pago
         } else {
             javax.swing.JOptionPane.showMessageDialog(this, "Por favor, selecciona un método de pago.", "Método de pago no seleccionado", javax.swing.JOptionPane.WARNING_MESSAGE);
-            return; 
+            return; // Salir si no se seleccionó un método de pago
         }
 
+        // Ahora llamamos al método de negocio para procesar la compra
         boolean compraExitosa = false;
         try {
             compraExitosa = ControlNegocio.getInstancia().comprarBoleto(detallesPago, usuarioActivo.obtenerUsuarioActual());
@@ -296,19 +314,22 @@ public class ComprarBoleto extends javax.swing.JFrame implements TemporizadorObs
             javax.swing.JOptionPane.showMessageDialog(this, "Error en la compra del boleto. Por favor, intente nuevamente.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
 
+        // Lógica adicional si la compra fue exitosa
         if (compraExitosa) {
             javax.swing.JOptionPane.showMessageDialog(this, "¡Compra realizada con éxito!");
             ControlTimer.getInstancia().finalizarTemporizador();
-            CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
+            CordinadorPresentacion.getInstancia().abrirPantallaPrincipal(); // Regresar a la pantalla principal
 
-            this.dispose();
+            this.dispose(); // Cerrar la ventana después de pasar los datos
         }
     }//GEN-LAST:event_btnCompraViajeActionPerformed
 
     private void campoNumeroTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoNumeroTarjetaActionPerformed
+        // TODO add your handling code here:
     }//GEN-LAST:event_campoNumeroTarjetaActionPerformed
 
     private void campoVencimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoVencimientoActionPerformed
+        // TODO add your handling code here:
     }//GEN-LAST:event_campoVencimientoActionPerformed
 
     private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
@@ -317,10 +338,11 @@ public class ComprarBoleto extends javax.swing.JFrame implements TemporizadorObs
 
         if (confirmacion == JOptionPane.YES_OPTION) {
             BoletoContext.limpiarBoleto();
-            ControlTimer.getInstancia().finalizarTemporizador();
+             ControlTimer.getInstancia().finalizarTemporizador(); 
             JOptionPane.showMessageDialog(null, "Has cancelado el proceso.\n Regresaras a la pantalla principal");
             CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
             this.dispose();
+            //AQUI DEBERIA DE IR ALGO PARA REGRESAR LOS ASIENTOS A DISPONIBLES
         }
     }//GEN-LAST:event_botonCancelarActionPerformed
 
@@ -350,7 +372,7 @@ public class ComprarBoleto extends javax.swing.JFrame implements TemporizadorObs
     @Override
     public void tiempoAgotado() {
         JOptionPane.showMessageDialog(this, "El tiempo se agotó. Serás redirigido al menú principal.");
-        this.dispose();
-        new MainMenu().setVisible(true);
+        this.dispose(); // Cierra esta pantalla
+        new MainMenu().setVisible(true); // Abre la pantalla principal
     }
 }

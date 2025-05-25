@@ -1,7 +1,7 @@
 package itson.persistenciarutapp.implementaciones;
 
-import itson.persistenciarutapp.entidades.Asiento;
-import itson.persistenciarutapp.entidades.Camion;
+import Entidades.Asiento;
+import Entidades.Camion;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;

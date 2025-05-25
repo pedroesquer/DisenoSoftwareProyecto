@@ -1,6 +1,6 @@
 package itson.persistenciarutapp.implementaciones;
 
-import itson.persistenciarutapp.entidades.Viaje;
+import Entidades.Viaje;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
