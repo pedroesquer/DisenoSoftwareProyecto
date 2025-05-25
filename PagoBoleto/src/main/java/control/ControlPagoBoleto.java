@@ -152,12 +152,7 @@ public class ControlPagoBoleto {
                 throw new PagoBoletoException("Saldo insuficiente en monedero.");
             }
         } else {
-//            // Validaciones locales
-//            if (!validarNumeroTarjeta(tarjeta.getNumeroTarjeta())) {
-//                throw new PagoBoletoException("Numero de tarjeta invalido");
-//            }
 
-            //Enviar al banco ficticio (servidor RMI)
             try {
                 ClienteBancoRMI cliente = new ClienteBancoRMI();
                 boolean aprobado = cliente.realizarPago(detalles);

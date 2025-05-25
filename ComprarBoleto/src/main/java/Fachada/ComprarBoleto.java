@@ -49,7 +49,7 @@ public class ComprarBoleto implements IComprarBoleto {
             System.out.println("Resultado del pago: " + pagoExitoso);
             return pagoExitoso;
         } catch (PagoBoletoException e) {
-            System.out.println("Excepción durante el pago: " + e.getMessage());
+//            System.out.println("Excepción durante el pago: " + e.getMessage());
             // Aquí puedes capturar y manejar excepciones para ver qué pasa
             
         }
