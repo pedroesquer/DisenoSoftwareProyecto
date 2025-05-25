@@ -175,7 +175,7 @@ public class MisBoletos extends javax.swing.JFrame {
         btnCancelar.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         btnCancelar.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        Date fechaViaje = compra.getViaje().getFecha(); // esta incluye hora
+        Date fechaViaje = compra.getViaje().getFecha();
         Date ahora = new Date();
 
         if (fechaViaje.before(ahora)) {
