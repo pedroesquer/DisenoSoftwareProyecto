@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Frames;
 
@@ -13,16 +13,20 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -30,233 +34,261 @@ import usuarioActivoManager.UsuarioActivoManager;
 
 /**
  *
- * @author multaslokas33
+ * @author mmax2
  */
-public class MisBoletos extends javax.swing.JFrame {
+public class MisBoletos extends javax.swing.JFrame{
+    
 
     private JPanel panelContenido;
+    private JScrollPane scrollPane; // Hacer scrollPane una variable de instancia
 
+    /**
+     * Constructor de la ventana MisBoletos.
+     * Inicializa los componentes y carga los boletos del usuario.
+     */
     public MisBoletos() {
         setTitle("Mis Boletos");
-        setSize(600, 500);
+        setSize(650, 550);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+        ControlNegocio.getInstancia().resetearModoReagendamiento();
 
         panelContenido = new JPanel();
         panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
         panelContenido.setBackground(Color.WHITE);
+        panelContenido.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JScrollPane scrollPane = new JScrollPane(panelContenido);
+        scrollPane = new JScrollPane(panelContenido);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         add(scrollPane, BorderLayout.CENTER);
 
         cargarBoletos();
     }
 
+    /**
+     * Carga y muestra los boletos del usuario en el panel de contenido.
+     * Si no hay boletos, muestra un mensaje indicándolo.
+     */
     private void cargarBoletos() {
+        panelContenido.removeAll();
+
         List<CompraDTO> compras = ControlNegocio.getInstancia()
-                .obtenerComprasUsuario(UsuarioActivoManager.getInstancia().getUsuario());
+                .obtenerComprasUsuario(UsuarioActivoManager.getInstancia().getUsuario()); //
 
-        if (compras.isEmpty()) {
+        if (compras == null || compras.isEmpty()) {
             JLabel sinBoletos = new JLabel("No tienes boletos comprados.", SwingConstants.CENTER);
-            sinBoletos.setFont(new Font("SansSerif", Font.PLAIN, 16));
-            panelContenido.add(sinBoletos);
-            return;
-        }
+            sinBoletos.setFont(new Font("SansSerif", Font.PLAIN, 18));
+            sinBoletos.setAlignmentX(Component.CENTER_ALIGNMENT);
+            
+            JPanel panelCentrado = new JPanel(new BorderLayout());
+            panelCentrado.setOpaque(false);
+            panelCentrado.add(sinBoletos, BorderLayout.CENTER);
+            
+            panelContenido.setLayout(new BorderLayout()); // Cambiar layout para centrar
+            panelContenido.add(panelCentrado, BorderLayout.CENTER);
 
-        for (CompraDTO compra : compras) {
-            JPanel panel = crearPanelCompra(compra);
-            panelContenido.add(panel);
-            panelContenido.add(Box.createVerticalStrut(15));
+        } else {
+            panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS)); // Restaurar layout
+            for (CompraDTO compra : compras) {
+                if (compra.getId() == null || compra.getId().trim().isEmpty()){
+                    // Opcional: loggear o manejar compras sin ID si esto no debería ocurrir.
+                }
+                JPanel panel = crearPanelCompra(compra);
+                panelContenido.add(panel);
+                panelContenido.add(Box.createVerticalStrut(15));
+            }
         }
 
         JButton btnRegresar = new JButton("Regresar a Inicio");
         btnRegresar.setAlignmentX(Component.CENTER_ALIGNMENT);
-        btnRegresar.setBackground(new Color(100, 149, 237));
-        btnRegresar.setForeground(Color.WHITE);
-        btnRegresar.setFocusPainted(false);
-        btnRegresar.setFont(new Font("SansSerif", Font.BOLD, 14));
-        btnRegresar.setMaximumSize(new Dimension(200, 40));
-        btnRegresar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        personalizarBoton(btnRegresar, new Color(100, 149, 237), 14); // Usar método para personalizar
+        btnRegresar.setMinimumSize(new Dimension(200, 40));
+        btnRegresar.setPreferredSize(new Dimension(200, 40));
+        btnRegresar.setMaximumSize(new Dimension(220, 45)); // Un poco más de flexibilidad
+        
         btnRegresar.addActionListener(e -> {
-            CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
-            this.dispose(); // cerrar esta ventana
+            CordinadorPresentacion.getInstancia().abrirPantallaPrincipal(); //
+            this.dispose();
         });
 
-        panelContenido.add(Box.createVerticalStrut(10));
+        panelContenido.add(Box.createVerticalStrut(20));
         panelContenido.add(btnRegresar);
+        panelContenido.add(Box.createVerticalStrut(10));
 
-    }
-
-    private JPanel crearPanelCompra(CompraDTO compra) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
-        Color colorNormal = new Color(230, 240, 255);
-        Color colorHover = new Color(200, 220, 255);
-        panel.setBackground(colorNormal);
-        panel.setPreferredSize(new Dimension(550, 160));
-        panel.setMaximumSize(new Dimension(550, 160));
-
-        // Mouse listener para efecto hover
-        panel.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                panel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                panel.setBackground(colorHover);
-            }
-
-            @Override
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                panel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-                panel.setBackground(colorNormal);
-            }
-        });
-
-        // Título centrado
-        JLabel titulo = new JLabel(compra.getOrigen() + " ➡ " + compra.getDestino(), SwingConstants.CENTER);
-        titulo.setFont(new Font("SansSerif", Font.BOLD, 16));
-        titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(titulo);
-
-        // Detalles en dos columnas
-        JPanel detalles = new JPanel(new GridLayout(2, 2));
-        detalles.setOpaque(false);
-        detalles.setMaximumSize(new Dimension(500, 50));
-        detalles.add(new JLabel("Fecha: " + new SimpleDateFormat("yyyy-MM-dd").format(compra.getFecha())));
-        detalles.add(new JLabel("Hora: " + compra.getHrSalida()));
-        detalles.add(new JLabel("Camión: " + compra.getCamion().getNumeroCamion()));
-        detalles.add(new JLabel("Precio: $" + compra.getPrecio()));
-        panel.add(detalles);
-
-        // Asientos + botón
-        JPanel abajo = new JPanel(new BorderLayout());
-        abajo.setOpaque(false);
-        abajo.setMaximumSize(new Dimension(500, 30));
-
-        StringBuilder asientosTexto = new StringBuilder("Asiento(s): ");
-        for (AsientoBoletoDTO ab : compra.getListaAsiento()) {
-            asientosTexto.append(ab.getAsiento().getNumero()).append(" ");
-        }
-
-        JLabel asientos = new JLabel(asientosTexto.toString());
-        abajo.add(asientos, BorderLayout.WEST);
-
-        JButton btnCancelar = new JButton("Cancelar Boleto");
-        btnCancelar.setBackground(Color.RED);
-        btnCancelar.setForeground(Color.WHITE);
-        btnCancelar.setFocusPainted(false);
-        btnCancelar.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
-        btnCancelar.addActionListener(e -> {
-            int confirm = javax.swing.JOptionPane.showConfirmDialog(
-                    this,
-                    "¿Seguro que deseas cancelar esta compra?\nSe liberarán todos los asientos.",
-                    "Confirmar cancelación",
-                    javax.swing.JOptionPane.YES_NO_OPTION
-            );
-
-            if (confirm == javax.swing.JOptionPane.YES_OPTION) {
-                try {
-                    ControlNegocio.getInstancia().cancelarCompra(compra);
-                    javax.swing.JOptionPane.showMessageDialog(this, "Compra cancelada con éxito.");
-                    recargarGUI(); // método que puedes agregar para refrescar la pantalla
-                } catch (Exception ex) {
-                    javax.swing.JOptionPane.showMessageDialog(this, "Error al cancelar la compra:\n" + ex.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-
-        abajo.add(btnCancelar, BorderLayout.EAST);
-
-        panel.add(abajo);
-
-        return panel;
-    }
-
-    private void recargarGUI() {
-        panelContenido.removeAll();
-        cargarBoletos();
         panelContenido.revalidate();
         panelContenido.repaint();
     }
 
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+     * Crea un panel individual para mostrar los detalles de una compra (boleto).
+     * Incluye información del viaje, asientos, precio y botones para cancelar o reagendar.
      */
+    private JPanel crearPanelCompra(CompraDTO compra) {
+        JPanel panelPrincipal = new JPanel();
+        panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
+        panelPrincipal.setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180), 1));
+        Color colorNormal = new Color(248, 249, 250);
+        Color colorHover = new Color(230, 240, 255);
+        panelPrincipal.setBackground(colorNormal);
+        panelPrincipal.setPreferredSize(new Dimension(580, 190));
+        panelPrincipal.setMaximumSize(new Dimension(600, 195));
+        panelPrincipal.setMinimumSize(new Dimension(570, 185));
+
+        panelPrincipal.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                panelPrincipal.setBackground(colorHover);
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                panelPrincipal.setBackground(colorNormal);
+            }
+        });
+        
+        panelPrincipal.add(Box.createVerticalStrut(10));
+
+        JLabel titulo = new JLabel((compra.getOrigen() != null ? compra.getOrigen() : "N/A") + 
+                                  "  ➔  " + 
+                                  (compra.getDestino() != null ? compra.getDestino() : "N/A"), SwingConstants.CENTER);
+        titulo.setFont(new Font("Arial", Font.BOLD, 18));
+        titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelPrincipal.add(titulo);
+        panelPrincipal.add(Box.createVerticalStrut(8));
+
+        JPanel detallesGrid = new JPanel(new GridLayout(0, 2, 15, 6));
+        detallesGrid.setOpaque(false);
+        detallesGrid.setBorder(BorderFactory.createEmptyBorder(5, 25, 5, 25));
+
+        String fechaFormateada = (compra.getFecha() != null) ? new SimpleDateFormat("dd/MM/yyyy").format(compra.getFecha()) : "N/A";
+        detallesGrid.add(new JLabel("<html><b>Fecha Compra:</b> " + fechaFormateada + "</html>"));
+        detallesGrid.add(new JLabel("<html><b>Hora Salida Viaje:</b> " + (compra.getHrSalida() != null ? compra.getHrSalida() : "N/A") + "</html>"));
+        
+        if (compra.getCamion() != null) {
+            detallesGrid.add(new JLabel("<html><b>Camión:</b> " + compra.getCamion().getNumeroCamion() + "</html>"));
+        } else {
+            detallesGrid.add(new JLabel("<html><b>Camión:</b> N/A</html>"));
+        }
+        detallesGrid.add(new JLabel("<html><b>Precio Total:</b> $" + String.format("%.2f", compra.getPrecio()) + "</html>"));
+        
+        StringBuilder asientosTexto = new StringBuilder("<html><b>Asiento(s):</b> ");
+        if (compra.getListaAsiento() != null && !compra.getListaAsiento().isEmpty()) {
+            for (int i = 0; i < compra.getListaAsiento().size(); i++) {
+                AsientoBoletoDTO ab = compra.getListaAsiento().get(i);
+                asientosTexto.append(ab.getAsiento().getNumero());
+                if (i < compra.getListaAsiento().size() - 1) {
+                    asientosTexto.append(", ");
+                }
+            }
+        } else {
+            asientosTexto.append("N/A");
+        }
+        asientosTexto.append("</html>");
+        JLabel lblAsientos = new JLabel(asientosTexto.toString());
+        detallesGrid.add(lblAsientos); 
+        if (detallesGrid.getComponentCount() % 2 != 0) {
+            detallesGrid.add(new JLabel(""));
+        }
+
+        panelPrincipal.add(detallesGrid);
+        panelPrincipal.add(Box.createVerticalStrut(12));
+
+        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
+        panelBotones.setOpaque(false);
+
+        JButton btnCancelar = new JButton("Cancelar Boleto");
+        personalizarBoton(btnCancelar, new Color(220, 53, 69), 13);
+        btnCancelar.addActionListener((ActionEvent e) -> {
+            if (compra.getId() == null || compra.getId().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(MisBoletos.this, "No se puede cancelar: ID de compra no disponible.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            int confirm = JOptionPane.showConfirmDialog(MisBoletos.this, "¿Seguro que deseas cancelar esta compra?\nSe liberarán los asientos y se reembolsará a tu monedero.", "Confirmar Cancelación", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                try {
+                    ControlNegocio.getInstancia().cancelarCompra(compra); //
+                    JOptionPane.showMessageDialog(MisBoletos.this, "Compra cancelada con éxito. El monto ha sido reembolsado a tu monedero.");
+                    recargarGUI();
+                } catch (HeadlessException ex) {
+                    JOptionPane.showMessageDialog(MisBoletos.this, "Error al cancelar la compra:\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        panelBotones.add(btnCancelar);
+
+        JButton btnReagendar = new JButton("Reagendar Boleto");
+        personalizarBoton(btnReagendar, new Color(0, 123, 255), 13); // Azul
+        btnReagendar.addActionListener(e -> {
+            if (compra.getId() == null || compra.getId().trim().isEmpty()){
+                JOptionPane.showMessageDialog(this, "No se puede reagendar: ID de compra no disponible.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            int confirm = JOptionPane.showConfirmDialog(
+                    this,
+                    "Vas a iniciar el proceso para reagendar este boleto.\n" +
+                    "Se te guiará para seleccionar un nuevo viaje y asientos.\n" +
+                    "La compra original se cancelará y se creará una nueva.",
+                    "Confirmar Reagendamiento",
+                    JOptionPane.YES_NO_OPTION
+            );
+            if (confirm == JOptionPane.YES_OPTION) {
+                ControlNegocio.getInstancia().iniciarProcesoReagendamiento(compra.getId(), compra.getUsuario()); //
+                CordinadorPresentacion.getInstancia().abrirBusquedaViaje(); //
+                this.dispose();
+            }
+        });
+        panelBotones.add(btnReagendar);
+
+        panelPrincipal.add(panelBotones);
+        panelPrincipal.add(Box.createVerticalStrut(10));
+
+        return panelPrincipal;
+    }
+    
+    /**
+     * Aplica un estilo personalizado a un JButton.
+     */
+    private void personalizarBoton(JButton boton, Color colorFondo, int fontSize) {
+        boton.setBackground(colorFondo);
+        boton.setForeground(Color.WHITE);
+        boton.setFont(new Font("Arial", Font.BOLD, fontSize));
+        boton.setFocusPainted(false);
+        boton.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(colorFondo.darker(), 1),
+            BorderFactory.createEmptyBorder(8, 18, 8, 18)
+        ));
+        boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }
+
+    /**
+     * Recarga la lista de boletos en la GUI.
+     */
+    private void recargarGUI() {
+        cargarBoletos();
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        listaBoletos = new javax.swing.JList<>();
-        jButton1 = new javax.swing.JButton();
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        listaBoletos.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(listaBoletos);
-
-        jButton1.setText("Regresar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(69, 69, 69)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(60, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(78, 78, 78)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addContainerGap(19, Short.MAX_VALUE))
-        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        CordinadorPresentacion.getInstancia().abrirPantallaPrincipal();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JList<String> listaBoletos;
     // End of variables declaration//GEN-END:variables
 }
+
