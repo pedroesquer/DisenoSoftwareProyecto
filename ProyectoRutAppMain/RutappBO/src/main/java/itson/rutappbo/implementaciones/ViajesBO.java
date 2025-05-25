@@ -8,10 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import mappers.ViajeMapper;
 
-/**
- *
- * @author chris
- */
+
 public class ViajesBO implements IViajesBO {
 
     private final IViajesDAO viajesDAO;

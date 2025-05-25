@@ -8,10 +8,7 @@ import itson.rutappdto.DetallesPagoDTO;
 import itson.rutappdto.PagoDTO;
 import java.util.Date;
 
-/**
- *
- * @author pedro
- */
+
 public class PagosBO implements IPagosBO {
 
     IPagosDAO pagosDAO = new PagosDAO();

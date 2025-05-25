@@ -19,10 +19,7 @@ import java.util.stream.Collectors;
 import mappers.CamionMapper;
 //import org.bson.types.ObjectId;
 
-/**
- *
- * @author chris
- */
+
 public class CamionesBO implements ICamionesBO {
 
     private final ICamionesDAO camionesDAO;
