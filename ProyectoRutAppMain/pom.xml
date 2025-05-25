@@ -20,6 +20,7 @@
         <module>RutappBO</module>
         <module>Resenias</module>
         <module>CancelarCompra</module>
+        <module>../ReagendaBoleto</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
