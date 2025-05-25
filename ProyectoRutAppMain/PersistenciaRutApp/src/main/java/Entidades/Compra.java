@@ -156,32 +156,32 @@ public class Compra {
     
     
     @BsonIgnore
-    public String getIdAsString() {
+    public String obtenerIdComoString() {
         return id != null ? id.toHexString() : null;
     }
 
     @BsonIgnore
-    public void setIdFromString(String id) {
+    public void asignarIdDesdeString(String id) {
         this.id = (id != null && !id.isBlank()) ? new ObjectId(id) : null;
     }
 
     @BsonIgnore
-    public String getUsuarioAsString() {
+    public String obtenerUsuarioComoString() {
         return usuario != null ? usuario.toHexString() : null;
     }
 
     @BsonIgnore
-    public void setUsuarioFromString(String usuarioId) {
+    public void asignarUsuarioDesdeString(String usuarioId) {
         this.usuario = (usuarioId != null && !usuarioId.isBlank()) ? new ObjectId(usuarioId) : null;
     }
 
     @BsonIgnore
-    public String getViajeAsString() {
+    public String obtenerViajeComoString() {
         return viaje != null ? viaje.toHexString() : null;
     }
 
     @BsonIgnore
-    public void setViajeFromString(String viajeId) {
+    public void asignarViajeDesdeString(String viajeId) {
         this.viaje = (viajeId != null && !viajeId.isBlank()) ? new ObjectId(viajeId) : null;
     }
 

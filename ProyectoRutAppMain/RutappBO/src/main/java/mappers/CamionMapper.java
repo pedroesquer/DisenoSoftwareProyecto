@@ -15,14 +15,14 @@ public class CamionMapper {
 
     public static CamionDTO toDTO(Camion camion) {
         CamionDTO dto = new CamionDTO();
-        dto.setId(camion.getIdAsString());
+        dto.setId(camion.obtenerIdComooString());
         dto.setNumeroCamion(camion.getNumeroDeCamion());
         return dto;
     }
 
     public static Camion toEntity(CamionDTO dto) {
         Camion camion = new Camion();
-        camion.setIdFromString(dto.getId());
+        camion.asignarIdDesdeeString(dto.getId());
         camion.setNumeroDeCamion(dto.getNumeroCamion());
         return camion;
     }

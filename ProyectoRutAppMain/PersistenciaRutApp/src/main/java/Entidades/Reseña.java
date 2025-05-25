@@ -113,32 +113,32 @@ public class Reseña {
     }
 
     @BsonIgnore
-    public String getIdAsString() {
+    public String obtenerIdComoString() {
         return id != null ? id.toHexString() : null;
     }
 
     @BsonIgnore
-    public void setIdFromString(String idStr) {
+    public void asignarIdDesdeString(String idStr) {
         this.id = (idStr != null && !idStr.isBlank()) ? new ObjectId(idStr) : null;
     }
 
     @BsonIgnore
-    public String getUsuarioAsString() {
+    public String obtenerIdUsuarioComoString() {
         return usuario != null ? usuario.toHexString() : null;
     }
 
     @BsonIgnore
-    public void setUsuarioFromString(String usuarioId) {
+    public void asignarUsuarioDesdeString(String usuarioId) {
         this.usuario = (usuarioId != null && !usuarioId.isBlank()) ? new ObjectId(usuarioId) : null;
     }
 
     @BsonIgnore
-    public String getCamionAsString() {
+    public String obtenerIdCamionComoString() {
         return camion != null ? camion.toHexString() : null;
     }
 
     @BsonIgnore
-    public void setCamionFromString(String camionId) {
+    public void asignarCamionDesdeString(String camionId) {
         this.camion = (camionId != null && !camionId.isBlank()) ? new ObjectId(camionId) : null;
     }
 

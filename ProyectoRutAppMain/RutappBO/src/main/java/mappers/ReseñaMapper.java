@@ -15,8 +15,8 @@ public class ReseñaMapper {
 
     public static Reseña toEntity(ReseñaDTO dto, String idUsuario, String idCamion) {
         Reseña reseña = new Reseña();
-        reseña.setUsuarioFromString(idUsuario);
-        reseña.setCamionFromString(idCamion);
+        reseña.asignarUsuarioDesdeString(idUsuario);
+        reseña.asignarCamionDesdeString(idCamion);
         reseña.setComentario(dto.getComentario());
         reseña.setCalificacion(dto.getCalificacion());
         reseña.setFecha(dto.getFecha());
@@ -25,7 +25,7 @@ public class ReseñaMapper {
 
     public static ReseñaDTO toDTO(Reseña reseña, String nombreUsuario, String numeroCamion) {
         ReseñaDTO dto = new ReseñaDTO();
-        dto.setId(reseña.getIdAsString());
+        dto.setId(reseña.obtenerIdComoString());
         dto.setNombreUsuario(nombreUsuario);
         dto.setNumeroCamion(numeroCamion);
         dto.setComentario(reseña.getComentario());

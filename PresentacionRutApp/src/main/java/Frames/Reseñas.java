@@ -51,10 +51,14 @@ public class Reseñas extends javax.swing.JFrame {
         List<CompraDTO> compras = ControlNegocio.getInstancia().obtenerComprasUsuario(usuario);
 
         Set<String> camionesUnicos = new HashSet<>();
+        Date hoy = new Date();
 
         for (CompraDTO compra : compras) {
-            String numCamion = compra.getViaje().getCamion().getNumeroCamion();
-            camionesUnicos.add(numCamion);
+            Date fechaViaje = compra.getViaje().getFecha();
+            if (fechaViaje.before(hoy)) { // Solo si el viaje ya pasó
+                String numCamion = compra.getViaje().getCamion().getNumeroCamion();
+                camionesUnicos.add(numCamion);
+            }
         }
 
         panelCamiones.removeAll();

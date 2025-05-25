@@ -111,12 +111,12 @@ public class Camion {
     }
     
     @BsonIgnore
-    public String getIdAsString() {
+    public String obtenerIdComooString() {
         return id != null ? id.toHexString() : null;
     }
 
     @BsonIgnore
-    public void setIdFromString(String idStr) {
+    public void asignarIdDesdeeString(String idStr) {
         this.id = (idStr != null && !idStr.isBlank()) ? new ObjectId(idStr) : null;
     }
 

@@ -95,6 +95,6 @@ public class CamionesBO implements ICamionesBO {
     @Override
     public String obtenerIdPorNumero(String numeroDeCamion) {
         Camion camion = camionesDAO.consultarCamionPorId(numeroDeCamion);
-        return camion != null ? camion.getIdAsString() : null;
+        return camion != null ? camion.obtenerIdComooString() : null;
     }
 }

@@ -27,8 +27,8 @@ public class CompraMapper {
      */
     public static Compra toEntity(CompraDTO dto) {
         Compra compra = new Compra();
-        compra.setUsuarioFromString(dto.getUsuario().getId()); // usa el String
-        compra.setViajeFromString(dto.getViaje().getIdViaje()); // usa el String
+        compra.asignarUsuarioDesdeString(dto.getUsuario().getId()); // usa el String
+        compra.asignarViajeDesdeString(dto.getViaje().getIdViaje()); // usa el String
         compra.setFechaCompra(dto.getFecha());
         compra.setAsientosComprados(dto.getListaAsiento().stream()
                 .map(CompraMapper::aEntidad)

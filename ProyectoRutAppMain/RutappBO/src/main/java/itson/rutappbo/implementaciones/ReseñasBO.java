@@ -68,7 +68,7 @@ public class ReseñasBO implements IReseñaBO {
 
         return reseñas.stream()
                 .map(r -> {
-                    String nombreUsuario = usuariosDAO.obtenerNombrePorId(r.getUsuarioAsString());
+                    String nombreUsuario = usuariosDAO.obtenerNombrePorId(r.obtenerIdUsuarioComoString());
                     return ReseñaMapper.toDTO(r, nombreUsuario, numeroCamion);
                 })
                 .collect(Collectors.toList());
@@ -82,7 +82,7 @@ public class ReseñasBO implements IReseñaBO {
         }
 
         String idUsuarioActivo = UsuarioActivoManager.getInstancia().getUsuario().getId();
-        if (!reseña.getUsuarioAsString().equals(idUsuarioActivo)) {
+        if (!reseña.obtenerIdUsuarioComoString().equals(idUsuarioActivo)) {
             return false;
         }
 

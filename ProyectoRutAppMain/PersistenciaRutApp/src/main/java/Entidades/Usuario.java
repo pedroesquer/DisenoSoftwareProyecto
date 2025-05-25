@@ -166,7 +166,7 @@ public class Usuario {
      * @return ID como String, o null si no está inicializado.
      */
     @BsonIgnore
-    public String getIdAsString() {
+    public String obtenerIddComoString() {
         return id != null ? id.toHexString() : null;
     }
 
@@ -176,7 +176,7 @@ public class Usuario {
      * @param idStr ID en formato String.
      */
     @BsonIgnore
-    public void setIdFromString(String idStr) {
+    public void asignarIddDesdeString(String idStr) {
         this.id = (idStr != null && !idStr.isBlank()) ? new ObjectId(idStr) : null;
     }
 
