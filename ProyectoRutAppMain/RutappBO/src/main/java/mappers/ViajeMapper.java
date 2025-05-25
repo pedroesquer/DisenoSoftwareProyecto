@@ -4,7 +4,7 @@
  */
 package mappers;
 
-import itson.persistenciarutapp.implementaciones.Viaje;
+import Entidades.Viaje;
 import itson.rutappdto.CamionDTO;
 import itson.rutappdto.ViajeDTO;
 

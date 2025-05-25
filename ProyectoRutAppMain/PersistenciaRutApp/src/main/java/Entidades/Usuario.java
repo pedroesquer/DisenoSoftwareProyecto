@@ -1,5 +1,6 @@
-package itson.persistenciarutapp.implementaciones;
+package Entidades;
 
+import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
@@ -164,6 +165,7 @@ public class Usuario {
      *
      * @return ID como String, o null si no está inicializado.
      */
+    @BsonIgnore
     public String getIdAsString() {
         return id != null ? id.toHexString() : null;
     }
@@ -173,6 +175,7 @@ public class Usuario {
      *
      * @param idStr ID en formato String.
      */
+    @BsonIgnore
     public void setIdFromString(String idStr) {
         this.id = (idStr != null && !idStr.isBlank()) ? new ObjectId(idStr) : null;
     }

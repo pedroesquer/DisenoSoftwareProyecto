@@ -1,7 +1,7 @@
 package mappers;
 
-import itson.persistenciarutapp.implementaciones.AsientoBoleto;
-import itson.persistenciarutapp.implementaciones.Compra;
+import Entidades.AsientoBoleto;
+import Entidades.Compra;
 import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.CamionDTO;

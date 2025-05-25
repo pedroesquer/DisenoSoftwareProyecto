@@ -21,7 +21,7 @@ import interfaz.ISeleccionAsiento;
 import interfaz.IUsuarioActivo;
 import itson.consultardisponibilidad.Interfaz.IConsultarDisponibilidad;
 import itson.consultardisponibilidad.fachada.FachadaConsultarDisponibilidad;
-import itson.persistenciarutapp.implementaciones.Viaje;
+import Entidades.Viaje;
 import itson.rutappbo.implementaciones.ComprasBO;
 import itson.rutappdto.AsientoAsignadoDTO;
 import itson.rutappdto.AsientoBoletoDTO;

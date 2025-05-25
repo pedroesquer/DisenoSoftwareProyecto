@@ -1,7 +1,5 @@
 package itson.rutappbo;
 
-import itson.persistenciarutapp.implementaciones.Pago;
-import itson.rutappdto.DetallesPagoDTO;
 import itson.rutappdto.PagoDTO;
 
 /**

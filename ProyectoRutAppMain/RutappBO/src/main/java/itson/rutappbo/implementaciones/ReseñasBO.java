@@ -4,7 +4,7 @@ package itson.rutappbo.implementaciones;
 import itson.persistenciarutapp.IReseñaDAO;
 import itson.persistenciarutapp.ICamionesDAO;
 import itson.persistenciarutapp.IUsuariosDAO;
-import itson.persistenciarutapp.implementaciones.Reseña;
+import Entidades.Reseña;
 import itson.persistenciarutapp.implementaciones.ReseñaDAO;
 import itson.persistenciarutapp.implementaciones.CamionesDAO;
 import itson.persistenciarutapp.implementaciones.UsuariosDAO;
@@ -14,7 +14,9 @@ import itson.rutappdto.UsuarioDTO;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.bson.types.ObjectId;
+import java.util.stream.Collectors;
+import mappers.ReseñaMapper;
+//import org.bson.types.ObjectId; YA NOOO LO USAMOOOOOOS 😎😎😎😎😎😎😎😎😎😎
 import usuarioActivoManager.UsuarioActivoManager;
 import util.ValidadorReseñas;
 
@@ -25,7 +27,6 @@ public class ReseñasBO implements IReseñaBO {
     private final IUsuariosDAO usuariosDAO = new UsuariosDAO();
 
     public ReseñasBO() {
-
     }
 
     @Override
@@ -50,13 +51,11 @@ public class ReseñasBO implements IReseñaBO {
             throw new Exception("Solo puedes dejar hasta 3 reseñas por camión.");
         }
 
-        // Construir la entidad Reseña
-        Reseña reseña = new Reseña();
-        reseña.setUsuario(new ObjectId(idUsuario));
-        reseña.setCamion(new ObjectId(idCamion));
-        reseña.setComentario(reseñaDTO.getComentario());
-        reseña.setCalificacion(reseñaDTO.getCalificacion());
-        reseña.setFecha(new Date());
+        // Asignar la fecha actual
+        reseñaDTO.setFecha(new Date());
+
+        // Mapear a entidad
+        Reseña reseña = ReseñaMapper.toEntity(reseñaDTO, idUsuario, idCamion);
 
         // Guardar la reseña en la base de datos
         reseñasDAO.agregarReseña(reseña);
@@ -67,43 +66,32 @@ public class ReseñasBO implements IReseñaBO {
         String idCamion = camionesDAO.obtenerIdCamionPorNumero(numeroCamion);
         List<Reseña> reseñas = reseñasDAO.obtenerReseñasPorCamion(idCamion);
 
-        List<ReseñaDTO> dtos = new ArrayList<>();
-        for (Reseña r : reseñas) {
-            ReseñaDTO dto = new ReseñaDTO();
-            dto.setId(r.getId().toHexString());
-            dto.setNombreUsuario(usuariosDAO.obtenerNombrePorId(r.getUsuario().toHexString()));
-            dto.setNumeroCamion(numeroCamion);
-            dto.setComentario(r.getComentario());
-            dto.setCalificacion(r.getCalificacion());
-            dto.setFecha(r.getFecha());
-            dtos.add(dto);
-        }
-        return dtos;
+        return reseñas.stream()
+                .map(r -> {
+                    String nombreUsuario = usuariosDAO.obtenerNombrePorId(r.getUsuarioAsString());
+                    return ReseñaMapper.toDTO(r, nombreUsuario, numeroCamion);
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
     public boolean eliminarReseña(String idReseña) {
         Reseña reseña = reseñasDAO.obtenerReseñaPorId(idReseña);
-
         if (reseña == null) {
             return false;
         }
 
-        // Validar que el usuario sea el autor
         String idUsuarioActivo = UsuarioActivoManager.getInstancia().getUsuario().getId();
-        if (!reseña.getUsuario().toHexString().equals(idUsuarioActivo)) {
+        if (!reseña.getUsuarioAsString().equals(idUsuarioActivo)) {
             return false;
         }
 
-        // Validar tiempo límite (10 minutos)
         long ahora = System.currentTimeMillis();
         long tiempoReseña = reseña.getFecha().getTime();
-        long diferencia = ahora - tiempoReseña;
-        if (diferencia > 10 * 60 * 1000) {
+        if ((ahora - tiempoReseña) > 10 * 60 * 1000) {
             return false;
         }
 
         return reseñasDAO.eliminarReseñaPorId(idReseña);
     }
-
 }

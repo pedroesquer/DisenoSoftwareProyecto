@@ -1,7 +1,8 @@
-package itson.persistenciarutapp.implementaciones;
+package Entidades;
 
 import java.util.Date;
 import java.util.List;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.types.ObjectId;
 
 /**
@@ -154,27 +155,32 @@ public class Compra {
     }
     
     
-
+    @BsonIgnore
     public String getIdAsString() {
         return id != null ? id.toHexString() : null;
     }
 
+    @BsonIgnore
     public void setIdFromString(String id) {
         this.id = (id != null && !id.isBlank()) ? new ObjectId(id) : null;
     }
 
+    @BsonIgnore
     public String getUsuarioAsString() {
         return usuario != null ? usuario.toHexString() : null;
     }
 
+    @BsonIgnore
     public void setUsuarioFromString(String usuarioId) {
         this.usuario = (usuarioId != null && !usuarioId.isBlank()) ? new ObjectId(usuarioId) : null;
     }
 
+    @BsonIgnore
     public String getViajeAsString() {
         return viaje != null ? viaje.toHexString() : null;
     }
 
+    @BsonIgnore
     public void setViajeFromString(String viajeId) {
         this.viaje = (viajeId != null && !viajeId.isBlank()) ? new ObjectId(viajeId) : null;
     }

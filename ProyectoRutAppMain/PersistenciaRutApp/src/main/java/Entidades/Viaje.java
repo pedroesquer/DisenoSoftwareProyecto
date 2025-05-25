@@ -1,4 +1,4 @@
-package itson.persistenciarutapp.implementaciones;
+package Entidades;
 
 import itson.rutappdto.CamionDTO;
 import java.util.Date;

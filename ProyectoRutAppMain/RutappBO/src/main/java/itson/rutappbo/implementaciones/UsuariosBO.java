@@ -1,7 +1,7 @@
 package itson.rutappbo.implementaciones;
 
 import itson.persistenciarutapp.IUsuariosDAO;
-import itson.persistenciarutapp.implementaciones.Usuario;
+import Entidades.Usuario;
 import itson.persistenciarutapp.implementaciones.UsuariosDAO;
 import itson.rutappbo.IUsuariosBO;
 import itson.rutappdto.UsuarioDTO;

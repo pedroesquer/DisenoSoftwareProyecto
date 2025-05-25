@@ -1,7 +1,7 @@
 package itson.rutappbo.implementaciones;
 
+import Entidades.Pago;
 import itson.persistenciarutapp.IPagosDAO;
-import itson.persistenciarutapp.implementaciones.Pago;
 import itson.persistenciarutapp.implementaciones.PagosDAO;
 import itson.rutappbo.IPagosBO;
 import itson.rutappdto.DetallesPagoDTO;

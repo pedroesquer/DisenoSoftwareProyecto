@@ -1,6 +1,6 @@
 package itson.consultardisponibilidad.Interfaz;
 
-import itson.persistenciarutapp.implementaciones.Viaje;
+import Entidades.Viaje;
 import itson.rutappdto.AsientoDTO;
 import itson.rutappdto.CamionDTO;
 import itson.rutappdto.CompraDTO;

@@ -5,9 +5,10 @@
 package itson.rutappbo;
 
 import excepciones.NegocioException;
-import itson.persistenciarutapp.implementaciones.Camion;
+import Entidades.Camion;
 import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.AsientoDTO;
+import itson.rutappdto.CamionDTO;
 import java.util.List;
 import org.bson.types.ObjectId;
 
@@ -17,9 +18,9 @@ import org.bson.types.ObjectId;
  */
 public interface ICamionesBO {
 
-    Camion obtenerCamion(String numeroDeCamion);
+    CamionDTO obtenerCamion(String numeroDeCamion);
 
-    List<Camion> obtenerTodos();
+    List<CamionDTO> obtenerTodos();
 
     int contarAsientosLibres(String numeroDeCamion);
 
@@ -27,8 +28,8 @@ public interface ICamionesBO {
 
     void ocuparAsientos(String idCamion, List<AsientoBoletoDTO> asientos) throws NegocioException;
 
-    public List<AsientoDTO> obtenerAsientosDisponibles(String numeroDeCamion);
-    
-    public ObjectId obtenerIdPorNumero(String numeroDeCamion);
+    List<AsientoDTO> obtenerAsientosDisponibles(String numeroDeCamion);
+
+    String obtenerIdPorNumero(String numeroDeCamion);
     
 }

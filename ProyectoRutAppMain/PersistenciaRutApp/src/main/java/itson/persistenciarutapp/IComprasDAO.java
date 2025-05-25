@@ -4,7 +4,7 @@
  */
 package itson.persistenciarutapp;
 
-import itson.persistenciarutapp.implementaciones.Compra;
+import Entidades.Compra;
 import itson.rutappdto.UsuarioDTO;
 import java.util.Date;
 import java.util.List;

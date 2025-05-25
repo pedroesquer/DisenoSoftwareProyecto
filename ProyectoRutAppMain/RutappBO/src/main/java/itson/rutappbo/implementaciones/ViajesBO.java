@@ -2,7 +2,7 @@ package itson.rutappbo.implementaciones;
 
 import itson.rutappbo.IViajesBO;
 import itson.persistenciarutapp.IViajesDAO;
-import itson.persistenciarutapp.implementaciones.Viaje;
+import Entidades.Viaje;
 import itson.rutappdto.ViajeDTO;
 import java.util.List;
 import java.util.stream.Collectors;

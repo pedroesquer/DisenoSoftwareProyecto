@@ -1,33 +1,47 @@
-package itson.persistenciarutapp.implementaciones;
+package Entidades;
 
 import java.util.Date;
 import org.bson.types.ObjectId;
 import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
 
 /**
  * Representa una reseña realizada por un usuario hacia un camión específico.
- * Contiene información sobre el usuario, el camión, la fecha de la reseña,
- * una calificación numérica y un comentario textual.
+ * Contiene información sobre el usuario, el camión, la fecha de la reseña, una
+ * calificación numérica y un comentario textual.
  */
 public class Reseña {
 
-    /** Identificador único de la reseña (mapeado a _id de MongoDB). */
+    /**
+     * Identificador único de la reseña (mapeado a _id de MongoDB).
+     */
     @BsonId
     private ObjectId id;
 
-    /** Identificador del usuario que realizó la reseña. */
+    /**
+     * Identificador del usuario que realizó la reseña.
+     */
     private ObjectId usuario;
 
-    /** Identificador del camión reseñado. */
+    /**
+     * Identificador del camión reseñado.
+     */
     private ObjectId camion;
 
-    /** Fecha en que se realizó la reseña. */
+    /**
+     * Fecha en que se realizó la reseña.
+     */
     private Date fecha;
 
-    /** Calificación asignada al camión por el usuario (por ejemplo, entre 1 y 5). */
+    /**
+     * Calificación asignada al camión por el usuario (por ejemplo, entre 1 y
+     * 5).
+     */
     private double calificacion;
 
-    /** Comentario descriptivo del usuario sobre el camión. */
+    /**
+     * Comentario descriptivo del usuario sobre el camión.
+     */
     private String comentario;
 
     public Reseña() {
@@ -98,15 +112,45 @@ public class Reseña {
         this.comentario = comentario;
     }
 
+    @BsonIgnore
+    public String getIdAsString() {
+        return id != null ? id.toHexString() : null;
+    }
+
+    @BsonIgnore
+    public void setIdFromString(String idStr) {
+        this.id = (idStr != null && !idStr.isBlank()) ? new ObjectId(idStr) : null;
+    }
+
+    @BsonIgnore
+    public String getUsuarioAsString() {
+        return usuario != null ? usuario.toHexString() : null;
+    }
+
+    @BsonIgnore
+    public void setUsuarioFromString(String usuarioId) {
+        this.usuario = (usuarioId != null && !usuarioId.isBlank()) ? new ObjectId(usuarioId) : null;
+    }
+
+    @BsonIgnore
+    public String getCamionAsString() {
+        return camion != null ? camion.toHexString() : null;
+    }
+
+    @BsonIgnore
+    public void setCamionFromString(String camionId) {
+        this.camion = (camionId != null && !camionId.isBlank()) ? new ObjectId(camionId) : null;
+    }
+
     @Override
     public String toString() {
-        return "Reseña{" +
-               "id=" + id +
-               ", usuario=" + usuario +
-               ", camion=" + camion +
-               ", fecha=" + fecha +
-               ", calificacion=" + calificacion +
-               ", comentario='" + comentario + '\'' +
-               '}';
+        return "Reseña{"
+                + "id=" + id
+                + ", usuario=" + usuario
+                + ", camion=" + camion
+                + ", fecha=" + fecha
+                + ", calificacion=" + calificacion
+                + ", comentario='" + comentario + '\''
+                + '}';
     }
 }

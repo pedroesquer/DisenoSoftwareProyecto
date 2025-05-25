@@ -1,7 +1,8 @@
-package itson.persistenciarutapp.implementaciones;
+package Entidades;
 
 import java.util.List;
 import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
@@ -107,6 +108,16 @@ public class Camion {
      */
     public void setAsientos(List<Asiento> asientos) {
         this.asientos = asientos;
+    }
+    
+    @BsonIgnore
+    public String getIdAsString() {
+        return id != null ? id.toHexString() : null;
+    }
+
+    @BsonIgnore
+    public void setIdFromString(String idStr) {
+        this.id = (idStr != null && !idStr.isBlank()) ? new ObjectId(idStr) : null;
     }
 
     /**

@@ -1,4 +1,4 @@
-package itson.persistenciarutapp.implementaciones;
+package Entidades;
 
 import enumm.MetodoPago;
 import java.util.Date;

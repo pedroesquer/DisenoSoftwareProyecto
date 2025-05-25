@@ -7,15 +7,17 @@ package itson.rutappbo.implementaciones;
 import enumm.estadoAsiento;
 import excepciones.NegocioException;
 import itson.persistenciarutapp.ICamionesDAO;
-import itson.persistenciarutapp.implementaciones.Asiento;
-import itson.persistenciarutapp.implementaciones.Camion;
+import Entidades.Asiento;
+import Entidades.Camion;
 import itson.persistenciarutapp.implementaciones.CamionesDAO;
 import itson.rutappbo.ICamionesBO;
 import itson.rutappdto.AsientoBoletoDTO;
 import itson.rutappdto.AsientoDTO;
+import itson.rutappdto.CamionDTO;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.bson.types.ObjectId;
+import mappers.CamionMapper;
+//import org.bson.types.ObjectId;
 
 /**
  *
@@ -30,13 +32,16 @@ public class CamionesBO implements ICamionesBO {
     }
 
     @Override
-    public Camion obtenerCamion(String numeroDeCamion) {
-        return camionesDAO.consultarCamionPorId(numeroDeCamion);
+    public CamionDTO obtenerCamion(String numeroDeCamion) {
+        Camion camion = camionesDAO.consultarCamionPorId(numeroDeCamion);
+        return camion != null ? CamionMapper.toDTO(camion) : null;
     }
 
     @Override
-    public List<Camion> obtenerTodos() {
-        return camionesDAO.consultarTodosLosCamiones();
+    public List<CamionDTO> obtenerTodos() {
+        return camionesDAO.consultarTodosLosCamiones().stream()
+                .map(CamionMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -88,8 +93,8 @@ public class CamionesBO implements ICamionesBO {
     }
 
     @Override
-    public ObjectId obtenerIdPorNumero(String numeroDeCamion) {
+    public String obtenerIdPorNumero(String numeroDeCamion) {
         Camion camion = camionesDAO.consultarCamionPorId(numeroDeCamion);
-        return camion != null ? camion.getId() : null;
+        return camion != null ? camion.getIdAsString() : null;
     }
 }

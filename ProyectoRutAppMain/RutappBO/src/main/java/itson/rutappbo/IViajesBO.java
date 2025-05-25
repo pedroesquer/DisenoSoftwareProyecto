@@ -4,7 +4,7 @@
  */
 package itson.rutappbo;
 
-import itson.persistenciarutapp.implementaciones.Viaje;
+import Entidades.Viaje;
 import itson.rutappdto.ViajeDTO;
 import java.time.LocalDateTime;
 import java.util.List;

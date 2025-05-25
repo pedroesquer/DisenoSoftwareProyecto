@@ -8,7 +8,9 @@ import java.util.List;
  *
  * @author chris
  */
-public class CamionDTO implements Serializable{
+public class CamionDTO implements Serializable {
+
+    private String id;
     private String numeroCamion;
     private List<AsientoDTO> listaAsiento;
 
@@ -18,6 +20,20 @@ public class CamionDTO implements Serializable{
     public CamionDTO(String numeroCamion, List<AsientoDTO> listaAsiento) {
         this.numeroCamion = numeroCamion;
         this.listaAsiento = listaAsiento;
+    }
+
+    public CamionDTO(String id, String numeroCamion, List<AsientoDTO> listaAsiento) {
+        this.id = id;
+        this.numeroCamion = numeroCamion;
+        this.listaAsiento = listaAsiento;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getNumeroCamion() {
@@ -35,7 +51,5 @@ public class CamionDTO implements Serializable{
     public void setListaAsiento(List<AsientoDTO> listaAsiento) {
         this.listaAsiento = listaAsiento;
     }
-    
-    
 
 }
